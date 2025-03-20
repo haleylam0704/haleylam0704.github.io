@@ -2,3 +2,9 @@
 ---
 
 @import "jekyll-theme-minimal";
+
+body {
+    font-family: "HelveticaNeue-Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 300; /* 300 = Light (45), 200 = Thin (35) */
+    font-style: normal;
+}
