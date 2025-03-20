@@ -24,3 +24,22 @@ a:hover {
 h1 {
     color: #b82151;
 }
+
+.social-icons {
+    display: flex;
+    justify-content: center; /* Centers icons in one row */
+    align-items: center;
+    gap: 10px; /* Adds spacing between icons */
+    margin-top: 10px;
+}
+
+.social-icon {
+    height: 22px;  /* Adjust size */
+    width: auto;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+}
+
+.social-icon:hover {
+    opacity: 1; /* Slight highlight on hover */
+}
