@@ -1,62 +1,81 @@
 @import "fonts";
 @import "rouge-github";
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300&display=swap');
 
 body {
-  background-color: #fff;
-  padding:50px;
-  font: 14px/1.5 "Noto Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  color:#727272;
-  font-weight:400;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  color:#222;
-  margin:0 0 20px;
-}
-
-p, ul, ol, table, pre, dl {
-  margin:0 0 20px;
-}
-
-h1, h2, h3 {
-  line-height:1.1;
+  background-color: #ffffff;
+  padding: 50px;
+  font: 15px/1.5 "HelveticaNeue-Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color:#424242;
+  font-weight:300;
 }
 
 h1 {
-  font-size:28px;
+  color:#3D6CD9;
+  margin:0 0 6px;
+}
+
+h2, h3, h4, h5, h6 {
+  color:#3D6CD9;
+  margin:0 0 6px;
+}
+
+p, ul, ol, table, pre, dl {
+  margin:0 0 15px;
+}
+
+h1, h2, h3 {
+  line-height:1;
+}
+
+h1 {
+  font-size:25px;
+  font-weight:540;
+}
+
+h1:lang(zh), .chinese {
+  font-family: 'Noto Sans SC', sans-serif;
+  font-weight: 200;
+}
+
+h1:hover, h1:focus {
+  font-weight: 540;
 }
 
 h2 {
-  color:#393939;
+  font-size:20px;
+  font-weight:540;
+  color:#3D6CD9;
 }
 
 h3, h4, h5, h6 {
-  color:#494949;
+  color:#3D6CD9;
+  font-weight:550;
 }
 
 a {
-  color:#267CB9;
+  color:#3D6CD9;
   text-decoration:none;
 }
 
 a:hover, a:focus {
-  color:#069;
-  font-weight: bold;
+  color:#163F9E;
+  font-weight: 550;
 }
 
 a small {
-  font-size:11px;
-  color:#777;
-  margin-top:-0.3em;
+  font-size:12.5px;
+  color:#3D6CD9;
+  margin-top:30px;
   display:block;
 }
 
 a:hover small {
-  color:#777;
+  color:#3D6CD9;
 }
 
 .wrapper {
-  width:860px;
+  width:auto;
   margin:0 auto;
 }
 
@@ -65,6 +84,7 @@ blockquote {
   margin:0;
   padding:0 0 0 20px;
   font-style:italic;
+  font-weight:300;
 }
 
 code, pre {
@@ -93,7 +113,7 @@ th, td {
 
 dt {
   color:#444;
-  font-weight:700;
+  font-weight:540;
 }
 
 th {
@@ -101,28 +121,16 @@ th {
 }
 
 img {
-  max-width:100%;
-}
-
-kbd {
-  background-color: #fafbfc;
-  border: 1px solid #c6cbd1;
-  border-bottom-color: #959da5;
-  border-radius: 3px;
-  box-shadow: inset 0 -1px 0 #959da5;
-  color: #444d56;
-  display: inline-block;
-  font-size: 11px;
-  line-height: 10px;
-  padding: 3px 5px;
-  vertical-align: middle;
+  max-width:90%;
 }
 
 header {
-  width:270px;
+  width:20%;
   float:left;
   position:fixed;
+  text-align: center;
   -webkit-font-smoothing:subpixel-antialiased;
+
 }
 
 ul.downloads {
@@ -162,7 +170,7 @@ ul.downloads {
 
 .downloads a:hover, .downloads a:focus {
   color:#675C5C;
-  font-weight:bold;
+  //font-weight:bold;
 }
 
 .downloads ul a:active {
@@ -171,7 +179,7 @@ ul.downloads {
 
 strong {
   color:#222;
-  font-weight:700;
+  font-weight:575;
 }
 
 .downloads li + li + li {
@@ -186,13 +194,13 @@ strong {
 }
 
 section {
-  width:500px;
+  width:75%;
   float:right;
   padding-bottom:50px;
 }
 
 small {
-  font-size:11px;
+  font-size:12.5px;
 }
 
 hr {
@@ -203,10 +211,10 @@ hr {
 }
 
 footer {
-  width:270px;
+  width:260px;
   float:left;
   position:fixed;
-  bottom:50px;
+  bottom:10px;
   -webkit-font-smoothing:subpixel-antialiased;
 }
 
@@ -225,7 +233,9 @@ footer {
 
   header {
     padding-right:320px;
+    padding-bottom:100px;
   }
+
 
   section {
     border:1px solid #e5e5e5;
