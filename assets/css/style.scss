@@ -8,3 +8,15 @@ body {
     font-weight: 300; /* 300 = Light (45), 200 = Thin (35) */
     font-style: normal;
 }
+
+/* Change default link color */
+a {
+    color: #b82151; /* Custom pinkish-red */
+    text-decoration: none; /* Removes underline */
+}
+
+/* Change color when hovering over links */
+a:hover {
+    color: #930f3b; /* Slightly darker shade for hover effect */
+    text-decoration: underline; /* Adds underline on hover */
+}
