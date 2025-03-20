@@ -21,8 +21,8 @@ a:hover {
     text-decoration: underline; /* Adds underline on hover */
 }
 
-h1 {
-    color: #b82151;
+h1, h2, h3, h4, h5, h6 {
+    color: #b82151 !important; /* Forces the pinkish-red color */
 }
 
 .social-icons {
