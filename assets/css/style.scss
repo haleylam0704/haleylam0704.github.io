@@ -27,15 +27,17 @@ h1 {
 
 .social-icons {
     display: flex;
-    justify-content: center; /* Centers icons in one row */
+    justify-content: center; /* Center icons in a row */
     align-items: center;
-    gap: 10px; /* Adds spacing between icons */
+    gap: 12px; /* Adds spacing between icons */
     margin-top: 10px;
 }
 
 .social-icon {
     height: 22px;  /* Adjust size */
-    width: auto;
+    width: 22px;  /* Ensures square aspect ratio */
+    object-fit: contain; /* Prevents squishing */
+    border-radius: 50%; 
     opacity: 0.8;
     transition: opacity 0.3s;
 }
