@@ -1,6 +1,6 @@
 # substack
 ---
-Substack is great. It's like my new Instagram, though less addicting.  
+Substack is kind of like my new Instagram. It's great. I've learned some really interesting ideas and research there, and I'm writing mainly to encourage reflection and growth, both in myself and others.
 
 I write mostly about psychology, AI, and economics. I also do a weekly series where I reflect on what I've learned, how I've failed, and how I seek to move forward.
 
