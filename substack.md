@@ -1,9 +1,4 @@
----
-layout: default
-title: Substack
----
-
-# My Substack
+# substack
 
 I write about psychology, AI, and human behavior. Check out my latest posts below:
 
