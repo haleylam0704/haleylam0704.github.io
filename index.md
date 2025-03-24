@@ -1,7 +1,7 @@
 ## hi!
 ***
 
-I'm currently in my final year of undergrad, studying psychology and economics at Baylor University. 
+Currently in my final year of undergrad. Studying psychology, economics, and music at Baylor University. 
 
 My research interests revolve around:
 - **AI Companionship**: Can AI companions sufficiently replace human relationships? Should it happen?
