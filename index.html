@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My AI + Human Journey</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="landing" class="landing-section">
+    <div class="landing-bg"></div>
+    <h1 class="landing-title">Welcome to Haley's Website</h1>
+    <div class="landing-scroll-cue">Scroll to explore ↓</div>
+  </div>
+  <div id="main-content" class="hidden">
+    <div class="floating-bg bg1"></div>
+    <div class="floating-bg bg2"></div>
+    <div class="floating-bg bg3"></div>
+    <header class="new-header">
+      <div class="left">
+        <span class="site-title">My Personal Website!</span>
+      </div>
+    
+      <div class="center">
+        <img src="images/profile.png" alt="Haley Lam" class="profile-pic" />
+      </div>
+    
+      <div class="right">
+        Haley Lam ｜ <span class="chinese-name">林駿熙</span>
+      </div>
+    </header>
+
+    <nav class="tabs">
+      <button class="tab-button active" data-tab="home">Home</button>
+      <button class="tab-button" data-tab="research">Research</button>
+      <button class="tab-button" data-tab="reflections">Substack</button>
+      <button class="tab-button" data-tab="timetogo">Time to Go!</button>
+      <button class="tab-button" data-tab="progress">Project Tracker</button>
+    </nav>
+
+    <main>
+      <div class="tab-content" data-tab="home">
+        <section id="about">
+          <h2>About Me</h2>
+          <ul class="about-chips">
+            <li>Psychology @ WFU</li>
+            <li>AI & Relationships</li>
+            <li>Econometrics in Psychology</li>
+          </ul>
+        </section>
+
+        <section id="values">
+          <h2>What I Care About</h2>
+          <ul class="about-chips">
+            <li>Accessible Therapy</li>
+            <li>Human-AI Risks & Benefits</li>
+            <li>Good Science</li>
+          </ul>
+        </section>
+
+        <section id="cv-download">
+          <a href="May_CV_25.pdf" download class="cv-button">Download My CV</a>
+        </section>
+      </div>
+
+      <div class="tab-content hidden" data-tab="reflections">
+        <section id="reflections">
+          <div id="substack-feed-embed"></div>
+          <script>
+            window.SubstackFeedWidget = {
+              substackUrl: "haleylam.substack.com",
+              posts: 4,
+              layout: "right",
+              colors: {
+                primary: "#000000",
+                secondary: "#131313",
+                background: "#F3E7E7"
+              }
+            };
+          </script>
+          <script src="https://substackapi.com/embeds/feed.js" async></script>
+        </section>
+      </div>
+
+      <div class="tab-content hidden" data-tab="research">
+        <section id="research-projects">
+          <h2>Research Projects</h2>
+        
+          <h3>Manuscripts Under Review</h3>
+          <ul class="citation-list">
+            <li>
+              <strong>Lam, H.</strong> (under review). 
+              <a href="path/to/diverging-methods.pdf" class="citation-title" target="_blank">
+                Diverging Methods: Trends and Differences in Research Methodologies Between Economics and Psychology.
+              </a>
+            </li>
+            <li>
+              <strong>Lam, H.</strong> (under review). 
+              <a href="path/to/ai-predictors.pdf" class="citation-title" target="_blank">
+                National Predictors of Attitudes Toward Artificial Intelligence: A Cross-Cultural Analysis.
+              </a>
+            </li>
+          </ul>
+        
+          <h3>Conference Presentations</h3>
+          <ul class="citation-list">
+            <li>
+              <strong>Lam, H.</strong> (2025, April). 
+              <a href="path/to/diverging-methods-blitz.pdf" class="citation-title" target="_blank">
+                Diverging Methods: Trends and Differences in Research Methodologies Between Economics and Psychology.
+              </a><em>Blitz paper presentation at Interdisciplinary Research Ethics and Norms Conference (IRENC).</em>
+            </li>
+            <li>
+              <strong>Lam, H.</strong> (2025, April). 
+              <a href="path/to/ai-cross-cultural.pdf" class="citation-title" target="_blank">
+                National Predictors of Attitudes Toward Artificial Intelligence: A Cross-Cultural Analysis.
+              </a><em>Platform presentation at University Scholars Week, Baylor University.</em>
+            </li>
+            <li>
+              <strong>Lam, H.</strong> (2024, October). 
+              <a href="path/to/mass-shooting-poster.pdf" class="citation-title" target="_blank">
+                The Impact of Mental Illness Diagnoses on Mass Shooting Severity.
+              </a>
+              <br>
+              <em>Poster presentation at Baylor Research & Internship Day Symposium.</em>
+            </li>
+          </ul>
+        
+          <h3>Ongoing Projects</h3>
+          <ul class="citation-list">
+            <li>
+              Foy, E.; Rowatt, W.; <strong>Lam, H.</strong> (ongoing). 
+              Attitudes Towards Open Science Across Disciplines.
+            </li>
+            <li>
+              Cunningham, S.; <strong>Lam, H.</strong>; Ramsay, J. (ongoing). 
+              Perceptions of AI Pastor Responses.
+            </li>
+            <li>
+              <strong>Lam, H.</strong> (ongoing). 
+              Comparing GPT Diagnoses with the DSM Clinical Cases.
+            </li>
+          </ul>
+        </section>
+      </div>
+      <div class="tab-content hidden" data-tab="timetogo">
+        <section id="timetogo">
+          <h2>Time To Go!</h2>
+      
+          <!-- your group shot -->
+          <img 
+            src="images/giveaways/books.jpg" 
+            alt="All books I'm giving away" 
+            class="group-photo" 
+          />
+      
+          <!-- list of individual titles + status -->
+          <ul id="giveaway-list" class="giveaway-list"></ul>
+        </section>
+      </div>
+      <div class="tab-content hidden" data-tab="progress">
+        <main class="progress-main">
+          <h1>In Progress</h1>
+
+          <section class="progress-section">
+            <h2>Books</h2>
+            <div class="progress-list">
+              <div class="progress-item">
+                <span class="progress-title">The Anxious Generation</span>
+                <div class="progress-bar"><div class="progress-bar-inner" style="width: 20%"></div></div>
+                <span class="progress-percent">20%</span>
+              </div>
+              <div class="progress-item">
+                <span class="progress-title">霓虹燈下說散聚</span>
+                <div class="progress-bar"><div class="progress-bar-inner" style="width: 5%"></div></div>
+                <span class="progress-percent">5%</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="progress-section">
+            <h2>Projects</h2>
+            <div class="progress-list">
+              <div class="progress-item">
+                <span class="progress-title">Create Personal Website</span>
+                <div class="progress-bar"><div class="progress-bar-inner" style="width: 65%"></div></div>
+                <span class="progress-percent">65%</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="progress-section">
+            <h2>Research Projects</h2>
+            <div class="progress-list">
+              <div class="progress-item">
+                <span class="progress-title">How well can LLMs diagnose psychiatric disorders?</span>
+                <div class="progress-bar"><div class="progress-bar-inner" style="width: 25%"></div></div>
+                <span class="progress-percent">25%</span>
+                <div class="progress-stages">
+                  <span class="stage done">Conceptualization</span>
+                  <span class="stage current">Data Collection</span>
+                  <span class="stage">Analysis</span>
+                  <span class="stage">Writing</span>
+                </div>
+              </div>
+              <div class="progress-item">
+                <span class="progress-title">AI Pastor Perception</span>
+                <div class="progress-bar"><div class="progress-bar-inner" style="width: 60%"></div></div>
+                <span class="progress-percent">60%</span>
+                <div class="progress-stages">
+                  <span class="stage current">Conceptualization</span>
+                  <span class="stage">Data Collection</span>
+                  <span class="stage">Analysis</span>
+                  <span class="stage">Writing</span>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+    </main>
+
+    <div id="node-popup" class="hidden">
+      <h3 id="popup-title"></h3>
+      <p id="popup-desc"></p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
