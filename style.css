@@ -833,27 +833,3 @@ section:last-of-type {
   flex-wrap: wrap;
   justify-content: center;
 }
-
-@media (prefers-color-scheme: dark) {
-  body, html {
-    background-color: #fafafa !important;
-    color: #000 !important;
-  }
-
-  section, main, .tab-content, .project-item, .progress-item {
-    background-color: #fff !important;
-    color: #000 !important;
-  }
-
-  .progress-bar {
-    background-color: #e7eaf3 !important;
-  }
-
-  .progress-bar-inner {
-    background-color: var(--color-accent) !important;
-  }
-
-  a {
-    color: var(--color-accent) !important;
-  }
-}
