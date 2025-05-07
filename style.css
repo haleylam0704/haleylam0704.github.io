@@ -639,13 +639,13 @@ section:last-of-type {
 .social-icons {
   display: flex;
   justify-content: center;
-  gap: 20px;
-  margin-top: 15px;
+  gap: 15px;
+  margin-top: 10px;
 }
 
 .social-icon {
-  width: 24px;
-  height: 24px;
+  width: 18px;
+  height: 18px;
   transition: opacity 0.2s ease;
 }
 
