@@ -236,8 +236,8 @@ window.addEventListener('DOMContentLoaded', () => {
         );
       }
       tooltip.style.whiteSpace = 'normal'; // in case something's overriding it
-tooltip.style.width = 'auto'; // let it grow
-tooltip.style.maxWidth = '440px';
+      tooltip.style.width = 'auto'; // let it grow
+      tooltip.style.maxWidth = '440px';
       tooltip.innerHTML = content;
       tooltip.style.display = 'block';
       tooltip.style.opacity = '1';
@@ -261,6 +261,24 @@ tooltip.style.maxWidth = '440px';
       tooltip.style.opacity = '0';
     });
   });
+
+  // --- Dark/Light mode toggle ---
+  const modeToggleBtn = document.getElementById("mode-toggle");
+  if (modeToggleBtn) {
+    modeToggleBtn.addEventListener("click", function () {
+      const body = document.body;
+      if (body.classList.contains('dark-mode')) {
+        body.classList.remove('dark-mode');
+        body.classList.add('light-mode');
+      } else {
+        body.classList.remove('light-mode');
+        body.classList.add('dark-mode');
+      }
+      updateToggleText();
+    });
+    // Initial label setup
+    updateToggleText();
+  }
 
   // Landing section fade-out and main-content fade-in
   const landing = document.getElementById('landing');
@@ -302,3 +320,13 @@ tooltip.style.maxWidth = '440px';
   window.addEventListener('scroll', revealSections);
   revealSections();
 });
+
+function updateToggleText() {
+  const toggleButton = document.getElementById("mode-toggle");
+  if (!toggleButton) return;
+  if (document.body.classList.contains("dark-mode")) {
+    toggleButton.textContent = "Light Mode";
+  } else {
+    toggleButton.textContent = "Dark Mode";
+  }
+}

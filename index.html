@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta name="color-scheme" content="light only">
+  <meta name="color-scheme" content="light dark">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <link rel="icon" type="image/png" href="favicon.png">
@@ -20,7 +20,12 @@
     <div class="floating-bg bg3"></div>
     <header class="new-header">
       <div class="left">
-        <span class="site-title">My Personal Website!</span>
+        <div style="display: flex; flex-direction: column;">
+          <span class="site-title" style="margin-bottom: 0.3rem;">My Personal Website!</span>
+          <button class="toggle-button" onclick="document.body.classList.toggle('dark-mode')" style="font-size: 0.85rem; padding: 6px 12px; background: #e8e8e8; border: none; border-radius: 6px; color: #333; font-family: var(--font-body); width: fit-content;">
+            Dark Mode
+          </button>
+        </div>
       </div>
     
       <div class="center">
@@ -204,42 +209,52 @@
           <div class="giveaway-grid">
             <div class="giveaway-item">
               <img src="images/giveaways/microwave.jpg" alt="Microwave" class="giveaway-image">
-              <span class="giveaway-title">Microwave</span>
+              <span class="giveaway-title">microwave</span>
               <span class="status available">Available</span>
             </div>
             <div class="giveaway-item">
               <img src="images/giveaways/bed.jpg" alt="Bed Frame" class="giveaway-image">
-              <span class="giveaway-title">Bed Frame</span>
+              <span class="giveaway-title">bed frame + mattress + pillows</span>
               <span class="status available">Available</span>
             </div>
             <div class="giveaway-item">
               <img src="images/giveaways/lamp.jpg" alt="Lamp" class="giveaway-image" style="object-position: top;">
-              <span class="giveaway-title">Lamp</span>
+              <span class="giveaway-title">lamp</span>
               <span class="status claimed">Claimed</span>
             </div>
             <div class="giveaway-item">
               <img src="images/giveaways/mouse.jpg" alt="Mouse" class="giveaway-image">
-              <span class="giveaway-title">Mouse</span>
+              <span class="giveaway-title">(wonky) mouse</span>
               <span class="status available">Available</span>
             </div>
             <div class="giveaway-item">
               <img src="images/giveaways/big trash.jpg" alt="Large Trash Can" class="giveaway-image">
-              <span class="giveaway-title">Big Trash Can</span>
+              <span class="giveaway-title">medium trash can</span>
               <span class="status available">Available</span>
             </div>
             <div class="giveaway-item">
               <img src="images/giveaways/small trash.jpg" alt="Small Trash Can" class="giveaway-image">
-              <span class="giveaway-title">Small Trash Can (4Gal)</span>
+              <span class="giveaway-title">small trash can (4Gal)</span>
               <span class="status available">Available</span>
             </div>
             <div class="giveaway-item">
               <img src="images/giveaways/binders.jpg" alt="Binders" class="giveaway-image">
-              <span class="giveaway-title">Binders</span>
+              <span class="giveaway-title">binders (do people use these anymore)</span>
               <span class="status available">Available</span>
             </div>
             <div class="giveaway-item">
               <img src="images/giveaways/sleepingbag.jpg" alt="Sleeping Bag" class="giveaway-image">
-              <span class="giveaway-title">Sleeping Bag</span>
+              <span class="giveaway-title">sleeping bag</span>
+              <span class="status available">Available</span>
+            </div>
+            <div class="giveaway-item">
+              <img src="images/giveaways/pans.jpg" alt="Pans" class="giveaway-image">
+              <span class="giveaway-title">pans</span>
+              <span class="status available">Available</span>
+            </div>
+            <div class="giveaway-item">
+              <img src="images/giveaways/bowl.jpg" alt="Huge Plastic Bowl" class="giveaway-image">
+              <span class="giveaway-title">huge plastic bowl</span>
               <span class="status available">Available</span>
             </div>
           </div>
@@ -313,6 +328,34 @@
     </div>
   </div>
 
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const toggleButton = document.querySelector('.toggle-button');
+      const body = document.body;
+
+      // Initialize based on current preference or set dark mode by default
+      if (!body.classList.contains('dark-mode') && !body.classList.contains('light-mode')) {
+        body.classList.add('dark-mode');
+      }
+
+      function updateToggleText() {
+        if (body.classList.contains('dark-mode')) {
+          toggleButton.textContent = 'Light Mode';
+        } else {
+          toggleButton.textContent = 'Dark Mode';
+        }
+      }
+
+      toggleButton.addEventListener('click', () => {
+        body.classList.toggle('dark-mode');
+        body.classList.toggle('light-mode');
+        updateToggleText();
+      });
+
+      // Set initial button text
+      updateToggleText();
+    });
+  </script>
   <script src="script.js"></script>
 </body>
 </html>
