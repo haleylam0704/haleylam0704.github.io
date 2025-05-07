@@ -639,14 +639,17 @@ section:last-of-type {
 .social-icons {
   display: flex;
   justify-content: center;
-  gap: 15px;
-  margin-top: 10px;
+  gap: 12px;
+  margin-top: 8px;
+  width: 100%;
+  max-width: 120px;
 }
 
 .social-icon {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   transition: opacity 0.2s ease;
+  object-fit: contain;
 }
 
 .social-icon:hover {
