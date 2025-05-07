@@ -149,42 +149,63 @@ function renderGiveawayList() {
 // == Tab switching ==
 function initTabs() {
   const buttons = document.querySelectorAll('.tab-button');
-  const panes   = document.querySelectorAll('.tab-content');
+  const panes = document.querySelectorAll('.tab-content');
 
-  buttons.forEach(button => {
-    button.addEventListener('click', () => {
-      const target = button.dataset.tab;
+  function switchTab(tabName) {
+    // 1) Update button states
+    buttons.forEach(btn => btn.classList.remove('active'));
+    document.querySelector(`.tab-button[data-tab="${tabName}"]`).classList.add('active');
 
-      // 1) Update button states
-      buttons.forEach(btn => btn.classList.remove('active'));
-      button.classList.add('active');
-
-      // 2) Fade out the currently active pane
-      const currentPane = document.querySelector('.tab-content.active');
-      if (currentPane) {
-        currentPane.classList.add('fade-out');
-        setTimeout(() => {
-          currentPane.classList.remove('active', 'fade-out');
-          currentPane.classList.add('hidden');
-          // 3) Show the selected pane and mark it 'active' with fade-in
-          const sel = document.querySelector(`.tab-content[data-tab="${target}"]`);
-          sel.classList.remove('hidden', 'fade-out');
-          sel.classList.add('active');
-        }, 500); // match CSS transition duration
-      } else {
-        // If no active pane, just show the selected one
-        const sel = document.querySelector(`.tab-content[data-tab="${target}"]`);
+    // 2) Fade out the currently active pane
+    const currentPane = document.querySelector('.tab-content.active');
+    if (currentPane) {
+      currentPane.classList.add('fade-out');
+      setTimeout(() => {
+        currentPane.classList.remove('active', 'fade-out');
+        currentPane.classList.add('hidden');
+        
+        // 3) Show the selected pane and mark it 'active' with fade-in
+        const sel = document.querySelector(`.tab-content[data-tab="${tabName}"]`);
         sel.classList.remove('hidden', 'fade-out');
         sel.classList.add('active');
-      }
+      }, 300); // shorter transition for better UX
+    } else {
+      // If no active pane, just show the selected one
+      const sel = document.querySelector(`.tab-content[data-tab="${tabName}"]`);
+      sel.classList.remove('hidden', 'fade-out');
+      sel.classList.add('active');
+    }
+
+    // Update URL hash without triggering a page reload
+    history.pushState(null, null, `#${tabName}`);
+  }
+
+  // Add click event listeners to tab buttons
+  buttons.forEach(button => {
+    button.addEventListener('click', () => {
+      switchTab(button.dataset.tab);
     });
   });
 
-  // 4) On initial load, show whichever button is already active
-  const defaultTab  = document.querySelector('.tab-button.active').dataset.tab;
-  const defaultPane = document.querySelector(`.tab-content[data-tab="${defaultTab}"]`);
-  defaultPane.classList.remove('hidden');
-  defaultPane.classList.add('active');
+  // Handle URL hash on page load
+  window.addEventListener('load', () => {
+    const hash = window.location.hash.slice(1); // Remove the # symbol
+    if (hash) {
+      switchTab(hash);
+    } else {
+      // Default to home tab if no hash
+      const defaultTab = document.querySelector('.tab-button.active').dataset.tab;
+      switchTab(defaultTab);
+    }
+  });
+
+  // Handle browser back/forward buttons
+  window.addEventListener('popstate', () => {
+    const hash = window.location.hash.slice(1);
+    if (hash) {
+      switchTab(hash);
+    }
+  });
 }
 
 // == Kick things off when the DOM is ready ==
