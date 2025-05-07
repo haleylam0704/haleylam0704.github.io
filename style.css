@@ -271,7 +271,8 @@ section:last-of-type {
   font-size: 0.9em;
   text-transform: uppercase;
   font-family: var(--font-body);
-  font-style: normal;
+  font-style: italic;
+  letter-spacing: 0.5px;
 }
 .status.available {
   color: #2e7d32;
