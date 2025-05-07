@@ -271,7 +271,7 @@ section:last-of-type {
   font-size: 0.9em;
   text-transform: uppercase;
   font-family: var(--font-body);
-  font-style: italic;
+  font-style: normal;
   letter-spacing: 0.5px;
 }
 .status.available {
