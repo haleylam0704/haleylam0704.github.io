@@ -2,13 +2,13 @@
 const giveaways = [
   {
     title: "The Violence Project: How to Stop a Mass Shooting Epidemic by Jillian Peterson and James Densley",
-    description: "A deep dive into the psych of mass shootings.",
+    description: "A deep dive into the psych of mass shootings. Top researchers in this narrow field.",
     status: "available"
   },
 
   {
     title: "Darkness Visible by William Styron",
-    description: "A beautiful memoir about severe depression. Eye-opening.",
+    description: "A great memoir about severe depression. Eye-opening.",
     status: "available"
   },
 
@@ -20,19 +20,19 @@ const giveaways = [
 
   {
     title: "Panzram: Butchering Humanity: An Autobiography by Carl Panzram",
-    description: "A serial killer's autobiography. Tried to understand what goes through a serial killer's mind, but he doesn't quite speak of that.",
+    description: "A serial killer's autobiography. Tried to understand what goes through a serial killer's mind, but he doesn't quite speak of that. Not great imo.",
     status: "available"
   },
 
   {
     title: "Moral Issues & Christian Responses by Patricia & Shannon Jung",
-    description: "Christian Ethics textbook. Pretty good commentaries on controversial issues from many perspectives.",
+    description: "Christian Ethics textbook. Pretty good commentaries on controversial issues from diverse perspectives.",
     status: "available"
   },
 
   {
     title: "Why Nations Fail by Daron Acemoglu and James A. Robinson",
-    description: "Nobel winners a couple of months ago. Very dense economics book with a persistant (but arguably weak) thesis.",
+    description: "Nobel winners a couple of months ago. Very dense economics book with a thesis, so it gets repetitive.",
     status: "available"
   },
 
@@ -50,7 +50,7 @@ const giveaways = [
 
   {
     title: "Existentialism: Basic Writings by Charles Guignon",
-    description: "Textbook for Existentialism (PHI 2303).",
+    description: "Textbook for Existentialism (PHI 2303). Didn't really read it.",
     status: "available"
   },
 
@@ -62,13 +62,13 @@ const giveaways = [
 
   {
     title: "Case Studies in Information and Computer Ethics by Richard A. Spinello",
-    description: "Haven't read this yet, but not sure if I ever will. Skimmed through it and seems very interesting.",
+    description: "Haven't read this yet, but not sure I ever will. Skimmed through it and seems interesting though.",
     status: "available"
   },
 
   {
     title: "The Holy Bible: NIV",
-    description: "An extra bible that I've had for a while.",
+    description: "An extra Bible I've had for a while.",
     status: "available"
   },
 ];
