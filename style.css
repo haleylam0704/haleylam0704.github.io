@@ -15,6 +15,11 @@
   --font-body: 'Inter', sans-serif;
 }
 
+html {
+  background-color: #fafafa;
+  color-scheme: light;
+}
+
 /*--------------------------------------------------
   Reset & Typography
 --------------------------------------------------*/

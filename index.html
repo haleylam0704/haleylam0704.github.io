@@ -82,6 +82,29 @@
               <a href="https://haleylam.substack.com" target="_blank" rel="noopener">my Substack!</a>.
             </p>
           </div>
+      
+          <!-- Subscribe Section -->
+          <div style="margin: 1.5rem 0 0.5rem;">
+            <strong>Sign up for the newsletter a receive emails of my posts:</strong>
+          </div>
+          <div id="custom-substack-embed" style="margin-bottom: 2rem;"></div>
+          <script>
+            window.CustomSubstackWidget = {
+              substackUrl: "haleylam.substack.com",
+              placeholder: "example@gmail.com",
+              buttonText: "Subscribe",
+              theme: "custom",
+              colors: {
+                primary: "#F7E7E7",
+                input: "#000000",
+                email: "#FFFFFF",
+                text: "#000000",
+              },
+            };
+          </script>
+          <script src="https://substackapi.com/widget.js" async></script>
+      
+          <!-- Substack Feed -->
           <div id="substack-feed-embed"></div>
           <script>
             window.SubstackFeedWidget = {
@@ -162,7 +185,7 @@
       </div>
       <div class="tab-content hidden" data-tab="timetogo" id="timetogo-content">
         <section id="timetogo">
-          <h2>bye bye! giving this stuff away</h2>
+          <h2>bye bye! giving this stuff away:</h2>
       
           <!-- your group shot -->
           <img 
