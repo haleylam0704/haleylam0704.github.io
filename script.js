@@ -14,7 +14,7 @@ const giveaways = [
 
   {
     title: "The Narcissism Epidemic: Living in the Age of Entitlement by Jean M. Twenge and W. Keith Campbell",
-    description: "One of my favourite books. Helped me realize my self-centeredness and need for affirmation.",
+    description: "Very informative, even though written almost 20 years ago. Helped me realize my self-centeredness and need for affirmation.",
     status: "available"
   },
 
@@ -127,24 +127,33 @@ function initMap() {
 }
 
 
-// == Render the giveaways list ==
 function renderGiveawayList() {
   const list = document.getElementById('giveaway-list');
   if (!list) return;
   list.innerHTML = '';
 
   giveaways.forEach((item, idx) => {
+    const parts = item.title.match(/^(.*?)(?:\s+by\s+)(.+)$/);
+    const titleOnly  = parts ? parts[1] : item.title;
+    const authorOnly = parts ? parts[2] : '';
+
     const li = document.createElement('li');
     li.innerHTML = `
       <div class="giveaway-entry">
-        <span class="giveaway-title">${idx + 1}. <em>${item.title}</em>&nbsp;<span class="status ${item.status}">${item.status === 'available' ? 'AVAILABLE' : 'CLAIMED'}</span></span>
+        <span class="giveaway-title">
+          ${idx + 1}. 
+          <span class="book-title">${titleOnly}</span>
+          ${authorOnly ? `<span class="book-author"> by ${authorOnly}</span>` : ""}
+          <span class="status ${item.status}">
+            ${item.status === 'available' ? 'AVAILABLE' : 'CLAIMED'}
+          </span>
+        </span>
       </div>
       <p class="giveaway-desc">${item.description}</p>
     `;
     list.appendChild(li);
   });
 }
-
 
 // == Tab switching ==
 function initTabs() {
