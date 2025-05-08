@@ -1237,3 +1237,17 @@ section {
   flex-wrap: wrap;
   justify-content: center; /* Center the progress stages */
 }
+
+#research-projects h2,
+#research-projects h3 {
+  display: block;
+  width: 100%;
+  clear: both; /* Ensures it doesn't float next to anything */
+  margin-top: 2.5rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .social-icon {
+    filter: invert(1) !important;
+  }
+}
