@@ -22,9 +22,7 @@
       <div class="left">
         <div style="display: flex; flex-direction: column;">
           <span class="site-title" style="margin-bottom: 0.3rem;">My Personal Website!</span>
-          <button class="toggle-button" onclick="document.body.classList.toggle('dark-mode')" style="font-size: 0.85rem; padding: 6px 12px; background: #e8e8e8; border: none; border-radius: 6px; color: #333; font-family: var(--font-body); width: fit-content;">
-            Dark Mode
-          </button>
+          <button class="toggle-button" onclick="toggleDarkMode()">☀</button>
         </div>
       </div>
     
@@ -91,7 +89,7 @@
       
           <!-- Subscribe Section -->
           <div style="margin: 1.5rem 0 0.5rem;">
-            <strong>Sign up for the newsletter a receive emails of my posts:</strong>
+            <strong>Sign up for the newsletter to receive emails of my posts:</strong>
           </div>
           <div id="custom-substack-embed" style="margin-bottom: 2rem;"></div>
           <script>
@@ -340,9 +338,13 @@
 
       function updateToggleText() {
         if (body.classList.contains('dark-mode')) {
-          toggleButton.textContent = 'Light Mode';
+          toggleButton.textContent = '☀';
+          toggleButton.style.backgroundColor = '#ffffff';
+          toggleButton.style.color = '#000000';
         } else {
-          toggleButton.textContent = 'Dark Mode';
+          toggleButton.textContent = '🌙';
+          toggleButton.style.backgroundColor = '#000000';
+          toggleButton.style.color = '#ffffff';
         }
       }
 
