@@ -13,4 +13,26 @@
     await mermaid.run({querySelector:'code.language-mermaid'});
 </script>
 
+<!-- Typing effect for bio -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const text = "{{ site.author.bio }}";
+  const element = document.getElementById('typed-bio');
+  const cursor = document.querySelector('.typing-cursor');
+  if (element && text) {
+    let i = 0;
+    function type() {
+      if (i < text.length) {
+        element.textContent += text.charAt(i);
+        i++;
+        setTimeout(type, 40);
+      } else if (cursor) {
+        setTimeout(() => { cursor.style.display = 'none'; }, 1500);
+      }
+    }
+    type();
+  }
+});
+</script>
+
 <!-- end custom footer snippets -->
