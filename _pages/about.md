@@ -9,7 +9,9 @@ redirect_from:
 
 I'm a Master's student in Psychology at Wake Forest University, working with Dr. Mike Furr.
 
-My research interests center on the **psychology of AI**, including how people perceive and interact with artificial intelligence systems, and how AI can be used as a tool in psychological research.
+My research interests center on the **social psychology of AI**—viewing AI as a social agent and examining how these systems affect human psychology. I'm also interested in leveraging AI as a tool for psychological research.
+
+Additionally, I'm interested in **pluralism**, particularly how individuals engage across worldview differences. I'm currently involved in developing a scale for "relational pluralism," which assesses individual orientation toward engaging across differences with the motivation to increase mutual understanding.
 
 ## Education
 
