@@ -7,7 +7,7 @@ redirect_from:
   - /about.html
 ---
 
-I'm a Master's student in Psychology at Wake Forest University, working with Dr. Mike Furr. Originally from Hong Kong, I'm currently based in the US.
+I'm a Master's student in Psychology at Wake Forest University, working with Dr. Mike Furr.
 
 My research interests center on the **psychology of AI**, including how people perceive and interact with artificial intelligence systems, and how AI can be used as a tool in psychological research.
 
