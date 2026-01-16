@@ -270,8 +270,9 @@ defaults:
     values:
       layout: single
       author_profile: true
-      share: true
-      comments: true
+      share: false
+      comments: false
+      pagination: false
   # _portfolio
   - scope:
       path: ""
@@ -279,8 +280,9 @@ defaults:
     values:
       layout: single
       author_profile: true
-      share: true
-      comment: true
+      share: false
+      comment: false
+      pagination: false
   # _talks
   - scope:
       path: ""
