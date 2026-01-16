@@ -24,7 +24,7 @@ Advisor: Dr. Mike Furr
 ## Current Research
 
 I'm currently working on projects examining:
-- Large Language Models (LLMs) and situational understanding
-- Covenantal pluralism as a psychological construct
+- How LLMs compare to humans in situational understanding
+- Developing a relational pluralism scale to assess orientation toward engaging across worldview differences
 
 Feel free to reach out via email (haleylam0704@gmail.com) or connect with me on LinkedIn!
