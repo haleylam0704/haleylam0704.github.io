@@ -13,10 +13,10 @@ My research interests center on the **psychology of AI**, including how people p
 
 ## Education
 
-**M.S. in Psychology**, Wake Forest University (expected May 2027)
+**M.S. in Psychology**, Wake Forest University (expected May 2027)<br>
 Advisor: Dr. Mike Furr
 
-**B.A. in Psychology, Economics, and Music**, Baylor University (May 2025)
+**B.A. in Psychology, Economics, and Music**, Baylor University (May 2025)<br>
 *Summa Cum Laude*
 
 ## Current Research
@@ -25,4 +25,4 @@ I'm currently working on projects examining:
 - Large Language Models (LLMs) and situational understanding
 - Covenantal pluralism as a psychological construct
 
-Feel free to reach out via email or connect with me on LinkedIn!
+Feel free to reach out via email (haleylam0704@gmail.com) or connect with me on LinkedIn!
