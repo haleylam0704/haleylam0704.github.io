@@ -22,7 +22,7 @@ repository               : "haleylam0704/haleylam0704.github.io"
 #               Additional customization can be done by editing /_includes/author-profile.html
 author:
   # Biographic information
-  avatar           : "profile-photo.jpg"
+  avatar           : "profile-photo.png"
   name             : "Haley Lam"
   pronouns         : # example: "she/her"
   bio              : "Master's student in Psychology at Wake Forest University. Interested in the psychology of AI."

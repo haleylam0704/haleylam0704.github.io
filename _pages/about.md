@@ -13,20 +13,16 @@ My research interests center on the **psychology of AI**, including how people p
 
 ## Education
 
-- **M.S. in Psychology**, Wake Forest University (expected May 2027)
-  - Advisor: Dr. Mike Furr
-- **B.A. in Psychology, Economics, and Music**, Baylor University (May 2025)
-  - *Summa Cum Laude*, GPA: 3.98
+**M.S. in Psychology**, Wake Forest University (expected May 2027)
+Advisor: Dr. Mike Furr
+
+**B.A. in Psychology, Economics, and Music**, Baylor University (May 2025)
+*Summa Cum Laude*
 
 ## Current Research
 
 I'm currently working on projects examining:
 - Large Language Models (LLMs) and situational understanding
 - Covenantal pluralism as a psychological construct
-
-## Selected Presentations
-
-- **Diverging Methods: Trends and Differences in Research Methodologies Between Economics and Psychology** - Blitz Paper Presentation at IRENC 2025
-- **National Predictors of Attitudes Toward Artificial Intelligence: A Cross-Cultural Analysis** - Platform Presentation at University Scholars Week, Baylor University 2025
 
 Feel free to reach out via email or connect with me on LinkedIn!

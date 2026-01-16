@@ -13,23 +13,17 @@ You can download a PDF version of my CV [here](/files/Haley_Lam_CV.pdf).
 
 ## Education
 
-* **M.S. in Psychology**, Wake Forest University, May 2027 (expected)
-  * Advisor: Dr. Mike Furr
-  * GPA: 4.0
-* **B.A. in Psychology, Economics, and Music**, Baylor University, May 2025
-  * *Summa Cum Laude*, GPA: 3.98
+**M.S. in Psychology**, Wake Forest University, May 2027 (expected)
+Advisor: Dr. Mike Furr | GPA: 4.0
 
-## Publications
+**B.A. in Psychology, Economics, and Music**, Baylor University, May 2025
+*Summa Cum Laude*
+
+## Publications & Presentations
 
 <ul>{% for post in site.publications reversed %}
   {% include archive-single-cv.html %}
 {% endfor %}</ul>
-
-## Conference Presentations
-
-* **Lam, H.** (2025, April). *Diverging Methods: Trends and Differences in Research Methodologies Between Economics and Psychology.* Blitz Paper Presentation at the Interdisciplinary Research Ethics and Norms Conference (IRENC).
-* **Lam, H.** (2025, April). *National Predictors of Attitudes Toward Artificial Intelligence: A Cross-Cultural Analysis.* Platform Presentation at University Scholars Week, Baylor University.
-* **Lam, H.** (2024, October). *The Impact of Mental Illness Diagnoses on Mass Shooting Severity.* Poster Presentation at Baylor Research & Internship Day Symposium.
 
 ## Honors & Awards
 
@@ -43,14 +37,14 @@ You can download a PDF version of my CV [here](/files/Haley_Lam_CV.pdf).
 
 ## Research Experience
 
-* **Social-Personality Psychology Lab**, Baylor University (2023-2025)
-  * Advisor: Dr. Wade C. Rowatt
-  * Ran participants in the Black Gospel Music Archive
-  * Assisted with data analyses and project conceptualization
+**Social-Personality Psychology Lab**, Baylor University (2023-2025)
+Advisor: Dr. Wade C. Rowatt
+* Ran participants in the Black Gospel Music Archive
+* Assisted with data analyses and project conceptualization
 
-* **Economics Research Assistant**, Baylor University (2023-2024)
-  * Advisor: Dr. James E. West (NBER)
-  * Assisted with conceptualizing studies and gathering public data
+**Economics Research Assistant**, Baylor University (2023-2024)
+Advisor: Dr. James E. West (NBER)
+* Assisted with conceptualizing studies and gathering public data
 
 ## Languages
 
