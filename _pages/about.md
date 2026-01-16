@@ -17,7 +17,7 @@ My research interests center on the **psychology of AI**, including how people p
 Advisor: Dr. Mike Furr
 
 **B.A. in Psychology, Economics, and Music**, Baylor University (May 2025)<br>
-*Summa Cum Laude*
+*summa cum laude*
 
 ## Current Research
 
