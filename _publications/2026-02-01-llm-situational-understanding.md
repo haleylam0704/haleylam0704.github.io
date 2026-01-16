@@ -1,11 +1,11 @@
 ---
 title: "How Well do People Understand Situations? Large Language Models (LLMs) Outperform Humans in Situational Understanding"
 collection: publications
-category: manuscripts
+category: ongoing
 permalink: /publication/2026-llm-situational-understanding
-excerpt: 'This study compares human and LLM performance in understanding social situations, finding that LLMs demonstrate superior situational comprehension.'
+excerpt: 'This study compares human and LLM performance in understanding social situations.'
 date: 2026-02-01
-venue: 'In Preparation'
+venue: 'In Preparation (expected February 2026)'
 citation: 'Lam, H., & Furr, R. M. (In preparation). How Well do People Understand Situations? Large Language Models (LLMs) Outperform Humans in Situational Understanding.'
 ---
 
