@@ -9,7 +9,7 @@ redirect_from:
 
 I'm a Master's student in Psychology at Wake Forest University, working with Dr. Mike Furr.
 
-My research interests are mainly in the **social psychology of LLMs**—viewing LLMs as social agents and examining how interacting with such agents affects human psychology. I'm also interested in learning about human nature by finding similarities and differences between humans and AI. I believe that by comparing humans with AI and examining what is unique to humans, we can truly understand what it means to be human. I'm also interested in using AI as a tool for psychological research.
+My research interests are mainly in the **social psychology of LLMs**, where I view LLMs as social agents and examine how interacting with such agents affects human psychology. I'm also interested in learning about human nature by finding similarities and differences between humans and AI. I believe that by comparing humans with AI and examining what is unique to humans, we can increase the understanding of ourselves. I'm also interested in using AI as a tool for psychological research.
 
 Additionally, I'm interested in **pluralism**, and how individuals can interact respectfully across deep worldview differences. I'm currently involved in developing a scale for "relational pluralism," which assesses individual orientation toward engaging across differences with the motivation to increase mutual understanding.
 
