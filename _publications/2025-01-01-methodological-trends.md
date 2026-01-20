@@ -11,3 +11,5 @@ citation: 'Lam, H. (2025). Methodological Trends and Differences: A Comparative 
 ---
 
 This paper presents a comparative analysis of research methodologies used in economics and psychology, examining trends and key differences between the two disciplines.
+
+[Interactive Data Explorer](/files/methods-explorer.html){: .btn .btn--primary} [OSF Materials](https://osf.io/d2z5c/){: .btn .btn--info}
