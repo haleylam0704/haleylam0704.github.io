@@ -9,7 +9,7 @@ redirect_from:
 
 I'm a Master's student in Psychology at Wake Forest University, working with Dr. Mike Furr.
 
-My research interests are mainly in the **social psychology of LLMs**, where I view LLMs as social agents and examine how interacting with such agents affects human psychology. I'm also interested in learning about human nature by finding similarities and differences between humans and AI. I believe that by comparing humans with AI and examining what is unique to humans, we can increase the understanding of ourselves. I'm also interested in using AI as a tool for psychological research.
+My research interests are mainly in the **psychology of human-computer interaction**, where I examine how interacting with emerging technologies affects human psychology. I'm also interested in learning about human nature by finding similarities and differences between humans and computational systems. I believe that by comparing humans with these systems and examining what is unique to humans, we can increase the understanding of ourselves. I'm also interested in using computational tools for psychological research.
 
 Additionally, I'm interested in **pluralism**, and how individuals can interact respectfully across deep worldview differences. I'm currently involved in developing a scale for "relational pluralism," which assesses individual orientation toward engaging across differences with the motivation to increase mutual understanding.
 
@@ -24,7 +24,7 @@ Advisor: Dr. Mike Furr
 ## Current Research
 
 I'm currently working on projects examining:
-- How LLMs compare to humans in situational understanding
+- How computational systems compare to humans in situational understanding
 - Developing a relational pluralism scale to assess orientation toward engaging across worldview differences
 
 Feel free to reach out via email (haleylam0704@gmail.com) or connect with me on LinkedIn!
