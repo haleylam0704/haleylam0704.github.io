@@ -548,14 +548,821 @@ let currentOptionMap = []; // maps shuffled index → original index
 const opts = { mode: 'all', shuffle: true, shuffleOpts: true };
 
 // ── Load questions ────────────────────────────────────────────────────────────
-fetch('questions.json')
-  .then(r => r.json())
-  .then(data => {
-    ALL_QUESTIONS = data;
-    buildSourceFilters();
-    updateStartBtn();
-  })
-  .catch(() => alert('Could not load questions.json — make sure the file is in the same directory.'));
+ALL_QUESTIONS = [
+  {
+    "id": 1,
+    "source": "Ch. 1 \u2013 Basic Concepts in Psychological Measurement",
+    "topic": "Measurement",
+    "type": "mcq",
+    "question": "Which level of measurement has equal intervals between values but no true zero point?",
+    "options": [
+      "Nominal",
+      "Ordinal",
+      "Interval",
+      "Ratio"
+    ],
+    "answer": 2,
+    "explanation": "Interval scales have equal, meaningful intervals between values but lack a true zero (e.g., temperature in Celsius). Ratio scales have all of that plus a true zero."
+  },
+  {
+    "id": 2,
+    "source": "Ch. 1 \u2013 Basic Concepts in Psychological Measurement",
+    "topic": "Measurement",
+    "type": "mcq",
+    "question": "A standard score (z-score) of +1.5 means a person scored:",
+    "options": [
+      "1.5 points above the mean",
+      "1.5 standard deviations above the mean",
+      "In the 85th percentile exactly",
+      "1.5 times the mean"
+    ],
+    "answer": 1,
+    "explanation": "A z-score expresses a raw score in units of standard deviations. A z = +1.5 means the person is 1.5 standard deviations above the group mean."
+  },
+  {
+    "id": 3,
+    "source": "Ch. 1 \u2013 Basic Concepts in Psychological Measurement",
+    "topic": "Reliability",
+    "type": "mcq",
+    "question": "Internal-consistency reliability (e.g., Cronbach's alpha) assesses:",
+    "options": [
+      "Whether scores are stable across different occasions",
+      "Whether different raters give the same score to the same person",
+      "Whether items within a scale measure the same underlying construct",
+      "Whether a test predicts an external criterion"
+    ],
+    "answer": 2,
+    "explanation": "Internal-consistency reliability measures how well items within a single test hang together \u2014 i.e., whether they all reflect the same underlying trait. Test-retest addresses stability across occasions; interrater addresses agreement between observers."
+  },
+  {
+    "id": 4,
+    "source": "Ch. 1 \u2013 Basic Concepts in Psychological Measurement",
+    "topic": "Reliability",
+    "type": "mcq",
+    "question": "Which type of reliability is most important when using trained coders to score open-ended responses?",
+    "options": [
+      "Internal-consistency reliability",
+      "Test-retest reliability",
+      "Interrater reliability",
+      "Criterion validity"
+    ],
+    "answer": 2,
+    "explanation": "Interrater (interobserver) reliability captures how much agreement exists between different coders/raters. It is critical whenever human judgment is involved in scoring."
+  },
+  {
+    "id": 5,
+    "source": "Ch. 1 \u2013 Basic Concepts in Psychological Measurement",
+    "topic": "Validity",
+    "type": "mcq",
+    "question": "Convergent validity evidence is best demonstrated when:",
+    "options": [
+      "A scale score predicts a future outcome like job performance",
+      "Two different measures of the same construct correlate highly with each other",
+      "A scale covers all the content domains of the thing being measured",
+      "A scale score shows low correlation with unrelated constructs"
+    ],
+    "answer": 1,
+    "explanation": "Convergent validity means your measure correlates strongly with other measures of the same construct. Discriminant validity (the flip side) is shown when it does NOT correlate with unrelated constructs."
+  },
+  {
+    "id": 6,
+    "source": "Ch. 1 \u2013 Basic Concepts in Psychological Measurement",
+    "topic": "Validity",
+    "type": "short",
+    "question": "Explain the difference between convergent and discriminant validity, and why you need both to argue that a measure has good construct validity.",
+    "model_answer": "Convergent validity means a measure correlates highly with other measures of the same construct (showing it captures something real). Discriminant validity means a measure does NOT correlate highly with measures of conceptually unrelated constructs (showing it is not just measuring everything in general). You need both because a scale could have high convergent validity but still lack discriminant validity if it also correlates with everything else \u2014 meaning it may not be specifically measuring what you claim."
+  },
+  {
+    "id": 7,
+    "source": "Ch. 1 \u2013 Basic Concepts in Psychological Measurement",
+    "topic": "Measurement Methods",
+    "type": "mcq",
+    "question": "Which measurement method is MOST prone to social desirability bias?",
+    "options": [
+      "Direct behavioral observation",
+      "Biodata (life outcome records)",
+      "Self-report inventories",
+      "Observer reports from close acquaintances"
+    ],
+    "answer": 2,
+    "explanation": "Self-reports are most susceptible to social desirability bias because respondents control their own answers and may present themselves favorably. Behavioral observations and biodata are less controllable."
+  },
+  {
+    "id": 8,
+    "source": "Ch. 1 \u2013 Basic Concepts in Psychological Measurement",
+    "topic": "Measurement",
+    "type": "short",
+    "question": "What is criterion validity, and give one example of how it might be assessed for a personality scale measuring conscientiousness?",
+    "model_answer": "Criterion validity (also called predictive or concurrent validity) is the degree to which a scale score predicts a real-world outcome (the criterion). For a conscientiousness scale, you could assess criterion validity by seeing whether high scorers achieve higher GPAs, have better job performance ratings, or are more likely to be promoted \u2014 these are real-world criteria that conscientiousness should predict."
+  },
+  {
+    "id": 9,
+    "source": "Ch. 2 \u2013 Personality Traits and the Inventories That Measure Them",
+    "topic": "Traits",
+    "type": "mcq",
+    "question": "According to the textbook definition, a personality trait is BEST defined as:",
+    "options": [
+      "A temporary emotional state triggered by specific situations",
+      "A tendency to behave, think, or feel in conceptually related ways across situations and over time",
+      "A conscious goal that guides behavior in a specific context",
+      "A biological reflex that is fixed at birth"
+    ],
+    "answer": 1,
+    "explanation": "A trait is a relatively stable, cross-situational tendency to respond in characteristic ways. It is not a transient state, a context-specific goal, or a fixed biological reflex."
+  },
+  {
+    "id": 10,
+    "source": "Ch. 2 \u2013 Personality Traits and the Inventories That Measure Them",
+    "topic": "Inventory Construction",
+    "type": "mcq",
+    "question": "The empirical (criterion-keyed) strategy of inventory construction selects items based on:",
+    "options": [
+      "Their theoretical relevance to a construct",
+      "Their factor loadings in exploratory factor analysis",
+      "Whether they statistically distinguish between known criterion groups",
+      "Expert consensus about item content"
+    ],
+    "answer": 2,
+    "explanation": "The empirical strategy (used in the original MMPI) selects items purely because they differentiate known groups (e.g., depressed vs. not), regardless of whether the items seem theoretically related to depression."
+  },
+  {
+    "id": 11,
+    "source": "Ch. 2 \u2013 Personality Traits and the Inventories That Measure Them",
+    "topic": "Inventory Construction",
+    "type": "mcq",
+    "question": "A key advantage of the rational (theoretical) strategy over the empirical strategy for building personality inventories is that:",
+    "options": [
+      "It guarantees higher test-retest reliability",
+      "Items are interpretable and linked to theory, making the scale conceptually coherent",
+      "It produces scales with no social desirability problems",
+      "Scores always generalize better across cultures"
+    ],
+    "answer": 1,
+    "explanation": "The rational strategy deliberately selects items that reflect the theoretical definition of a construct, making it easier to interpret what a score means. The empirical strategy can yield valid but theoretically opaque scales."
+  },
+  {
+    "id": 12,
+    "source": "Ch. 2 \u2013 Personality Traits and the Inventories That Measure Them",
+    "topic": "Self vs Observer Reports",
+    "type": "mcq",
+    "question": "Research on self-observer agreement in personality ratings generally finds that:",
+    "options": [
+      "Self- and observer reports show near-perfect agreement on all traits",
+      "Self-reports are always more accurate than observer reports",
+      "Self- and observer reports show moderate positive agreement, especially for more observable traits",
+      "Observer reports are completely unrelated to self-reports"
+    ],
+    "answer": 2,
+    "explanation": "Studies consistently show moderate agreement (typically r \u2248 .40\u2013.60) between self and observer ratings. Agreement tends to be stronger for more observable, external traits (like extraversion) and lower for internal traits (like neuroticism)."
+  },
+  {
+    "id": 13,
+    "source": "Ch. 2 \u2013 Personality Traits and the Inventories That Measure Them",
+    "topic": "Traits",
+    "type": "short",
+    "question": "What evidence did Newcomb (1929) and other early studies provide regarding the existence of personality traits, and what was the key concern raised by Mischel (1968)?",
+    "model_answer": "Early studies like Newcomb (1929) found that children's behaviors were correlated across situations \u2014 a child who was extraverted in one setting tended to be extraverted in others \u2014 providing evidence that stable trait tendencies exist. Mischel (1968) challenged this by noting that cross-situational consistency correlations were often quite low (the 'personality coefficient' around .30), suggesting that situations may determine behavior more than internal traits. This sparked a major debate about whether traits are real determinants of behavior or just labels we apply retrospectively."
+  },
+  {
+    "id": 14,
+    "source": "Ch. 3 \u2013 Personality Structure: Classifying Traits",
+    "topic": "Personality Structure",
+    "type": "mcq",
+    "question": "The lexical approach to personality structure is based on the hypothesis that:",
+    "options": [
+      "Personality can only be measured by biological instruments",
+      "The most important personality differences are encoded as words in natural language",
+      "Factor analysis always produces exactly five factors",
+      "Personality traits are entirely culturally specific"
+    ],
+    "answer": 1,
+    "explanation": "The lexical hypothesis proposes that personality differences important to human social life will be encoded as single words in language. By cataloguing personality-descriptive adjectives and factor-analyzing them, researchers can discover the basic dimensions of personality."
+  },
+  {
+    "id": 15,
+    "source": "Ch. 3 \u2013 Personality Structure: Classifying Traits",
+    "topic": "Big Five / HEXACO",
+    "type": "mcq",
+    "question": "Which Big Five factor is MOST strongly associated with academic and occupational achievement?",
+    "options": [
+      "Extraversion",
+      "Agreeableness",
+      "Conscientiousness",
+      "Openness to Experience"
+    ],
+    "answer": 2,
+    "explanation": "Conscientiousness \u2014 reflecting organization, diligence, and self-control \u2014 is the single best Big Five predictor of academic performance and job performance across many studies."
+  },
+  {
+    "id": 16,
+    "source": "Ch. 3 \u2013 Personality Structure: Classifying Traits",
+    "topic": "Big Five / HEXACO",
+    "type": "mcq",
+    "question": "The HEXACO model differs from the Big Five primarily because it:",
+    "options": [
+      "Reduces personality to only three factors",
+      "Adds an Honesty-Humility factor not clearly represented in the Big Five",
+      "Replaces Neuroticism with Openness to Experience",
+      "Is based only on observer reports, not self-reports"
+    ],
+    "answer": 1,
+    "explanation": "HEXACO adds a sixth factor \u2014 Honesty-Humility \u2014 that captures sincerity, fairness, and non-exploitation. This factor emerged consistently in lexical studies across many languages but was not clearly separated in the Big Five."
+  },
+  {
+    "id": 17,
+    "source": "Ch. 3 \u2013 Personality Structure: Classifying Traits",
+    "topic": "Factor Analysis",
+    "type": "short",
+    "question": "Briefly explain what factor analysis does in the context of personality research, and why it is useful for reducing hundreds of traits to a smaller set of dimensions.",
+    "model_answer": "Factor analysis is a statistical technique that identifies clusters of variables (here, personality traits or items) that correlate with each other more than they correlate with variables in other clusters. Each cluster is represented by a 'factor' \u2014 a latent dimension that explains the correlations. In personality research, this allows hundreds of correlated trait descriptors to be reduced to a small number of broad dimensions (e.g., five or six factors), capturing the structure of personality more efficiently and revealing which traits are fundamentally related to each other."
+  },
+  {
+    "id": 18,
+    "source": "Ch. 4 \u2013 Developmental Change and Stability of Personality",
+    "topic": "Personality Development",
+    "type": "mcq",
+    "question": "The 'maturity principle' of personality development refers to the finding that:",
+    "options": [
+      "Personality becomes completely fixed after age 30",
+      "People tend to increase on traits like Conscientiousness and Agreeableness and decrease on Neuroticism with age",
+      "Older adults are less open to experience than children",
+      "Personality change is driven entirely by genetic factors"
+    ],
+    "answer": 1,
+    "explanation": "The maturity principle describes the normative trend toward greater social maturity with age: increases in Conscientiousness, Agreeableness, and Emotional Stability (lower Neuroticism), and decreases in some aspects of Extraversion and Openness \u2014 forming a more 'mature' profile."
+  },
+  {
+    "id": 19,
+    "source": "Ch. 4 \u2013 Developmental Change and Stability of Personality",
+    "topic": "Personality Development",
+    "type": "mcq",
+    "question": "Rank-order (differential) stability of personality refers to:",
+    "options": [
+      "Whether group averages on traits change over time",
+      "Whether a trait's heritability changes across development",
+      "Whether people maintain their relative standing on a trait compared to peers over time",
+      "Whether traits become more differentiated with age"
+    ],
+    "answer": 2,
+    "explanation": "Rank-order stability asks: does someone who is relatively high on extraversion at age 20 remain relatively high at age 40 compared to peers? It is different from mean-level change, which asks whether the group average shifts."
+  },
+  {
+    "id": 20,
+    "source": "Ch. 4 \u2013 Developmental Change and Stability of Personality",
+    "topic": "Personality Development",
+    "type": "mcq",
+    "question": "Compared to adults, rank-order stability of personality traits during adolescence is typically:",
+    "options": [
+      "Higher, because identity formation is complete",
+      "Comparable to adult stability",
+      "Lower, reflecting greater personality flux during this period",
+      "Zero, because adolescent traits are entirely situational"
+    ],
+    "answer": 2,
+    "explanation": "Rank-order stability is lower during adolescence than in adulthood. This is consistent with the idea that personality is still consolidating during this developmental period. Stability increases steadily through adulthood."
+  },
+  {
+    "id": 21,
+    "source": "Ch. 4 \u2013 Developmental Change and Stability of Personality",
+    "topic": "Personality Development",
+    "type": "short",
+    "question": "Distinguish between mean-level change and rank-order stability in personality development, and give an example of how both could be true simultaneously for Conscientiousness.",
+    "model_answer": "Mean-level change refers to shifts in the average score on a trait for a population across age (e.g., everyone gets a bit more conscientious on average). Rank-order stability refers to whether people maintain the same relative position compared to their peers (e.g., the most conscientious 20-year-olds are also the most conscientious 50-year-olds). Both can be true simultaneously: as people age, the whole group's conscientiousness average increases (mean-level change), yet the relative ordering of individuals remains largely intact \u2014 the people who were most conscientious young stay near the top, even as everyone rises together."
+  },
+  {
+    "id": 22,
+    "source": "Ch. 6 \u2013 Genetic and Environmental Influences on Personality",
+    "topic": "Behavioral Genetics",
+    "type": "mcq",
+    "question": "In twin studies, comparing the similarity of identical (MZ) twins with fraternal (DZ) twins allows researchers to estimate heritability because:",
+    "options": [
+      "MZ twins always have identical environments",
+      "MZ twins share 100% of genes while DZ twins share ~50%, but both share similar family environments",
+      "DZ twins are genetically unrelated but share families",
+      "MZ twins raised apart prove environment has no effect"
+    ],
+    "answer": 1,
+    "explanation": "MZ twins share 100% of DNA; DZ twins share ~50% on average. Both types are assumed to share similarly similar environments (the equal environments assumption). Greater MZ than DZ similarity is therefore attributed to genetic factors."
+  },
+  {
+    "id": 23,
+    "source": "Ch. 6 \u2013 Genetic and Environmental Influences on Personality",
+    "topic": "Behavioral Genetics",
+    "type": "mcq",
+    "question": "The shared (common) environment refers to environmental influences that:",
+    "options": [
+      "Affect only one twin because they are unique to that individual",
+      "Make family members who live together more similar to each other",
+      "Are entirely genetic in origin",
+      "Only operate during adulthood"
+    ],
+    "answer": 1,
+    "explanation": "Shared environment = influences experienced by both children in the same family (same parents, same neighborhood, same socioeconomic status), which should make siblings more alike. The nonshared environment, by contrast, makes siblings different even when raised together."
+  },
+  {
+    "id": 24,
+    "source": "Ch. 6 \u2013 Genetic and Environmental Influences on Personality",
+    "topic": "Behavioral Genetics",
+    "type": "mcq",
+    "question": "One of the most surprising findings from behavioral genetics research on personality is that:",
+    "options": [
+      "Heritability of personality traits is near zero",
+      "The shared family environment has a substantial, lasting effect on adult personality",
+      "Shared environment accounts for very little variance in adult personality traits",
+      "Identical twins raised together show lower similarity than those raised apart"
+    ],
+    "answer": 2,
+    "explanation": "Studies consistently find that shared environment contributes little to adult personality variance (near zero for most traits). Heritability is moderate (~40\u201360%) and nonshared environment accounts for most of the remaining variance, suggesting that unique individual experiences matter more than family-level factors."
+  },
+  {
+    "id": 25,
+    "source": "Ch. 6 \u2013 Genetic and Environmental Influences on Personality",
+    "topic": "Behavioral Genetics",
+    "type": "short",
+    "question": "What is the 'equal environments assumption' in twin research, and what would it mean for heritability estimates if the assumption were violated?",
+    "model_answer": "The equal environments assumption states that MZ and DZ twin pairs experience equally similar environments \u2014 i.e., being genetically identical does not lead MZ twins to be treated more similarly than DZ twins. If this assumption were violated (e.g., MZ twins are treated much more similarly), then the greater behavioral similarity of MZ twins might be partly due to more similar environments rather than genes alone, which would lead researchers to overestimate heritability. Research testing this assumption generally finds it is approximately met for personality traits."
+  },
+  {
+    "id": 26,
+    "source": "Ch. 9 \u2013 Personality and Life Outcomes",
+    "topic": "Life Outcomes",
+    "type": "mcq",
+    "question": "Which personality trait is most consistently associated with longevity (living longer)?",
+    "options": [
+      "Extraversion",
+      "Openness to Experience",
+      "Conscientiousness",
+      "Agreeableness"
+    ],
+    "answer": 2,
+    "explanation": "Conscientiousness is the Big Five trait most robustly associated with longer life. High-conscientiousness individuals tend to avoid risky health behaviors, adhere to medical advice, and engage in healthier lifestyles \u2014 all of which contribute to longevity."
+  },
+  {
+    "id": 27,
+    "source": "Ch. 9 \u2013 Personality and Life Outcomes",
+    "topic": "Life Outcomes",
+    "type": "mcq",
+    "question": "Research on personality and job performance shows that:",
+    "options": [
+      "Extraversion is the single best predictor of performance in all jobs",
+      "Conscientiousness is a valid, general predictor of job performance across occupations",
+      "Neuroticism predicts performance better than all other traits",
+      "Personality has essentially no predictive validity for work outcomes"
+    ],
+    "answer": 1,
+    "explanation": "Meta-analyses (e.g., Barrick & Mount, 1991) show Conscientiousness has the highest and most consistent predictive validity for job performance across job types. Other traits may predict performance in specific jobs (e.g., Extraversion for sales roles)."
+  },
+  {
+    "id": 28,
+    "source": "Ch. 9 \u2013 Personality and Life Outcomes",
+    "topic": "Life Outcomes",
+    "type": "mcq",
+    "question": "The concept of psychopathy is characterized by a combination of:",
+    "options": [
+      "High anxiety, high empathy, and social withdrawal",
+      "Low empathy, lack of remorse, impulsivity, and superficial charm",
+      "High conscientiousness with aggressive coping strategies",
+      "Low extraversion and high openness combined with rule-breaking"
+    ],
+    "answer": 1,
+    "explanation": "Psychopathy involves low empathy, shallow affect, lack of guilt/remorse, impulsivity, and often superficial social charm. It is associated with antisocial and criminal behavior and has distinct profiles on HEXACO (very low Honesty-Humility, low Agreeableness) and Big Five models."
+  },
+  {
+    "id": 29,
+    "source": "Ch. 9 \u2013 Personality and Life Outcomes",
+    "topic": "Life Outcomes",
+    "type": "short",
+    "question": "Why is low self-control (as conceptualized by Gottfredson & Hirschi) considered a key personality predictor of criminality, and what personality factors does it overlap with?",
+    "model_answer": "Gottfredson and Hirschi argued that criminality results from low self-control \u2014 an inability to defer gratification, consider long-term consequences, and resist impulsive urges. People with low self-control seek immediate gratification and are insensitive to the future costs of their actions (including legal consequences). In Big Five terms, low self-control overlaps with low Conscientiousness (disinhibition, lack of planfulness) and low Agreeableness (callousness), and in HEXACO terms with low Honesty-Humility. Low self-control predicts not just crime but a wide range of counterproductive behaviors."
+  },
+  {
+    "id": 30,
+    "source": "Ch. 12 \u2013 Religion and Politics",
+    "topic": "Religion & Politics",
+    "type": "mcq",
+    "question": "Right-Wing Authoritarianism (RWA) consists of three core components. Which of the following is NOT one of them?",
+    "options": [
+      "Authoritarian submission",
+      "Authoritarian aggression",
+      "Conventionalism",
+      "Social dominance orientation"
+    ],
+    "answer": 3,
+    "explanation": "RWA (Altemeyer) comprises authoritarian submission (deference to established authorities), authoritarian aggression (support for punishing those who violate norms), and conventionalism (endorsement of traditional values). Social Dominance Orientation (SDO) is a separate construct, though the two are correlated."
+  },
+  {
+    "id": 31,
+    "source": "Ch. 12 \u2013 Religion and Politics",
+    "topic": "Religion & Politics",
+    "type": "mcq",
+    "question": "Research on religiosity and personality consistently finds that religiosity is most strongly associated with:",
+    "options": [
+      "High Openness to Experience and low Conscientiousness",
+      "Low Agreeableness and high Neuroticism",
+      "High Agreeableness and high Conscientiousness",
+      "High Extraversion and low Honesty-Humility"
+    ],
+    "answer": 2,
+    "explanation": "Religiosity correlates positively with both Agreeableness (prosocial, caring orientation) and Conscientiousness (rule-following, dutifulness). It is generally negatively associated with Openness to Experience, particularly its intellect/ideas facets."
+  },
+  {
+    "id": 32,
+    "source": "Ch. 12 \u2013 Religion and Politics",
+    "topic": "Religion & Politics",
+    "type": "mcq",
+    "question": "Social Dominance Orientation (SDO) is best described as the tendency to:",
+    "options": [
+      "Submit to all authority figures unconditionally",
+      "Prefer hierarchical social arrangements in which some groups dominate others",
+      "Avoid conflict through agreeableness and compromise",
+      "Prioritize religious traditions over secular values"
+    ],
+    "answer": 1,
+    "explanation": "SDO reflects a general preference for group-based social hierarchies \u2014 the belief that some groups should dominate others. High SDO individuals tend to oppose policies that reduce inequality (e.g., affirmative action, welfare programs) and show prejudice toward low-status groups."
+  },
+  {
+    "id": 33,
+    "source": "Ch. 12 \u2013 Religion and Politics",
+    "topic": "Religion & Politics",
+    "type": "short",
+    "question": "Explain how RWA and SDO together form a 'dual process' model of prejudice, and what distinguishes them from each other.",
+    "model_answer": "Duckitt's dual process model proposes that RWA and SDO are two distinct pathways to prejudice. RWA is driven by a worldview perceiving the world as dangerous and threatening, leading to deference to authority and support for punishing norm violators \u2014 prejudice emerges toward groups seen as threatening conventional social order. SDO is driven by a competitive, zero-sum view of the world, leading to a preference for dominance hierarchies \u2014 prejudice emerges toward groups that are lower-status. RWA predicts prejudice against 'dangerous' groups (e.g., people with unconventional lifestyles); SDO predicts prejudice against 'low-status' or outgroups. The two are moderately correlated but can operate independently."
+  },
+  {
+    "id": 34,
+    "source": "Caviola et al. (2019)",
+    "topic": "Speciesism",
+    "type": "mcq",
+    "question": "Caviola et al. (2019) define speciesism as:",
+    "options": [
+      "The scientific study of animal intelligence across species",
+      "The assignment of different moral worth to individuals based on their species membership",
+      "The preference for pets over wild animals in conservation policy",
+      "A form of altruism directed exclusively toward humans"
+    ],
+    "answer": 1,
+    "explanation": "Speciesism is defined as assigning different moral worth based purely on species membership \u2014 analogous to racism or sexism, where worth is assigned based on group membership rather than morally relevant individual characteristics."
+  },
+  {
+    "id": 35,
+    "source": "Caviola et al. (2019)",
+    "topic": "Speciesism",
+    "type": "mcq",
+    "question": "In Caviola et al. (2019), speciesism showed positive correlations with which of the following clusters of constructs?",
+    "options": [
+      "Empathy, openness to experience, and political liberalism",
+      "Racism, sexism, homophobia, social dominance orientation, and right-wing authoritarianism",
+      "Veganism, environmental concern, and agreeableness",
+      "Introversion, conscientiousness, and disgust sensitivity"
+    ],
+    "answer": 1,
+    "explanation": "Study 3 found speciesism positively correlated with other forms of prejudice (racism, sexism, homophobia) and with ideological constructs associated with prejudice (SDO, RWA, system justification), suggesting shared psychological mechanisms underlie multiple forms of prejudice."
+  },
+  {
+    "id": 36,
+    "source": "Caviola et al. (2019)",
+    "topic": "Speciesism",
+    "type": "mcq",
+    "question": "Studies 4 and 5 in Caviola et al. (2019) tested whether speciesism predicts real-world behavior by measuring:",
+    "options": [
+      "Voting behavior on animal welfare legislation",
+      "Actual purchases of animal products in a supermarket",
+      "Prosocial behavior toward animals via charitable donations and time investment",
+      "Agreement with philosophical arguments about animal consciousness"
+    ],
+    "answer": 2,
+    "explanation": "Studies 4 and 5 showed speciesism predicted real prosocial behavior toward animals \u2014 specifically, how participants allocated charitable donations and time between human vs. animal charities \u2014 demonstrating the scale has criterion validity beyond attitudes."
+  },
+  {
+    "id": 37,
+    "source": "Caviola et al. (2019)",
+    "topic": "Speciesism",
+    "type": "short",
+    "question": "Why is it important that Caviola et al. demonstrated test-retest reliability over four weeks for the Speciesism Scale? What does this tell us about the construct?",
+    "model_answer": "Test-retest reliability over four weeks demonstrates that speciesist attitudes are stable over time \u2014 they are not just transient feelings that fluctuate day to day, but a consistent individual difference. This is important because a scale measuring a stable personality-like construct must itself be stable; if scores changed dramatically week to week, it would suggest the scale is measuring something unstable (like mood) rather than a durable attitude or trait. High test-retest reliability supports the argument that speciesism is a genuine, measurable, stable individual difference construct, comparable to other personality traits."
+  },
+  {
+    "id": 38,
+    "source": "Cramer et al. (2012)",
+    "topic": "Network Theory",
+    "type": "mcq",
+    "question": "Cramer et al. (2012) challenge the dominant 'latent variable' view of personality. In the latent variable view, personality dimensions like extraversion are understood as:",
+    "options": [
+      "Networks of mutually reinforcing behaviors that cause each other",
+      "Latent common causes that produce correlated item responses",
+      "Cultural constructions with no psychological reality",
+      "Direct measures of neurological activity"
+    ],
+    "answer": 1,
+    "explanation": "The latent variable (common cause) model says extraversion is a hidden underlying entity that causally produces all the correlated behaviors. Cramer et al. argue instead that the behaviors themselves form a causal network \u2014 items correlate because they causally influence each other, not because a latent factor drives them all."
+  },
+  {
+    "id": 39,
+    "source": "Cramer et al. (2012)",
+    "topic": "Network Theory",
+    "type": "mcq",
+    "question": "In Cramer et al.'s network model, items like 'I like parties' and 'I like people' correlate with each other because:",
+    "options": [
+      "They are both indicators of a latent extraversion factor",
+      "Liking people causally leads to liking parties, and vice versa \u2014 they are directly causally connected",
+      "They are both caused by high levels of dopamine",
+      "They happen to be answered on the same survey"
+    ],
+    "answer": 1,
+    "explanation": "The network model proposes direct causal connections between behaviors: liking people makes you more likely to enjoy parties; enjoying parties helps you meet people you like. The correlation emerges from this causal chain, not from a shared latent cause."
+  },
+  {
+    "id": 40,
+    "source": "Cramer et al. (2012)",
+    "topic": "Network Theory",
+    "type": "short",
+    "question": "What is the key empirical or conceptual implication of the network model for how we should interpret a personality scale score (e.g., an extraversion score)?",
+    "model_answer": "In the latent variable model, a high extraversion score means the person possesses a lot of the underlying latent trait, which is causing all the extraverted behaviors. In the network model, a high extraversion score means many behaviors in the extraversion network are simultaneously active and reinforcing each other \u2014 there is no single latent cause, just a stable equilibrium state of the network. This changes interpretation: a person might have the same score as another but via very different combinations of network elements. It also implies that intervening on one behavior (e.g., going to more social events) could shift the whole network toward a more extraverted equilibrium, with implications for personality change interventions."
+  },
+  {
+    "id": 41,
+    "source": "Crowe et al. (2017)",
+    "topic": "Agreeableness",
+    "type": "mcq",
+    "question": "Crowe et al. (2017) empirically derived the facet structure of Agreeableness using factor analysis. Which five-factor solution did they identify as most appropriate?",
+    "options": [
+      "Kindness, Empathy, Cooperation, Flexibility, and Patience",
+      "Compassion, Morality, Trust, Affability, and Modesty",
+      "Altruism, Compliance, Tender-mindedness, Straightforwardness, and Trust",
+      "Warmth, Care, Fairness, Politeness, and Openness"
+    ],
+    "answer": 1,
+    "explanation": "Crowe et al.'s factor analysis of 131 Agreeableness items from 22 scales converged on five facets: Compassion, Morality, Trust, Affability, and Modesty \u2014 each with distinct patterns of associations with criterion variables."
+  },
+  {
+    "id": 42,
+    "source": "Crowe et al. (2017)",
+    "topic": "Agreeableness",
+    "type": "mcq",
+    "question": "A key finding of Crowe et al. (2017) was that the five Agreeableness facets showed divergent patterns of correlations with criterion variables. This finding suggests:",
+    "options": [
+      "Agreeableness is a unitary construct best measured by a single score",
+      "The broad Agreeableness score obscures meaningfully different sub-traits with distinct real-world correlates",
+      "All five facets predict the same outcomes equally well",
+      "Facets of Agreeableness only matter in clinical populations"
+    ],
+    "answer": 1,
+    "explanation": "The fact that facets like Compassion, Morality, and Trust predicted different criterion variables differently demonstrates that collapsing them into a single Agreeableness score loses important information. Facet-level analysis provides greater predictive and conceptual precision."
+  },
+  {
+    "id": 43,
+    "source": "Crowe et al. (2017)",
+    "topic": "Agreeableness",
+    "type": "short",
+    "question": "What methodological approach did Crowe et al. use to identify the facets of Agreeableness, and why is the empirically-derived approach they used different from simply adopting facets from existing models like the NEO-PI-R?",
+    "model_answer": "Crowe et al. administered 131 items from 22 different Agreeableness-measuring scales to 1,205 participants and conducted a series of exploratory factor analyses, allowing the factor structure to emerge from the data rather than imposing a theoretically predetermined structure. This is different from NEO-PI-R facets (which were constructed via the rational/theoretical strategy) because Crowe et al. let the empirical correlations among a very broad item pool dictate which facets naturally cluster together. Their approach is more data-driven and not constrained by any single model's prior assumptions, making the resulting facets more likely to reflect the true underlying structure of the domain."
+  },
+  {
+    "id": 44,
+    "source": "Fleeson & Gallagher (2009)",
+    "topic": "Density Distribution / Traits in Behavior",
+    "type": "mcq",
+    "question": "Fleeson & Gallagher (2009) used experience sampling to study personality. Their central claim is that trait levels predict:",
+    "options": [
+      "Whether a person will ever behave in a trait-consistent way",
+      "The mean of a person's distribution of trait-relevant behaviors across many occasions",
+      "Only the most extreme behaviors a person shows",
+      "The consistency of behavior across contexts more than the average level"
+    ],
+    "answer": 1,
+    "explanation": "Fleeson's density distribution approach holds that each person has a distribution of behaviors across occasions. Trait standing (as measured by questionnaire) predicts where the mean of that distribution falls \u2014 a highly extraverted person's average level of extraverted behavior will be higher, even though they sometimes behave introverted."
+  },
+  {
+    "id": 45,
+    "source": "Fleeson & Gallagher (2009)",
+    "topic": "Density Distribution / Traits in Behavior",
+    "type": "mcq",
+    "question": "According to Fleeson & Gallagher (2009), within-person variability in behavior across occasions is:",
+    "options": [
+      "Evidence that personality traits do not exist",
+      "A normal feature of behavior that coexists with meaningful trait-level differences between people",
+      "Only observed in people with personality disorders",
+      "Lower than between-person variability in trait scores"
+    ],
+    "answer": 1,
+    "explanation": "Fleeson's key insight is that within-person variability is large and normal \u2014 everyone fluctuates across occasions \u2014 but this doesn't negate traits. Trait standing predicts the central tendency (mean) of the distribution, and between-person differences in means are meaningful even with high within-person variability."
+  },
+  {
+    "id": 46,
+    "source": "Fleeson & Gallagher (2009)",
+    "topic": "Density Distribution / Traits in Behavior",
+    "type": "short",
+    "question": "Explain the density distribution approach to personality and describe what it implies about the 'person-situation debate.'",
+    "model_answer": "The density distribution approach treats each person's behavior as a distribution of states across occasions rather than a fixed point. A person might behave extraverted, introverted, or anywhere in between across different situations and moments, but the mean, variability, and shape of their distribution is their personality signature. This reconciles the person-situation debate: situationists were correct that behavior varies greatly across contexts (high within-person variability), but trait theorists are also correct that stable individual differences exist \u2014 they just operate at the level of distributional means. High trait extraverts have distributions centered at higher levels of extraverted behavior on average, even while both they and low-trait extraverts fluctuate substantially."
+  },
+  {
+    "id": 47,
+    "source": "Fleeson & Gallagher (2009)",
+    "topic": "Density Distribution / Traits in Behavior",
+    "type": "mcq",
+    "question": "The meta-analysis by Fleeson & Gallagher (2009) was based on how many experience-sampling studies and approximately how many behavioral reports?",
+    "options": [
+      "5 studies, ~2,000 reports",
+      "15 studies, over 20,000 reports",
+      "30 studies, over 100,000 reports",
+      "10 studies, ~5,000 reports"
+    ],
+    "answer": 1,
+    "explanation": "The meta-analysis synthesized data from 15 experience-sampling studies conducted over eight years, amassing over 20,000 reports of trait manifestation in behavior \u2014 providing a very large empirical base for their conclusions."
+  },
+  {
+    "id": 48,
+    "source": "Kuper et al. (2022)",
+    "topic": "Situation-State Contingencies",
+    "type": "mcq",
+    "question": "Kuper et al. (2022) study 'situation characteristic\u2013state contingencies' (SCSCs). What do SCSCs capture?",
+    "options": [
+      "The average level of a personality state across all situations",
+      "How much a specific situational feature (e.g., positivity) predicts a specific psychological state (e.g., positive affect) for a given individual",
+      "The heritability of personality responses to environments",
+      "The number of distinct situations a person encounters in daily life"
+    ],
+    "answer": 1,
+    "explanation": "SCSCs are individual-level parameters that capture how strongly a given situational characteristic (from the DIAMONDS framework) predicts a given psychological state for a particular person. They operationalize the classic 'if\u2013then' personality signatures \u2014 person A's positive affect rises sharply in duty situations; person B's does not."
+  },
+  {
+    "id": 49,
+    "source": "Kuper et al. (2022)",
+    "topic": "Situation-State Contingencies",
+    "type": "mcq",
+    "question": "The DIAMONDS framework used in Kuper et al. (2022) describes eight situational characteristics. Which of the following is one of the DIAMONDS dimensions?",
+    "options": [
+      "Dominance, Introversion, Affect, Mood, Openness, Negativity, Duty, Sociality",
+      "Duty, Intellect, Adversity, Mating, Positivity, Negativity, Deception, Sociality",
+      "Danger, Intelligence, Arousal, Motivation, Order, Negativity, Dominance, Sociality",
+      "Duty, Intellect, Adversity, Mating, pOsitivity, Negativity, Deception, Sociality"
+    ],
+    "answer": 3,
+    "explanation": "DIAMONDS stands for: Duty, Intellect, Adversity, Mating, pOsitivity, Negativity, Deception, and Sociality \u2014 eight dimensions proposed to capture the psychologically relevant features of situations."
+  },
+  {
+    "id": 50,
+    "source": "Kuper et al. (2022)",
+    "topic": "Situation-State Contingencies",
+    "type": "short",
+    "question": "How does the SCSC approach extend Mischel's 'if\u2013then' signature concept, and what does it add empirically to our understanding of personality?",
+    "model_answer": "Mischel's if\u2013then signatures proposed that personality is better captured by stable patterns of 'if [situation], then [behavior/feeling]' rather than by context-free trait levels \u2014 people have stable, characteristic ways of responding to specific situational features. Kuper et al. extend this by operationalizing if\u2013then signatures as quantifiable contingencies (regression coefficients) in experience-sampling data, linking specific DIAMONDS situation characteristics to specific Big Five states. This allows researchers to measure individual differences in how strongly each person's psychological states respond to each situational feature, test the reliability and stability of these contingencies, explore their factor structure, and examine how they relate to trait levels and life outcomes \u2014 all of which are empirical questions Mischel's original framework left open."
+  },
+  {
+    "id": 51,
+    "source": "Kuper et al. (2022)",
+    "topic": "Situation-State Contingencies",
+    "type": "mcq",
+    "question": "What was the average meta-analytic reliability of individual differences in SCSCs reported by Kuper et al. (2022)?",
+    "options": [
+      "Very high (r \u2248 .80)",
+      "Moderate (r \u2248 .47)",
+      "Near zero (r \u2248 .05)",
+      "Perfect (r = 1.00)"
+    ],
+    "answer": 1,
+    "explanation": "The average meta-analytic reliability was approximately .47 \u2014 moderate, but sufficient to study individual differences. This is lower than typical personality trait reliability, suggesting SCSCs are noisier parameters that require intensive measurement to assess well."
+  },
+  {
+    "id": 52,
+    "source": "McAdams (1995)",
+    "topic": "Levels of Personality",
+    "type": "mcq",
+    "question": "McAdams (1995) proposes that personality should be described at three levels. Level I consists of:",
+    "options": [
+      "Personal concerns, including strivings, goals, and coping strategies",
+      "The narrative personal identity that integrates a person's life story",
+      "Broad dispositional traits that provide a decontextualized signature of personality",
+      "Biological temperament and neurological underpinnings"
+    ],
+    "answer": 2,
+    "explanation": "Level I in McAdams' framework consists of broad, decontextualized dispositional traits (like Big Five factors) \u2014 the 'psychology of the stranger' that provides a quick summary but lacks context. Level II adds personal concerns; Level III adds identity as narrative."
+  },
+  {
+    "id": 53,
+    "source": "McAdams (1995)",
+    "topic": "Levels of Personality",
+    "type": "mcq",
+    "question": "McAdams argues that trait descriptions (Level I) yield only a 'psychology of the stranger' because:",
+    "options": [
+      "Traits are biologically determined and therefore impersonal",
+      "Trait scores tell us nothing accurate about behavior",
+      "Traits describe a person's general tendencies without conveying the personal meaning, context, and life story that makes them fully known as a person",
+      "Trait questionnaires are too unreliable to convey meaningful information"
+    ],
+    "answer": 2,
+    "explanation": "Trait descriptions give broad probabilistic sketches useful for initial characterization (as you'd describe a stranger) but say nothing about what a person wants, how they navigate specific life domains, or how they understand the meaning and purpose of their life \u2014 all of which require Levels II and III."
+  },
+  {
+    "id": 54,
+    "source": "McAdams (1995)",
+    "topic": "Levels of Personality",
+    "type": "mcq",
+    "question": "According to McAdams (1995), personal narratives (Level III \u2014 identity) are most relevant to adulthood because:",
+    "options": [
+      "Children have not yet developed personality traits",
+      "Narrative identity construction is a developmental task that becomes important as people seek unity and purpose in their lives, which is characteristic of modern Western adulthood",
+      "Adults have lower trait stability than children",
+      "Biological factors replace psychological ones in adulthood"
+    ],
+    "answer": 1,
+    "explanation": "McAdams argues that constructing a coherent life narrative \u2014 an inner story integrating past, present, and anticipated future \u2014 is a distinctively adult task, particularly in modern Western societies that place a premium on individuation and self-definition. Children and people in non-Western contexts may not require this level of analysis."
+  },
+  {
+    "id": 55,
+    "source": "McAdams (1995)",
+    "topic": "Levels of Personality",
+    "type": "short",
+    "question": "Describe McAdams' three levels of personality analysis and explain why he argues all three are necessary for fully knowing a person.",
+    "model_answer": "Level I: Dispositional traits \u2014 broad, decontextualized tendencies like Big Five factors that describe general behavioral signatures across situations ('the psychology of the stranger'). Level II: Personal concerns \u2014 contextualized motivational and strategic constructs like strivings, goals, coping strategies, and life tasks that describe what a person wants and how they pursue it in specific life domains and roles. Level III: Narrative identity \u2014 the integrative life story a person constructs to give their life unity, purpose, and meaning, linking past, present, and anticipated future into a personal myth. All three are necessary because traits alone give only a thin probabilistic sketch; without Level II, we miss what the person is trying to do and how they navigate their world; without Level III, we miss the person's understanding of who they are, where they came from, and where they are going \u2014 the subjective, meaningful self that defines modern personal identity."
+  },
+  {
+    "id": 56,
+    "source": "Stewart et al. (2022)",
+    "topic": "Facets vs. Domains",
+    "type": "mcq",
+    "question": "Stewart et al. (2022) examine personality\u2013life outcome associations. Their primary argument is that:",
+    "options": [
+      "Broad personality domains (like Big Five) are sufficient for predicting all life outcomes",
+      "Personality facets (more specific traits within domains) often predict life outcomes better than domain-level scores alone",
+      "Life outcomes cannot be reliably predicted from personality",
+      "Only neuroticism and conscientiousness matter for real-world outcomes"
+    ],
+    "answer": 1,
+    "explanation": "Stewart et al. argue that facets provide incremental predictive power over broad domain scores for many outcomes, because outcomes are often related to specific behavioral tendencies captured at the facet level that get diluted when aggregated into broad domains."
+  },
+  {
+    "id": 57,
+    "source": "Stewart et al. (2022)",
+    "topic": "Facets vs. Domains",
+    "type": "mcq",
+    "question": "A core methodological contribution of Stewart et al. (2022) is demonstrating that facets can predict outcomes even after controlling for domain scores. This is called:",
+    "options": [
+      "Discriminant validity",
+      "Incremental validity",
+      "Construct validity",
+      "Criterion-related validity"
+    ],
+    "answer": 1,
+    "explanation": "Incremental validity is the additional predictive power a measure provides beyond what is already explained by another measure. Showing facets have incremental validity over domains means facets capture variance in outcomes not accounted for by the broader domain score alone."
+  },
+  {
+    "id": 58,
+    "source": "Stewart et al. (2022)",
+    "topic": "Facets vs. Domains",
+    "type": "short",
+    "question": "Why might a narrow personality facet predict a specific life outcome better than the broad domain it belongs to? Use an example from the paper or a logical example.",
+    "model_answer": "Broad domains are averages across many heterogeneous facets \u2014 some of which predict an outcome positively, others negatively, and some not at all. When you average them into a domain score, the signal from the relevant facets is diluted. A narrow facet that directly captures the behavioral tendency most proximal to the outcome will have a stronger, less diluted association. For example, within Conscientiousness, the 'Orderliness' facet might specifically predict adherence to medication schedules, while 'Industriousness' predicts work productivity \u2014 these two outcomes would both show a moderate correlation with broad Conscientiousness but stronger correlations with their specific relevant facets. Using only domain scores sacrifices this precision."
+  },
+  {
+    "id": 59,
+    "source": "Cramer et al. (2012) + Ch. 3",
+    "topic": "Cross-Cutting: Personality Structure",
+    "type": "mcq",
+    "question": "Both Cramer et al. (2012) and the chapter on personality structure (Ch. 3) discuss why personality items within a scale correlate with each other. The chapters differ in that the textbook assumes _______, while Cramer et al. argue for _______.",
+    "options": [
+      "A network causal model; a latent variable model",
+      "A latent common cause model; a network causal model",
+      "A biological basis; a purely social constructionist account",
+      "Complete context-specificity; complete cross-situational stability"
+    ],
+    "answer": 1,
+    "explanation": "The standard textbook view (and factor analytic tradition) treats personality dimensions as latent variables \u2014 common causes of correlated item responses. Cramer et al. challenge this, proposing that items correlate because they are causally connected in a network, without a latent common cause needed."
+  },
+  {
+    "id": 60,
+    "source": "Fleeson & Gallagher (2009) + Kuper et al. (2022)",
+    "topic": "Cross-Cutting: Traits and Situations",
+    "type": "short",
+    "question": "Both Fleeson & Gallagher (2009) and Kuper et al. (2022) address personality in everyday life via experience sampling. How do their approaches complement each other?",
+    "model_answer": "Fleeson & Gallagher focus on the distribution of trait-relevant behaviors across occasions, showing that trait scores predict the mean of a person's behavioral distribution \u2014 reconciling traits with the large within-person variability observed in daily life. Kuper et al. add a situational dimension: they examine how the features of specific situations (DIAMONDS characteristics) modulate personality states for different individuals. Fleeson & Gallagher establish that traits predict average behavioral levels; Kuper et al. ask how and when individuals differ in their sensitivity to situational pulls on their states. Together, they suggest a fuller picture: a person's personality is captured both by their average state level (trait mean) and by their characteristic pattern of situation-state contingencies \u2014 what situations reliably shift their states, and by how much."
+  },
+  {
+    "id": 61,
+    "source": "McAdams (1995) + Caviola et al. (2019)",
+    "topic": "Cross-Cutting: Personality and Attitudes",
+    "type": "mcq",
+    "question": "McAdams (1995) places attitudes and values at Level II of personality ('personal concerns'). Given Caviola et al.'s finding that speciesism is stable over time and correlates with personality traits, speciesism could be described as fitting which level(s) in McAdams' framework?",
+    "options": [
+      "Level I only \u2014 it is a broad, decontextualized trait",
+      "Level II primarily \u2014 a stable motivational-attitudinal construct with contextual relevance, but possibly also having Level I trait correlates",
+      "Level III only \u2014 a narrative identity construct",
+      "Levels II and III \u2014 an attitude embedded in life narrative but not related to traits"
+    ],
+    "answer": 1,
+    "explanation": "Speciesism most naturally fits Level II \u2014 it is a stable attitudinal/motivational construct with real-world behavioral relevance (similar to values and strivings). However, its correlations with broad personality traits (SDO, RWA, Big Five) also give it Level I connections. It is not purely a Level I trait (it is domain-specific) nor a Level III narrative construct."
+  },
+  {
+    "id": 62,
+    "source": "Ch. 6 + Caviola et al. (2019)",
+    "topic": "Cross-Cutting: Origins of Attitudes",
+    "type": "short",
+    "question": "Caviola et al. show speciesism correlates with RWA and SDO. Given what Ch. 6 tells us about genetic influences on personality and Ch. 12 about the origins of political attitudes, what might we predict about the heritability of speciesism, and what would that suggest about efforts to reduce it?",
+    "model_answer": "Chapter 6 shows that personality traits and, as covered in Ch. 12, political attitudes (including RWA and SDO) have moderate heritabilities \u2014 meaning a portion of individual differences is genetically influenced, with the rest due largely to nonshared environment. If speciesism is correlated with these constructs, we might predict it also has moderate heritability. However, heritability does not mean immutability \u2014 people's speciesist attitudes can still change through education, exposure to information about animal sentience, or changing social norms. The finding that nonshared environment (unique personal experiences, peer groups) influences attitudes suggests that targeted interventions at the individual level (personal encounters, persuasive information) could shift speciesist attitudes even among those genetically predisposed toward prejudicial worldviews."
+  }
+];
+buildSourceFilters();
+updateStartBtn();
 
 // ── Setup helpers ─────────────────────────────────────────────────────────────
 function getSources() {
