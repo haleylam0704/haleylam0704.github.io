@@ -425,6 +425,38 @@
     .btn-new-session { background: var(--accent); color: #fff; border: none; }
     .btn-new-session:hover { background: var(--accent-dark); }
 
+    /* ── kbd hint ─────────────────────────────────────────────────────── */
+    kbd {
+      display: inline-block;
+      padding: 1px 5px;
+      font-size: 0.78rem;
+      font-family: monospace;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: var(--surface);
+      color: var(--muted);
+    }
+
+    /* ── Round results circle colour variants ──────────────────────────── */
+    .score-circle.good  { border-color: var(--correct); background: var(--correct-bg); }
+    .score-circle.good .score-pct { color: var(--correct); }
+    .score-circle.ok    { border-color: #c89b00; background: var(--warn-bg); }
+    .score-circle.ok .score-pct   { color: var(--warn); }
+    .score-circle.poor  { border-color: var(--wrong); background: var(--wrong-bg); }
+    .score-circle.poor .score-pct { color: var(--wrong); }
+
+    /* ── Streak badge ──────────────────────────────────────────────────── */
+    .streak-badge {
+      display: inline-block;
+      background: var(--warn-bg);
+      color: var(--warn);
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 2px 10px;
+      border-radius: 99px;
+      border: 1px solid #c89b00;
+    }
+
     /* ── Animations ──────────────────────────────────────────────────── */
     @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -467,11 +499,23 @@
     </div>
 
     <div class="setup-card">
+      <h2>Round Size</h2>
+      <p style="font-size:0.85rem; color:var(--muted); margin-bottom:10px;">Pause for a score check after every N questions. Choose "All at once" to disable rounds.</p>
+      <div class="toggle-row" id="round-size-row">
+        <button class="toggle-btn" id="rs-10" onclick="setRoundSize(10)">10</button>
+        <button class="toggle-btn active" id="rs-15" onclick="setRoundSize(15)">15 (default)</button>
+        <button class="toggle-btn" id="rs-20" onclick="setRoundSize(20)">20</button>
+        <button class="toggle-btn" id="rs-0"  onclick="setRoundSize(0)">All at once</button>
+      </div>
+    </div>
+
+    <div class="setup-card">
       <h2>Options</h2>
       <div class="toggle-row">
         <button class="toggle-btn active" id="opt-shuffle" onclick="toggleOpt('shuffle')">Shuffle questions</button>
         <button class="toggle-btn active" id="opt-shuffle-opts" onclick="toggleOpt('shuffleOpts')">Shuffle MCQ options</button>
       </div>
+      <p style="font-size:0.8rem;color:var(--muted);margin-top:10px;">Tip: press <kbd>1</kbd>–<kbd>4</kbd> to select MCQ options, <kbd>Enter</kbd> / <kbd>Space</kbd> to advance.</p>
     </div>
 
     <button class="start-btn" id="start-btn" onclick="startQuiz()">Start Practice Session</button>
@@ -479,12 +523,18 @@
 
   <!-- ── QUIZ SCREEN ── -->
   <div id="quiz-screen">
+    <!-- Overall session progress -->
     <div class="progress-bar-outer">
       <div class="progress-bar-inner" id="progress-bar" style="width:0%"></div>
     </div>
     <div class="progress-meta">
-      <span id="progress-text">Question 1 of 62</span>
+      <span id="progress-text">Question 1 of 15</span>
       <span id="score-text">Score: 0/0</span>
+    </div>
+    <!-- Round indicator (hidden when rounds disabled) -->
+    <div id="round-indicator" style="display:none; text-align:center; font-size:0.82rem; color:var(--muted); margin-bottom:14px;">
+      Round <span id="round-num">1</span> &nbsp;·&nbsp; <span id="round-q-text">Q 1 of 15 this round</span>
+      &nbsp;·&nbsp; <span id="streak-text" style="color:var(--accent-dark); font-weight:600;"></span>
     </div>
 
     <div class="q-card" id="q-card">
@@ -505,17 +555,47 @@
     </div>
   </div>
 
-  <!-- ── RESULTS SCREEN ── -->
+  <!-- ── ROUND RESULTS SCREEN ── -->
+  <div id="round-screen" style="display:none; animation: fadeIn 0.3s ease;">
+    <div class="results-card" style="text-align:center;">
+      <div style="font-size:0.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:8px;">Round <span id="rr-round-num">1</span> Complete</div>
+      <div class="score-circle" id="rr-circle">
+        <div class="score-pct" id="rr-pct">–</div>
+        <div class="score-label">this round</div>
+      </div>
+      <div class="score-breakdown">
+        <div class="score-stat" id="rr-stat-round"></div>
+        <div class="score-stat" id="rr-stat-session"></div>
+        <div class="score-stat" id="rr-stat-streak"></div>
+      </div>
+      <div id="rr-remaining" style="font-size:0.88rem;color:var(--muted);margin-top:8px;"></div>
+    </div>
+
+    <div class="results-card" id="rr-missed-card" style="display:none; text-align:left;">
+      <div class="missed-section">
+        <h3>Missed this round</h3>
+        <div id="rr-missed-list"></div>
+      </div>
+    </div>
+
+    <div class="results-actions">
+      <button class="btn-retry-missed" id="rr-btn-retry" onclick="retryRoundMissed()" disabled>Retry Round Misses</button>
+      <button class="btn-new-session" onclick="continueSession()">Continue →</button>
+    </div>
+  </div>
+
+  <!-- ── FINAL RESULTS SCREEN ── -->
   <div id="results-screen">
     <div class="results-card">
       <div class="score-circle">
         <div class="score-pct" id="score-pct">–</div>
-        <div class="score-label">score</div>
+        <div class="score-label">final score</div>
       </div>
       <div class="score-breakdown">
         <div class="score-stat" id="stat-correct"></div>
         <div class="score-stat" id="stat-mcq"></div>
         <div class="score-stat" id="stat-short"></div>
+        <div class="score-stat" id="stat-streak"></div>
       </div>
     </div>
 
@@ -542,8 +622,14 @@ let answered         = 0;
 let points           = 0;
 let maxPoints        = 0;
 let missedIds        = [];
+let roundMissedIds   = [];
 let currentOptionMap = [];
-const opts = { mode: 'all', shuffle: true, shuffleOpts: true };
+let streak           = 0;
+let bestStreak       = 0;
+let roundNum         = 1;
+let roundStart       = 0;
+let roundPointsBefore = 0;
+const opts = { mode: 'all', shuffle: true, shuffleOpts: true, roundSize: 15 };
 
 let ALL_QUESTIONS = [
   {
@@ -3109,6 +3195,13 @@ function setMode(mode) {
   updateStartBtn();
 }
 
+function setRoundSize(n) {
+  opts.roundSize = n;
+  [10, 15, 20, 0].forEach(v => {
+    document.getElementById('rs-' + v).classList.toggle('active', v === n);
+  });
+}
+
 function toggleOpt(key) {
   opts[key] = !opts[key];
   document.getElementById('opt-' + key.replace(/([A-Z])/g, '-$1').toLowerCase())
@@ -3123,7 +3216,7 @@ function getFilteredQuestions() {
   const sources = getSelectedSources();
   return ALL_QUESTIONS.filter(q => {
     if (!sources.includes(q.source)) return false;
-    if (opts.mode === 'mcq' && q.type !== 'mcq') return false;
+    if (opts.mode === 'mcq'   && q.type !== 'mcq')   return false;
     if (opts.mode === 'short' && q.type !== 'short') return false;
     return true;
   });
@@ -3149,8 +3242,11 @@ function startQuiz(questionSet) {
   let qs = questionSet || getFilteredQuestions();
   if (opts.shuffle) shuffle(qs);
   sessionQueue = qs;
-  current = 0; answered = 0; points = 0; maxPoints = 0; missedIds = [];
+  current = 0; answered = 0; points = 0; maxPoints = 0;
+  missedIds = []; roundMissedIds = []; streak = 0; bestStreak = 0;
+  roundNum = 1; roundStart = 0;
 
+  updateRoundIndicator();
   show('quiz-screen');
   renderQuestion();
 }
@@ -3160,14 +3256,68 @@ function retryMissed() {
   if (qs.length) startQuiz(qs);
 }
 
+function retryRoundMissed() {
+  const qs = ALL_QUESTIONS.filter(q => roundMissedIds.includes(q.id));
+  if (!qs.length) return;
+  // Queue them at front of remaining session
+  const remaining = sessionQueue.slice(current);
+  sessionQueue = [...qs, ...remaining];
+  roundMissedIds = [];
+  continueSession();
+}
+
+function continueSession() {
+  updateRoundIndicator();
+  show('quiz-screen');
+  renderQuestion();
+}
+
 function newSession() {
   show('setup-screen');
 }
 
 function show(id) {
-  ['setup-screen','quiz-screen','results-screen'].forEach(s => {
+  ['setup-screen','quiz-screen','round-screen','results-screen'].forEach(s => {
     document.getElementById(s).style.display = s === id ? 'block' : 'none';
   });
+}
+
+// ── Round helpers ──────────────────────────────────────────────────────────────
+function roundSize() {
+  return opts.roundSize || 0;
+}
+
+function positionInRound() {
+  // 1-indexed position within the current round
+  return (current - roundStart) + 1;
+}
+
+function isEndOfRound() {
+  const rs = roundSize();
+  if (!rs) return false;
+  const pos = current - roundStart + 1; // how many answered in this round incl. current
+  return pos >= rs;
+}
+
+function updateRoundIndicator() {
+  const rs = roundSize();
+  const ind = document.getElementById('round-indicator');
+  if (!rs) { ind.style.display = 'none'; return; }
+  ind.style.display = 'block';
+  document.getElementById('round-num').textContent = roundNum;
+  const posInRound = current - roundStart + 1;
+  const roundTotal = Math.min(rs, sessionQueue.length - roundStart);
+  document.getElementById('round-q-text').textContent = `Q ${posInRound} of ${roundTotal} this round`;
+  renderStreak();
+}
+
+function renderStreak() {
+  const el = document.getElementById('streak-text');
+  if (streak >= 3) {
+    el.innerHTML = `<span class="streak-badge">${streak} in a row</span>`;
+  } else {
+    el.textContent = '';
+  }
 }
 
 // ── Render question ───────────────────────────────────────────────────────────
@@ -3175,19 +3325,32 @@ function renderQuestion() {
   const q = sessionQueue[current];
   const total = sessionQueue.length;
 
-  // Progress
+  // Overall session progress bar
   const pct = (current / total) * 100;
   document.getElementById('progress-bar').style.width = pct + '%';
   document.getElementById('progress-text').textContent = `Question ${current + 1} of ${total}`;
   updateScoreText();
+  updateRoundIndicator();
 
-  // Meta badges
+  // Meta badges — detect [Type] prefix in question text for prof-style Qs
+  let typeBadge = '';
+  const typeMatch = q.question.match(/^\[(Comprehension|Application|Analysis|Synthesis)\]/i);
+  if (typeMatch) {
+    const colorMap = { comprehension: '#dde8f8', application: '#e0f0e8', analysis: '#f0e8f8', synthesis: '#fce8d8' };
+    const textMap  = { comprehension: '#345185', application: '#2d6040', analysis: '#5a3080', synthesis: '#7a3d10' };
+    const key = typeMatch[1].toLowerCase();
+    typeBadge = `<span class="badge" style="background:${colorMap[key]};color:${textMap[key]}">${typeMatch[1]}</span>`;
+  }
+
   document.getElementById('q-meta').innerHTML =
     `<span class="badge badge-${q.type}">${q.type === 'mcq' ? 'Multiple Choice' : 'Short Answer'}</span>` +
+    typeBadge +
     `<span class="badge badge-source">${q.source}</span>` +
     `<span class="badge badge-topic">${q.topic}</span>`;
 
-  document.getElementById('q-text').textContent = q.question;
+  // Strip the [Type] prefix from displayed question text
+  const displayQ = q.question.replace(/^\[(Comprehension|Application|Analysis|Synthesis)\]\s*/i, '');
+  document.getElementById('q-text').textContent = displayQ;
 
   const body = document.getElementById('q-body');
   const fb   = document.getElementById('feedback-box');
@@ -3198,7 +3361,6 @@ function renderQuestion() {
   document.getElementById('next-btn').disabled = true;
 
   if (q.type === 'mcq') {
-    // Build shuffled option order
     const indices = [0, 1, 2, 3];
     if (opts.shuffleOpts) shuffle(indices);
     currentOptionMap = indices;
@@ -3210,6 +3372,7 @@ function renderQuestion() {
       const btn = document.createElement('button');
       btn.className = 'option-btn';
       btn.textContent = q.options[origIdx];
+      btn.dataset.displayIdx = displayIdx;
       btn.onclick = () => selectOption(displayIdx, q);
       li.appendChild(btn);
       ul.appendChild(li);
@@ -3244,15 +3407,20 @@ function selectOption(displayIdx, q) {
     fb.className = 'feedback-box correct-fb';
     fb.innerHTML = `<strong>Correct</strong>${q.explanation}`;
     points += 1;
+    streak++;
+    if (streak > bestStreak) bestStreak = streak;
   } else {
     fb.className = 'feedback-box wrong-fb';
     fb.innerHTML = `<strong>Incorrect</strong>${q.explanation}`;
     missedIds.push(q.id);
+    roundMissedIds.push(q.id);
+    streak = 0;
   }
   maxPoints += 1;
   answered++;
   document.getElementById('next-btn').disabled = false;
   updateScoreText();
+  renderStreak();
 }
 
 function revealModel() {
@@ -3272,16 +3440,21 @@ function gradeShort(score) {
   maxPoints += 1;
   if (score === 1) {
     points += 1;
+    streak++;
+    if (streak > bestStreak) bestStreak = streak;
   } else if (score === 0.5) {
     points += 0.5;
+    streak = 0;
   } else {
     missedIds.push(q.id);
+    roundMissedIds.push(q.id);
+    streak = 0;
   }
   answered++;
   document.getElementById('next-btn').disabled = false;
-  // Dim self-grade buttons
   document.querySelectorAll('.grade-btn').forEach(b => b.disabled = true);
   updateScoreText();
+  renderStreak();
 }
 
 function updateScoreText() {
@@ -3291,23 +3464,105 @@ function updateScoreText() {
 }
 
 function nextQuestion() {
+  if (isEndOfRound()) {
+    showRoundResults();
+    return;
+  }
   current++;
   if (current >= sessionQueue.length) {
     endQuiz();
   } else {
     renderQuestion();
-    // Scroll to top of card
     document.getElementById('q-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 }
 
-function endQuiz() {
-  const total = sessionQueue.slice(0, current + (answered > 0 ? 1 : 0)).length;
-  const pct = maxPoints > 0 ? Math.round((points / maxPoints) * 100) : 0;
+// ── Round results ──────────────────────────────────────────────────────────────
+function showRoundResults() {
+  const rs = roundSize();
+  // Calculate this-round stats
+  const roundEnd = current; // inclusive
+  const roundQs  = sessionQueue.slice(roundStart, roundEnd + 1);
+  const roundMax = roundQs.length; // each Q worth 1 pt max (approximation for display)
 
+  // Approximate round points: total points minus points before this round
+  // We track roundPointsBefore at round start
+  const roundPts = points - roundPointsBefore;
+  const roundPct = roundMax > 0 ? Math.round((roundPts / roundMax) * 100) : 0;
+
+  // Update round circle
+  const circle = document.getElementById('rr-circle');
+  circle.className = 'score-circle ' + (roundPct >= 80 ? 'good' : roundPct >= 60 ? 'ok' : 'poor');
+  document.getElementById('rr-pct').textContent = roundPct + '%';
+  document.getElementById('rr-round-num').textContent = roundNum;
+
+  // Stats row
+  document.getElementById('rr-stat-round').innerHTML =
+    `<strong>${roundPts % 1 === 0 ? roundPts : roundPts.toFixed(1)} / ${roundMax}</strong> this round`;
+  const sessionPct = maxPoints > 0 ? Math.round((points / maxPoints) * 100) : 0;
+  document.getElementById('rr-stat-session').innerHTML =
+    `<strong>${sessionPct}%</strong> session so far`;
+  document.getElementById('rr-stat-streak').innerHTML =
+    bestStreak >= 3 ? `<strong>${bestStreak}</strong> best streak` : '';
+
+  // Remaining
+  const remaining = sessionQueue.length - (current + 1);
+  document.getElementById('rr-remaining').textContent =
+    remaining > 0 ? `${remaining} question${remaining !== 1 ? 's' : ''} remaining in this session` : 'No more questions — see final results below.';
+
+  // Missed this round
+  const roundMissed = ALL_QUESTIONS.filter(q => roundMissedIds.includes(q.id));
+  const rrMissedCard = document.getElementById('rr-missed-card');
+  const rrMissedList = document.getElementById('rr-missed-list');
+  const rrRetryBtn   = document.getElementById('rr-btn-retry');
+
+  if (roundMissed.length > 0) {
+    rrMissedCard.style.display = 'block';
+    rrMissedList.innerHTML = roundMissed.map(q =>
+      `<div class="missed-item">
+        <div class="mi-source">${q.source} · ${q.topic}</div>
+        ${q.question.replace(/^\[(Comprehension|Application|Analysis|Synthesis)\]\s*/i, '')}
+      </div>`
+    ).join('');
+    rrRetryBtn.disabled = false;
+  } else {
+    rrMissedCard.style.display = 'none';
+    rrRetryBtn.disabled = true;
+  }
+
+  // Update "Continue" button
+  const continueBtn = document.querySelector('#round-screen .btn-new-session');
+  if (remaining <= 0) {
+    continueBtn.textContent = 'See Final Results';
+    continueBtn.onclick = endQuiz;
+  } else {
+    continueBtn.textContent = 'Continue →';
+    continueBtn.onclick = advanceRound;
+  }
+
+  show('round-screen');
+}
+
+function advanceRound() {
+  // Advance state for next round
+  current++;
+  roundNum++;
+  roundStart = current;
+  roundMissedIds = [];
+  roundPointsBefore = points;
+  if (current >= sessionQueue.length) {
+    endQuiz();
+  } else {
+    continueSession();
+  }
+}
+
+// ── Final results ─────────────────────────────────────────────────────────────
+function endQuiz() {
+  const pct = maxPoints > 0 ? Math.round((points / maxPoints) * 100) : 0;
   document.getElementById('score-pct').textContent = pct + '%';
 
-  const mcqQ = sessionQueue.filter(q => q.type === 'mcq');
+  const mcqQ   = sessionQueue.filter(q => q.type === 'mcq');
   const shortQ = sessionQueue.filter(q => q.type === 'short');
 
   document.getElementById('stat-correct').innerHTML =
@@ -3316,9 +3571,10 @@ function endQuiz() {
     `<strong>${mcqQ.length}</strong> MCQ`;
   document.getElementById('stat-short').innerHTML =
     `<strong>${shortQ.length}</strong> Short Answer`;
+  document.getElementById('stat-streak').innerHTML =
+    bestStreak >= 3 ? `<strong>${bestStreak}</strong> best streak` : '';
 
-  // Missed list
-  const missed = ALL_QUESTIONS.filter(q => missedIds.includes(q.id));
+  const missed    = ALL_QUESTIONS.filter(q => missedIds.includes(q.id));
   const missedCard = document.getElementById('missed-card');
   const missedList = document.getElementById('missed-list');
   const retryBtn   = document.getElementById('btn-retry-missed');
@@ -3328,7 +3584,7 @@ function endQuiz() {
     missedList.innerHTML = missed.map(q =>
       `<div class="missed-item">
         <div class="mi-source">${q.source} · ${q.topic}</div>
-        ${q.question}
+        ${q.question.replace(/^\[(Comprehension|Application|Analysis|Synthesis)\]\s*/i, '')}
       </div>`
     ).join('');
     retryBtn.disabled = false;
@@ -3339,6 +3595,22 @@ function endQuiz() {
 
   show('results-screen');
 }
+
+// ── Keyboard shortcuts ────────────────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  // 1–4: select MCQ option
+  if (['1','2','3','4'].includes(e.key)) {
+    const idx = parseInt(e.key) - 1;
+    const btns = [...document.querySelectorAll('.option-btn')].filter(b => !b.disabled);
+    if (btns[idx]) btns[idx].click();
+    return;
+  }
+  // Enter or Space: advance (Next button)
+  if (e.key === 'Enter' || e.key === ' ') {
+    const nextBtn = document.getElementById('next-btn');
+    if (nextBtn && !nextBtn.disabled) { e.preventDefault(); nextBtn.click(); }
+  }
+});
 
 // Init
 buildSourceFilters();
