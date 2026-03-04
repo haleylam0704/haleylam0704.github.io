@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Personality Psychology – Midterm Review</title>
+  <style>
+    /* ── Reset & Variables ──────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f7f6f3;
+      --surface: #ffffff;
+      --surface2: #f0ede8;
+      --border: #ddd8d0;
+      --text: #1a1816;
+      --muted: #6b6560;
+      --accent: #4a6fa5;
+      --accent-dark: #345185;
+      --accent-light: #e8eef6;
+      --correct: #2d7a4f;
+      --correct-bg: #e8f5ee;
+      --wrong: #b33c3c;
+      --wrong-bg: #faeaea;
+      --warn: #8a6400;
+      --warn-bg: #fff6d6;
+      --radius: 10px;
+      --shadow: 0 2px 12px rgba(0,0,0,0.07);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* ── Layout ─────────────────────────────────────────────────────── */
+    .app {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 24px 20px 60px;
+    }
+
+    /* ── Header ─────────────────────────────────────────────────────── */
+    .header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .header h1 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--accent-dark);
+    }
+    .header p {
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin-top: 4px;
+    }
+
+    /* ── Setup Screen ────────────────────────────────────────────────── */
+    #setup-screen { animation: fadeIn 0.3s ease; }
+
+    .setup-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow);
+    }
+    .setup-card h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 14px;
+      color: var(--accent-dark);
+    }
+
+    /* Filter checkboxes */
+    .filter-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 8px;
+    }
+    .filter-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      background: var(--surface2);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: background 0.15s;
+    }
+    .filter-item:hover { background: var(--accent-light); }
+    .filter-item input[type=checkbox] { accent-color: var(--accent); width: 15px; height: 15px; cursor: pointer; }
+    .filter-item .src-label { font-weight: 500; }
+    .filter-item .src-count { color: var(--muted); margin-left: auto; font-size: 0.8rem; }
+
+    /* Mode / shuffle toggles */
+    .toggle-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .toggle-btn {
+      padding: 8px 16px;
+      border: 2px solid var(--border);
+      border-radius: 20px;
+      background: var(--surface2);
+      cursor: pointer;
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: all 0.15s;
+      color: var(--text);
+    }
+    .toggle-btn.active {
+      border-color: var(--accent);
+      background: var(--accent-light);
+      color: var(--accent-dark);
+    }
+
+    .select-all-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .mini-btn {
+      font-size: 0.8rem;
+      padding: 4px 10px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: var(--surface);
+      cursor: pointer;
+      color: var(--muted);
+      transition: background 0.15s;
+    }
+    .mini-btn:hover { background: var(--surface2); }
+
+    .start-btn {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 1.05rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 20px;
+    }
+    .start-btn:hover { background: var(--accent-dark); }
+    .start-btn:disabled { background: #b0b0b0; cursor: not-allowed; }
+
+    /* ── Quiz Screen ─────────────────────────────────────────────────── */
+    #quiz-screen { display: none; animation: fadeIn 0.3s ease; }
+
+    /* Progress */
+    .progress-bar-outer {
+      background: var(--surface2);
+      border-radius: 99px;
+      height: 8px;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+    .progress-bar-inner {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 99px;
+      transition: width 0.4s ease;
+    }
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    /* Question card */
+    .q-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 26px;
+      box-shadow: var(--shadow);
+      margin-bottom: 14px;
+    }
+    .q-meta {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .badge {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 99px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .badge-mcq { background: #dde8f8; color: #345185; }
+    .badge-short { background: #e8f0e0; color: #3a5a20; }
+    .badge-source { background: var(--surface2); color: var(--muted); font-weight: 500; text-transform: none; letter-spacing: 0; }
+    .badge-topic { background: var(--warn-bg); color: var(--warn); font-weight: 500; text-transform: none; letter-spacing: 0; }
+
+    .q-text {
+      font-size: 1.08rem;
+      font-weight: 500;
+      line-height: 1.55;
+      margin-bottom: 20px;
+    }
+
+    /* MCQ options */
+    .options-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .option-btn {
+      width: 100%;
+      text-align: left;
+      padding: 12px 16px;
+      background: var(--surface2);
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      transition: all 0.15s;
+      color: var(--text);
+    }
+    .option-btn:hover:not(:disabled) {
+      border-color: var(--accent);
+      background: var(--accent-light);
+    }
+    .option-btn.correct {
+      border-color: var(--correct);
+      background: var(--correct-bg);
+      color: var(--correct);
+      font-weight: 600;
+    }
+    .option-btn.wrong {
+      border-color: var(--wrong);
+      background: var(--wrong-bg);
+      color: var(--wrong);
+    }
+    .option-btn.reveal-correct {
+      border-color: var(--correct);
+      background: var(--correct-bg);
+    }
+    .option-btn:disabled { cursor: default; }
+
+    /* Short answer */
+    .short-answer-area textarea {
+      width: 100%;
+      min-height: 120px;
+      padding: 12px;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      line-height: 1.5;
+      resize: vertical;
+      background: var(--surface2);
+      color: var(--text);
+      transition: border-color 0.15s;
+    }
+    .short-answer-area textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      background: #fff;
+    }
+    .reveal-btn {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .reveal-btn:hover { background: var(--accent-dark); }
+
+    /* Feedback box */
+    .feedback-box {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 8px;
+      font-size: 0.93rem;
+      line-height: 1.6;
+      display: none;
+    }
+    .feedback-box.correct-fb { background: var(--correct-bg); border-left: 4px solid var(--correct); }
+    .feedback-box.wrong-fb   { background: var(--wrong-bg);   border-left: 4px solid var(--wrong);   }
+    .feedback-box.model-fb   { background: var(--warn-bg);    border-left: 4px solid #c89b00;        }
+    .feedback-box strong { display: block; margin-bottom: 4px; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.04em; }
+
+    /* Self-grade for short answer */
+    .self-grade {
+      display: none;
+      gap: 10px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+    .grade-btn {
+      flex: 1;
+      min-width: 120px;
+      padding: 10px;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      background: var(--surface2);
+      color: var(--text);
+    }
+    .grade-btn.got-it  { border-color: var(--correct); }
+    .grade-btn.got-it:hover  { background: var(--correct-bg); color: var(--correct); }
+    .grade-btn.missed-it { border-color: var(--wrong); }
+    .grade-btn.missed-it:hover { background: var(--wrong-bg); color: var(--wrong); }
+    .grade-btn.partial  { border-color: #c89b00; }
+    .grade-btn.partial:hover  { background: var(--warn-bg); color: var(--warn); }
+
+    /* Nav buttons */
+    .nav-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .nav-btn {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .next-btn { background: var(--accent); color: #fff; }
+    .next-btn:hover { background: var(--accent-dark); }
+    .next-btn:disabled { background: #b0b0b0; cursor: not-allowed; }
+    .end-btn { background: var(--surface2); color: var(--muted); border: 1px solid var(--border); }
+    .end-btn:hover { background: var(--border); }
+
+    /* ── Results Screen ──────────────────────────────────────────────── */
+    #results-screen { display: none; animation: fadeIn 0.3s ease; }
+
+    .results-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 30px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+    }
+    .score-circle {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: var(--accent-light);
+      border: 4px solid var(--accent);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+    }
+    .score-pct { font-size: 2rem; font-weight: 800; color: var(--accent-dark); line-height: 1; }
+    .score-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+
+    .score-breakdown {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .score-stat { font-size: 0.9rem; color: var(--muted); }
+    .score-stat strong { color: var(--text); }
+
+    .missed-section h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--wrong);
+      margin-bottom: 12px;
+    }
+    .missed-item {
+      background: var(--wrong-bg);
+      border-left: 3px solid var(--wrong);
+      border-radius: 6px;
+      padding: 10px 14px;
+      margin-bottom: 8px;
+      font-size: 0.88rem;
+      text-align: left;
+      line-height: 1.5;
+    }
+    .missed-item .mi-source { font-size: 0.78rem; color: var(--wrong); margin-bottom: 3px; font-weight: 600; }
+
+    .results-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .results-actions button {
+      flex: 1;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-retry-missed { background: var(--wrong); color: #fff; border: none; }
+    .btn-retry-missed:hover { background: #8a2a2a; }
+    .btn-retry-missed:disabled { background: #b0b0b0; cursor: not-allowed; }
+    .btn-new-session { background: var(--accent); color: #fff; border: none; }
+    .btn-new-session:hover { background: var(--accent-dark); }
+
+    /* ── Animations ──────────────────────────────────────────────────── */
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ── Responsive ──────────────────────────────────────────────────── */
+    @media (max-width: 480px) {
+      .q-text { font-size: 1rem; }
+      .setup-card { padding: 16px; }
+      .q-card { padding: 18px; }
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- Header -->
+  <div class="header">
+    <h1>Personality Psychology</h1>
+    <p>Midterm Review &nbsp;·&nbsp; 62 questions across 14 sources</p>
+  </div>
+
+  <!-- ── SETUP SCREEN ── -->
+  <div id="setup-screen">
+
+    <div class="setup-card">
+      <h2>Question Type</h2>
+      <div class="toggle-row">
+        <button class="toggle-btn active" id="mode-all" onclick="setMode('all')">All</button>
+        <button class="toggle-btn" id="mode-mcq" onclick="setMode('mcq')">Multiple Choice Only</button>
+        <button class="toggle-btn" id="mode-short" onclick="setMode('short')">Short Answer Only</button>
+      </div>
+    </div>
+
+    <div class="setup-card">
+      <h2>Sources</h2>
+      <div class="select-all-row">
+        <button class="mini-btn" onclick="selectAllSources(true)">Select all</button>
+        <button class="mini-btn" onclick="selectAllSources(false)">Deselect all</button>
+      </div>
+      <div class="filter-grid" id="source-filters"></div>
+    </div>
+
+    <div class="setup-card">
+      <h2>Options</h2>
+      <div class="toggle-row">
+        <button class="toggle-btn active" id="opt-shuffle" onclick="toggleOpt('shuffle')">Shuffle questions</button>
+        <button class="toggle-btn active" id="opt-shuffle-opts" onclick="toggleOpt('shuffleOpts')">Shuffle MCQ options</button>
+      </div>
+    </div>
+
+    <button class="start-btn" id="start-btn" onclick="startQuiz()">Start Practice Session</button>
+  </div>
+
+  <!-- ── QUIZ SCREEN ── -->
+  <div id="quiz-screen">
+    <div class="progress-bar-outer">
+      <div class="progress-bar-inner" id="progress-bar" style="width:0%"></div>
+    </div>
+    <div class="progress-meta">
+      <span id="progress-text">Question 1 of 62</span>
+      <span id="score-text">Score: 0/0</span>
+    </div>
+
+    <div class="q-card" id="q-card">
+      <div class="q-meta" id="q-meta"></div>
+      <div class="q-text" id="q-text"></div>
+      <div id="q-body"></div>
+      <div class="feedback-box" id="feedback-box"></div>
+      <div class="self-grade" id="self-grade">
+        <button class="grade-btn got-it"   onclick="gradeShort(1)">Got it ✓</button>
+        <button class="grade-btn partial"  onclick="gradeShort(0.5)">Partially ≈</button>
+        <button class="grade-btn missed-it" onclick="gradeShort(0)">Missed it ✗</button>
+      </div>
+    </div>
+
+    <div class="nav-row">
+      <button class="nav-btn end-btn" onclick="endQuiz()">End &amp; See Results</button>
+      <button class="nav-btn next-btn" id="next-btn" onclick="nextQuestion()" disabled>Next →</button>
+    </div>
+  </div>
+
+  <!-- ── RESULTS SCREEN ── -->
+  <div id="results-screen">
+    <div class="results-card">
+      <div class="score-circle">
+        <div class="score-pct" id="score-pct">–</div>
+        <div class="score-label">score</div>
+      </div>
+      <div class="score-breakdown">
+        <div class="score-stat" id="stat-correct"></div>
+        <div class="score-stat" id="stat-mcq"></div>
+        <div class="score-stat" id="stat-short"></div>
+      </div>
+    </div>
+
+    <div class="results-card" id="missed-card" style="display:none; text-align:left;">
+      <div class="missed-section">
+        <h3>Questions to review</h3>
+        <div id="missed-list"></div>
+      </div>
+    </div>
+
+    <div class="results-actions">
+      <button class="btn-retry-missed" id="btn-retry-missed" onclick="retryMissed()" disabled>Retry Missed Questions</button>
+      <button class="btn-new-session" onclick="newSession()">New Session</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ── Data & State ──────────────────────────────────────────────────────────────
+let ALL_QUESTIONS = [];
+let sessionQueue  = [];
+let current       = 0;
+let answered      = 0;
+let points        = 0;
+let maxPoints     = 0;
+let missedIds     = [];
+let currentOptionMap = []; // maps shuffled index → original index
+
+const opts = { mode: 'all', shuffle: true, shuffleOpts: true };
+
+// ── Load questions ────────────────────────────────────────────────────────────
+fetch('questions.json')
+  .then(r => r.json())
+  .then(data => {
+    ALL_QUESTIONS = data;
+    buildSourceFilters();
+    updateStartBtn();
+  })
+  .catch(() => alert('Could not load questions.json — make sure the file is in the same directory.'));
+
+// ── Setup helpers ─────────────────────────────────────────────────────────────
+function getSources() {
+  const map = {};
+  ALL_QUESTIONS.forEach(q => {
+    if (!map[q.source]) map[q.source] = 0;
+    map[q.source]++;
+  });
+  return map;
+}
+
+function buildSourceFilters() {
+  const map = getSources();
+  const container = document.getElementById('source-filters');
+  container.innerHTML = '';
+  Object.entries(map).forEach(([src, count]) => {
+    const id = 'src-' + btoa(src).replace(/[^a-z0-9]/gi, '');
+    const label = document.createElement('label');
+    label.className = 'filter-item';
+    label.innerHTML = `
+      <input type="checkbox" id="${id}" data-source="${src}" checked onchange="updateStartBtn()">
+      <span class="src-label">${src}</span>
+      <span class="src-count">${count}q</span>`;
+    container.appendChild(label);
+  });
+}
+
+function selectAllSources(val) {
+  document.querySelectorAll('#source-filters input[type=checkbox]').forEach(cb => cb.checked = val);
+  updateStartBtn();
+}
+
+function setMode(mode) {
+  opts.mode = mode;
+  ['all','mcq','short'].forEach(m => {
+    document.getElementById('mode-' + m).classList.toggle('active', m === mode);
+  });
+  updateStartBtn();
+}
+
+function toggleOpt(key) {
+  opts[key] = !opts[key];
+  document.getElementById('opt-' + key.replace(/([A-Z])/g, '-$1').toLowerCase())
+    .classList.toggle('active', opts[key]);
+}
+
+function getSelectedSources() {
+  return [...document.querySelectorAll('#source-filters input:checked')].map(cb => cb.dataset.source);
+}
+
+function getFilteredQuestions() {
+  const sources = getSelectedSources();
+  return ALL_QUESTIONS.filter(q => {
+    if (!sources.includes(q.source)) return false;
+    if (opts.mode === 'mcq' && q.type !== 'mcq') return false;
+    if (opts.mode === 'short' && q.type !== 'short') return false;
+    return true;
+  });
+}
+
+function updateStartBtn() {
+  const btn = document.getElementById('start-btn');
+  const count = getFilteredQuestions().length;
+  btn.disabled = count === 0;
+  btn.textContent = count > 0 ? `Start Practice Session (${count} questions)` : 'No questions match filters';
+}
+
+// ── Quiz control ──────────────────────────────────────────────────────────────
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function startQuiz(questionSet) {
+  let qs = questionSet || getFilteredQuestions();
+  if (opts.shuffle) shuffle(qs);
+  sessionQueue = qs;
+  current = 0; answered = 0; points = 0; maxPoints = 0; missedIds = [];
+
+  show('quiz-screen');
+  renderQuestion();
+}
+
+function retryMissed() {
+  const qs = ALL_QUESTIONS.filter(q => missedIds.includes(q.id));
+  if (qs.length) startQuiz(qs);
+}
+
+function newSession() {
+  show('setup-screen');
+}
+
+function show(id) {
+  ['setup-screen','quiz-screen','results-screen'].forEach(s => {
+    document.getElementById(s).style.display = s === id ? 'block' : 'none';
+  });
+}
+
+// ── Render question ───────────────────────────────────────────────────────────
+function renderQuestion() {
+  const q = sessionQueue[current];
+  const total = sessionQueue.length;
+
+  // Progress
+  const pct = (current / total) * 100;
+  document.getElementById('progress-bar').style.width = pct + '%';
+  document.getElementById('progress-text').textContent = `Question ${current + 1} of ${total}`;
+  updateScoreText();
+
+  // Meta badges
+  document.getElementById('q-meta').innerHTML =
+    `<span class="badge badge-${q.type}">${q.type === 'mcq' ? 'Multiple Choice' : 'Short Answer'}</span>` +
+    `<span class="badge badge-source">${q.source}</span>` +
+    `<span class="badge badge-topic">${q.topic}</span>`;
+
+  document.getElementById('q-text').textContent = q.question;
+
+  const body = document.getElementById('q-body');
+  const fb   = document.getElementById('feedback-box');
+  const sg   = document.getElementById('self-grade');
+  fb.style.display = 'none';
+  fb.className = 'feedback-box';
+  sg.style.display = 'none';
+  document.getElementById('next-btn').disabled = true;
+
+  if (q.type === 'mcq') {
+    // Build shuffled option order
+    const indices = [0, 1, 2, 3];
+    if (opts.shuffleOpts) shuffle(indices);
+    currentOptionMap = indices;
+
+    const ul = document.createElement('ul');
+    ul.className = 'options-list';
+    indices.forEach((origIdx, displayIdx) => {
+      const li = document.createElement('li');
+      const btn = document.createElement('button');
+      btn.className = 'option-btn';
+      btn.textContent = q.options[origIdx];
+      btn.onclick = () => selectOption(displayIdx, q);
+      li.appendChild(btn);
+      ul.appendChild(li);
+    });
+    body.innerHTML = '';
+    body.appendChild(ul);
+  } else {
+    body.innerHTML = `
+      <div class="short-answer-area">
+        <textarea id="short-input" placeholder="Write your answer here…"></textarea>
+        <button class="reveal-btn" onclick="revealModel()">Reveal Model Answer</button>
+      </div>`;
+  }
+}
+
+function selectOption(displayIdx, q) {
+  const origIdx = currentOptionMap[displayIdx];
+  const isCorrect = origIdx === q.answer;
+  const btns = document.querySelectorAll('.option-btn');
+
+  btns.forEach((btn, i) => {
+    btn.disabled = true;
+    const thisOrigIdx = currentOptionMap[i];
+    if (thisOrigIdx === q.answer) btn.classList.add('reveal-correct');
+    if (i === displayIdx && !isCorrect) btn.classList.add('wrong');
+    if (i === displayIdx && isCorrect) { btn.classList.remove('reveal-correct'); btn.classList.add('correct'); }
+  });
+
+  const fb = document.getElementById('feedback-box');
+  fb.style.display = 'block';
+  if (isCorrect) {
+    fb.className = 'feedback-box correct-fb';
+    fb.innerHTML = `<strong>Correct</strong>${q.explanation}`;
+    points += 1;
+  } else {
+    fb.className = 'feedback-box wrong-fb';
+    fb.innerHTML = `<strong>Incorrect</strong>${q.explanation}`;
+    missedIds.push(q.id);
+  }
+  maxPoints += 1;
+  answered++;
+  document.getElementById('next-btn').disabled = false;
+  updateScoreText();
+}
+
+function revealModel() {
+  const q = sessionQueue[current];
+  const fb = document.getElementById('feedback-box');
+  const sg = document.getElementById('self-grade');
+  fb.style.display = 'block';
+  fb.className = 'feedback-box model-fb';
+  fb.innerHTML = `<strong>Model Answer</strong>${q.model_answer}`;
+  sg.style.display = 'flex';
+  document.querySelector('.reveal-btn').disabled = true;
+  document.getElementById('short-input').disabled = true;
+}
+
+function gradeShort(score) {
+  const q = sessionQueue[current];
+  maxPoints += 1;
+  if (score === 1) {
+    points += 1;
+  } else if (score === 0.5) {
+    points += 0.5;
+  } else {
+    missedIds.push(q.id);
+  }
+  answered++;
+  document.getElementById('next-btn').disabled = false;
+  // Dim self-grade buttons
+  document.querySelectorAll('.grade-btn').forEach(b => b.disabled = true);
+  updateScoreText();
+}
+
+function updateScoreText() {
+  const pct = maxPoints > 0 ? Math.round((points / maxPoints) * 100) : 0;
+  document.getElementById('score-text').textContent =
+    `Score: ${points % 1 === 0 ? points : points.toFixed(1)}/${maxPoints} (${pct}%)`;
+}
+
+function nextQuestion() {
+  current++;
+  if (current >= sessionQueue.length) {
+    endQuiz();
+  } else {
+    renderQuestion();
+    // Scroll to top of card
+    document.getElementById('q-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+function endQuiz() {
+  const total = sessionQueue.slice(0, current + (answered > 0 ? 1 : 0)).length;
+  const pct = maxPoints > 0 ? Math.round((points / maxPoints) * 100) : 0;
+
+  document.getElementById('score-pct').textContent = pct + '%';
+
+  const mcqQ = sessionQueue.filter(q => q.type === 'mcq');
+  const shortQ = sessionQueue.filter(q => q.type === 'short');
+
+  document.getElementById('stat-correct').innerHTML =
+    `<strong>${points % 1 === 0 ? points : points.toFixed(1)} / ${maxPoints}</strong> points`;
+  document.getElementById('stat-mcq').innerHTML =
+    `<strong>${mcqQ.length}</strong> MCQ`;
+  document.getElementById('stat-short').innerHTML =
+    `<strong>${shortQ.length}</strong> Short Answer`;
+
+  // Missed list
+  const missed = ALL_QUESTIONS.filter(q => missedIds.includes(q.id));
+  const missedCard = document.getElementById('missed-card');
+  const missedList = document.getElementById('missed-list');
+  const retryBtn   = document.getElementById('btn-retry-missed');
+
+  if (missed.length > 0) {
+    missedCard.style.display = 'block';
+    missedList.innerHTML = missed.map(q =>
+      `<div class="missed-item">
+        <div class="mi-source">${q.source} · ${q.topic}</div>
+        ${q.question}
+      </div>`
+    ).join('');
+    retryBtn.disabled = false;
+  } else {
+    missedCard.style.display = 'none';
+    retryBtn.disabled = true;
+  }
+
+  show('results-screen');
+}
+
+// Init
+show('setup-screen');
+</script>
+</body>
+</html>
