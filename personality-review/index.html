@@ -1377,7 +1377,7 @@ function buildSourceFilters() {
   const container = document.getElementById('source-filters');
   container.innerHTML = '';
   Object.entries(map).forEach(([src, count]) => {
-    const id = 'src-' + btoa(src).replace(/[^a-z0-9]/gi, '');
+    const id = 'src-' + src.replace(/[^a-z0-9]/gi, '_');
     const label = document.createElement('label');
     label.className = 'filter-item';
     label.innerHTML = `
