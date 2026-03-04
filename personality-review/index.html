@@ -442,7 +442,7 @@
   <!-- Header -->
   <div class="header">
     <h1>Personality Psychology</h1>
-    <p>Midterm Review &nbsp;·&nbsp; 62 questions across 14 sources</p>
+    <p>Midterm Review &nbsp;·&nbsp; 128 questions across 14 sources</p>
   </div>
 
   <!-- ── SETUP SCREEN ── -->
@@ -536,7 +536,16 @@
 
 <script>
 // ── Data & State ──────────────────────────────────────────────────────────────
-ALL_QUESTIONS = [
+let sessionQueue     = [];
+let current          = 0;
+let answered         = 0;
+let points           = 0;
+let maxPoints        = 0;
+let missedIds        = [];
+let currentOptionMap = [];
+const opts = { mode: 'all', shuffle: true, shuffleOpts: true };
+
+let ALL_QUESTIONS = [
   {
     "id": 1,
     "source": "Ch. 1 – Basic Concepts in Psychological Measurement",
