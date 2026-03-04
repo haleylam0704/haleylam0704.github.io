@@ -1361,8 +1361,6 @@ ALL_QUESTIONS = [
     "model_answer": "Chapter 6 shows that personality traits and, as covered in Ch. 12, political attitudes (including RWA and SDO) have moderate heritabilities \u2014 meaning a portion of individual differences is genetically influenced, with the rest due largely to nonshared environment. If speciesism is correlated with these constructs, we might predict it also has moderate heritability. However, heritability does not mean immutability \u2014 people's speciesist attitudes can still change through education, exposure to information about animal sentience, or changing social norms. The finding that nonshared environment (unique personal experiences, peer groups) influences attitudes suggests that targeted interventions at the individual level (personal encounters, persuasive information) could shift speciesist attitudes even among those genetically predisposed toward prejudicial worldviews."
   }
 ];
-buildSourceFilters();
-updateStartBtn();
 
 // ── Setup helpers ─────────────────────────────────────────────────────────────
 function getSources() {
@@ -1635,6 +1633,8 @@ function endQuiz() {
 }
 
 // Init
+buildSourceFilters();
+updateStartBtn();
 show('setup-screen');
 </script>
 </body>
