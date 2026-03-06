@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Personality – Professor-Style Quiz (Q185–208)</title>
+  <style>
+    /* ── Reset & Variables ──────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f7f6f3;
+      --surface: #ffffff;
+      --surface2: #f0ede8;
+      --border: #ddd8d0;
+      --text: #1a1816;
+      --muted: #6b6560;
+      --accent: #4a6fa5;
+      --accent-dark: #345185;
+      --accent-light: #e8eef6;
+      --correct: #2d7a4f;
+      --correct-bg: #e8f5ee;
+      --wrong: #b33c3c;
+      --wrong-bg: #faeaea;
+      --warn: #8a6400;
+      --warn-bg: #fff6d6;
+      --radius: 10px;
+      --shadow: 0 2px 12px rgba(0,0,0,0.07);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    .app {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 24px 20px 60px;
+    }
+
+    /* ── Header ─────────────────────────────────────────────────────── */
+    .header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .header h1 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--accent-dark);
+    }
+    .header p {
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin-top: 4px;
+    }
+
+    /* ── Setup Screen ─────────────────────────────────────────────── */
+    #setup-screen { animation: fadeIn 0.3s ease; }
+
+    .setup-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow);
+    }
+    .setup-card h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 14px;
+      color: var(--accent-dark);
+    }
+
+    .toggle-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .toggle-btn {
+      padding: 8px 16px;
+      border: 2px solid var(--border);
+      border-radius: 20px;
+      background: var(--surface2);
+      cursor: pointer;
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: all 0.15s;
+      color: var(--text);
+    }
+    .toggle-btn.active {
+      border-color: var(--accent);
+      background: var(--accent-light);
+      color: var(--accent-dark);
+    }
+
+    .start-btn {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 1.05rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 20px;
+    }
+    .start-btn:hover { background: var(--accent-dark); }
+
+    /* ── Topic overview grid ─────────────────────────────────────── */
+    .topic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 8px;
+    }
+    .topic-item {
+      padding: 10px 12px;
+      background: var(--surface2);
+      border-radius: 8px;
+      font-size: 0.85rem;
+    }
+    .topic-item .ti-name { font-weight: 600; color: var(--accent-dark); }
+    .topic-item .ti-src  { color: var(--muted); font-size: 0.78rem; margin-top: 2px; }
+    .topic-item .ti-count { color: var(--muted); font-size: 0.78rem; }
+
+    /* ── Quiz Screen ─────────────────────────────────────────────── */
+    #quiz-screen { display: none; animation: fadeIn 0.3s ease; }
+
+    .progress-bar-outer {
+      background: var(--surface2);
+      border-radius: 99px;
+      height: 8px;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+    .progress-bar-inner {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 99px;
+      transition: width 0.4s ease;
+    }
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    /* Question card */
+    .q-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 26px;
+      box-shadow: var(--shadow);
+      margin-bottom: 14px;
+    }
+    .q-meta {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .badge {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 99px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    /* Bloom's badge colours */
+    .badge-bloom-comprehension { background: #dde8f8; color: #345185; }
+    .badge-bloom-application   { background: #e8f0e0; color: #3a5a20; }
+    .badge-bloom-analysis      { background: #f5e8d8; color: #7a4010; }
+    .badge-bloom-synthesis     { background: #ede0f8; color: #5a2080; }
+
+    .badge-source { background: var(--surface2); color: var(--muted); font-weight: 500; text-transform: none; letter-spacing: 0; }
+    .badge-topic  { background: var(--warn-bg);   color: var(--warn);  font-weight: 500; text-transform: none; letter-spacing: 0; }
+
+    .q-text {
+      font-size: 1.08rem;
+      font-weight: 500;
+      line-height: 1.55;
+      margin-bottom: 20px;
+    }
+
+    /* MCQ options */
+    .options-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .option-btn {
+      width: 100%;
+      text-align: left;
+      padding: 12px 16px;
+      background: var(--surface2);
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      transition: all 0.15s;
+      color: var(--text);
+    }
+    .option-btn:hover:not(:disabled) {
+      border-color: var(--accent);
+      background: var(--accent-light);
+    }
+    .option-btn.correct {
+      border-color: var(--correct);
+      background: var(--correct-bg);
+      color: var(--correct);
+      font-weight: 600;
+    }
+    .option-btn.wrong {
+      border-color: var(--wrong);
+      background: var(--wrong-bg);
+      color: var(--wrong);
+    }
+    .option-btn.reveal-correct {
+      border-color: var(--correct);
+      background: var(--correct-bg);
+    }
+    .option-btn:disabled { cursor: default; }
+
+    /* Feedback box */
+    .feedback-box {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 8px;
+      font-size: 0.93rem;
+      line-height: 1.6;
+      display: none;
+    }
+    .feedback-box.correct-fb { background: var(--correct-bg); border-left: 4px solid var(--correct); }
+    .feedback-box.wrong-fb   { background: var(--wrong-bg);   border-left: 4px solid var(--wrong);   }
+    .feedback-box strong { display: block; margin-bottom: 4px; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.04em; }
+
+    /* Nav buttons */
+    .nav-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .nav-btn {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .next-btn { background: var(--accent); color: #fff; }
+    .next-btn:hover { background: var(--accent-dark); }
+    .next-btn:disabled { background: #b0b0b0; cursor: not-allowed; }
+    .end-btn { background: var(--surface2); color: var(--muted); border: 1px solid var(--border); }
+    .end-btn:hover { background: var(--border); }
+
+    /* ── Results Screen ────────────────────────────────────────────── */
+    #results-screen { display: none; animation: fadeIn 0.3s ease; }
+
+    .results-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 30px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+    }
+    .score-circle {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: var(--accent-light);
+      border: 4px solid var(--accent);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+    }
+    .score-circle.good  { border-color: var(--correct); background: var(--correct-bg); }
+    .score-circle.good .score-pct { color: var(--correct); }
+    .score-circle.ok    { border-color: #c89b00; background: var(--warn-bg); }
+    .score-circle.ok .score-pct   { color: var(--warn); }
+    .score-circle.poor  { border-color: var(--wrong); background: var(--wrong-bg); }
+    .score-circle.poor .score-pct { color: var(--wrong); }
+
+    .score-pct   { font-size: 2rem; font-weight: 800; color: var(--accent-dark); line-height: 1; }
+    .score-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+
+    .score-breakdown {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .score-stat { font-size: 0.9rem; color: var(--muted); }
+    .score-stat strong { color: var(--text); }
+
+    .missed-section h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--wrong);
+      margin-bottom: 12px;
+    }
+    .missed-item {
+      background: var(--wrong-bg);
+      border-left: 3px solid var(--wrong);
+      border-radius: 6px;
+      padding: 10px 14px;
+      margin-bottom: 8px;
+      font-size: 0.88rem;
+      text-align: left;
+      line-height: 1.5;
+    }
+    .missed-item .mi-source { font-size: 0.78rem; color: var(--wrong); margin-bottom: 3px; font-weight: 600; }
+
+    .results-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .results-actions button {
+      flex: 1;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-retry-missed { background: var(--wrong); color: #fff; border: none; }
+    .btn-retry-missed:hover { background: #8a2a2a; }
+    .btn-retry-missed:disabled { background: #b0b0b0; cursor: not-allowed; }
+    .btn-new-session { background: var(--accent); color: #fff; border: none; }
+    .btn-new-session:hover { background: var(--accent-dark); }
+
+    /* ── kbd hint ────────────────────────────────────────────────── */
+    kbd {
+      display: inline-block;
+      padding: 1px 5px;
+      font-size: 0.78rem;
+      font-family: monospace;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: var(--surface);
+      color: var(--muted);
+    }
+
+    /* ── Animations ─────────────────────────────────────────────── */
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ── Responsive ─────────────────────────────────────────────── */
+    @media (max-width: 480px) {
+      .q-text { font-size: 1rem; }
+      .setup-card { padding: 16px; }
+      .q-card { padding: 18px; }
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ── Header ─────────────────────────────────────────────────── -->
+  <div class="header">
+    <h1>Personality Psychology</h1>
+    <p>Professor-Style Quiz &mdash; Questions 185–208 &mdash; 24 Questions</p>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       SETUP SCREEN
+  ══════════════════════════════════════════════════════════════ -->
+  <div id="setup-screen">
+
+    <div class="setup-card">
+      <h2>Quiz Options</h2>
+      <div class="toggle-row">
+        <button class="toggle-btn active" id="btn-shuffle-q" onclick="toggleOpt('shuffleQ')">Shuffle questions</button>
+        <button class="toggle-btn active" id="btn-shuffle-a" onclick="toggleOpt('shuffleA')">Shuffle answers</button>
+      </div>
+    </div>
+
+    <div class="setup-card">
+      <h2>Topics covered in this quiz</h2>
+      <div class="topic-grid" id="topic-overview"></div>
+    </div>
+
+    <button class="start-btn" onclick="startQuiz()">Start Quiz (24 questions)</button>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       QUIZ SCREEN
+  ══════════════════════════════════════════════════════════════ -->
+  <div id="quiz-screen">
+
+    <div class="progress-bar-outer">
+      <div class="progress-bar-inner" id="progress-bar"></div>
+    </div>
+    <div class="progress-meta">
+      <span id="progress-text">Question 1 of 24</span>
+      <span id="score-text">Score: 0 / 0</span>
+    </div>
+
+    <div class="q-card">
+      <div class="q-meta" id="q-meta"></div>
+      <div class="q-text" id="q-text"></div>
+      <ul class="options-list" id="options-list"></ul>
+      <div class="feedback-box" id="feedback-box"></div>
+    </div>
+
+    <div class="nav-row">
+      <button class="nav-btn next-btn" id="next-btn" onclick="nextQuestion()" disabled>
+        Next &rarr; <kbd>Enter</kbd>
+      </button>
+      <button class="nav-btn end-btn" onclick="finishEarly()">End &amp; See Results</button>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       RESULTS SCREEN
+  ══════════════════════════════════════════════════════════════ -->
+  <div id="results-screen">
+
+    <div class="results-card">
+      <div class="score-circle" id="score-circle">
+        <span class="score-pct" id="score-pct">—</span>
+        <span class="score-label">Score</span>
+      </div>
+      <div class="score-breakdown">
+        <div class="score-stat"><strong id="res-correct">0</strong> correct</div>
+        <div class="score-stat"><strong id="res-total">0</strong> attempted</div>
+        <div class="score-stat"><strong id="res-missed">0</strong> missed</div>
+      </div>
+    </div>
+
+    <div class="results-card missed-section" id="missed-section" style="display:none; text-align:left;">
+      <h3>Missed Questions</h3>
+      <div id="missed-list"></div>
+    </div>
+
+    <div class="results-card" style="padding:20px;">
+      <div class="results-actions">
+        <button class="btn-retry-missed" id="btn-retry-missed" onclick="retryMissed()">Retry Missed</button>
+        <button class="btn-new-session" onclick="newSession()">Start Over</button>
+      </div>
+    </div>
+
+  </div>
+
+</div><!-- /.app -->
+
+<script>
+/* ================================================================
+   DATA – 24 professor-style questions (IDs 185–208)
+================================================================ */
+let ALL_QUESTIONS = [
+  {
+    "id": 185,
+    "source": "Crowe et al. (2017)",
+    "topic": "Agreeableness",
+    "type": "mcq",
+    "question": "[Comprehension] Crowe et al. (2017) argue that Agreeableness should be understood as a hierarchical construct with distinct facets beneath the broad domain. What is the primary theoretical justification for treating Agreeableness at the facet level rather than solely at the domain level?",
+    "options": [
+      "Facets of Agreeableness show divergent patterns of association with external criteria, indicating that the broad domain score obscures theoretically and practically meaningful distinctions among its components.",
+      "Facets of Agreeableness are more heritable than the broad domain score, which means facet-level measurement captures genetic variance that domain scores systematically mask.",
+      "The broad Agreeableness domain score is psychometrically unreliable, making facet-level scores the only valid way to assess this dimension of personality.",
+      "Facet-level measurement is preferred because it produces shorter questionnaires that reduce respondent fatigue and improve data quality in large-scale survey studies."
+    ],
+    "answer": 0,
+    "explanation": "The key argument for facet-level analysis is that Compassion, Politeness, and Morality (among others) predict different outcomes in different directions. A domain score averages across these, potentially canceling out real effects. Heritability, reliability, and questionnaire length are not the rationale Crowe et al. advance."
+  },
+  {
+    "id": 186,
+    "source": "Crowe et al. (2017)",
+    "topic": "Agreeableness",
+    "type": "mcq",
+    "question": "[Application] Priya scores very high on the Compassion facet of Agreeableness but only moderately high on the Politeness facet. Based on Crowe et al.'s framework, which prediction about Priya's behavior is most consistent with the facet-level approach?",
+    "options": [
+      "Priya will show strong empathic responding and prosocial helping behavior, but may be less likely to defer to authority figures or suppress her opinions in social hierarchies.",
+      "Priya's moderate Politeness score means her overall Agreeableness domain score will be low, and she will score poorly on measures of interpersonal warmth and cooperation.",
+      "Priya will show uniformly high prosocial behavior across all interpersonal contexts because high Compassion is the most influential facet and overrides the effects of other facets.",
+      "Priya's facet profile indicates a personality disorder because discrepancies between facets within the same domain are diagnostic of maladaptive personality functioning."
+    ],
+    "answer": 0,
+    "explanation": "Crowe et al.'s framework predicts that facets have distinct criterion associations. Compassion is more strongly tied to empathy and helping; Politeness is tied to deference and norm compliance. Priya's profile predicts the former without necessarily the latter. Domain scores do not simply average in a way that makes high Compassion irrelevant."
+  },
+  {
+    "id": 187,
+    "source": "Crowe et al. (2017)",
+    "topic": "Agreeableness",
+    "type": "mcq",
+    "question": "[Analysis] Crowe et al. find that some Agreeableness facets positively predict certain outcomes while other facets within the same domain negatively predict those same outcomes. What does this pattern of divergent validity imply for researchers who study prosocial behavior using only broad Agreeableness scores?",
+    "options": [
+      "Researchers using only domain scores risk finding null or weak effects not because Agreeableness is unimportant, but because opposing facet-level effects cancel out when aggregated, suppressing the true relationship.",
+      "Researchers using only domain scores will consistently overestimate the effect of Agreeableness on prosocial behavior because broad scores capture more variance than any single facet can.",
+      "Researchers using only domain scores will find that Agreeableness predicts prosocial behavior strongly, because aggregating across facets increases reliability and therefore increases observed validity coefficients.",
+      "The divergent facet pattern means that Agreeableness is not a coherent psychological construct and should be split into multiple independent dimensions with no superordinate domain score."
+    ],
+    "answer": 0,
+    "explanation": "When facets within a domain have opposing criterion associations, aggregating them into a domain score produces suppression — the effects cancel, yielding a weak or null domain-level correlation even though the facet-level effects are real and substantial. This is distinct from arguing the construct is incoherent; the hierarchical structure can still be valid."
+  },
+  {
+    "id": 188,
+    "source": "Crowe et al. (2017)",
+    "topic": "Agreeableness",
+    "type": "mcq",
+    "question": "[Synthesis] Crowe et al.'s findings about Agreeableness facets parallel Stewart et al.'s argument about nuances and domains more broadly. What unified theoretical claim about personality measurement do both papers support?",
+    "options": [
+      "Both papers support the claim that personality measurement should be hierarchical and purposive: domain scores serve taxonomy and communication, but facets and narrower units are necessary when the research goal is predicting specific behavioral outcomes.",
+      "Both papers conclude that broad personality domains like the Big Five are scientifically outdated frameworks that produce misleading results and should be fully replaced by item-level or facet-level measurement systems in all research contexts.",
+      "Both papers demonstrate that the complexity of personality traits makes them fundamentally resistant to reliable self-report measurement, and that behavioral observation methods should systematically replace questionnaire-based assessment.",
+      "Both papers argue that reporting any single summary score for personality is indefensible — the only scientifically credible approach is to present all levels of specificity simultaneously so readers can judge the relevant level for themselves."
+    ],
+    "answer": 0,
+    "explanation": "Both papers make a compatible hierarchical argument: domain scores provide parsimony and replicability for taxonomy, but when the goal is predicting specific outcomes, narrower units (facets or nuances) capture variance that is masked at the domain level. Neither paper argues for abandoning domains or self-report entirely."
+  },
+  {
+    "id": 189,
+    "source": "Cramer et al. (2012)",
+    "topic": "Network Theory",
+    "type": "mcq",
+    "question": "[Comprehension] In Cramer et al.'s network model of personality, what role do the nodes and edges of the network play, and how does this differ from the role of items and factors in a latent variable model?",
+    "options": [
+      "Nodes represent personality components (behaviors, cognitions, feelings) that directly cause one another through edges, whereas in a latent variable model items are passive reflections of a common underlying factor that causes them.",
+      "Nodes represent latent personality factors that passively reflect underlying genetic variance, whereas edges represent the environmental pathways through which trait expression is shaped across situations.",
+      "Nodes and edges in the network model serve the same explanatory function as factors and loadings in a latent variable model — both frameworks claim that correlations among items arise from a common underlying source.",
+      "Nodes represent observed behaviors and edges represent heritability coefficients, making the network model a graphical representation of behavior genetic findings rather than a causal personality theory."
+    ],
+    "answer": 0,
+    "explanation": "The network model's central claim is that personality components actively cause one another — e.g., not liking people causes you to avoid parties, which causes loneliness. In the latent variable model, the causal arrow runs from a hidden factor downward to items, which are passive indicators. These are fundamentally different causal structures, not just graphical variants of each other."
+  },
+  {
+    "id": 190,
+    "source": "Cramer et al. (2012)",
+    "topic": "Network Theory",
+    "type": "mcq",
+    "question": "[Application] Jordan's therapist notices that his insomnia, irritability, and withdrawal from friends seem to reinforce each other in a self-sustaining cycle, making his anxiety worse even when the original stressor is gone. Which concept from Cramer et al.'s network framework best explains this pattern?",
+    "options": [
+      "The network has entered a stable attractor state in which mutually reinforcing nodes keep the system locked in a pathological configuration independent of the initial trigger.",
+      "Jordan's pattern reflects a latent Neuroticism factor that has become activated by stress and is now expressing itself across multiple symptom domains simultaneously.",
+      "The pattern illustrates that Jordan has low resilience as a trait, which is a stable individual difference in how quickly people return to baseline after a stressor is removed.",
+      "Jordan's self-sustaining symptoms reflect a shared environmental stressor that is maintaining the network in an elevated state rather than any internal personality dynamic."
+    ],
+    "answer": 0,
+    "explanation": "Cramer et al. describe how networks can have attractor states — stable configurations that the system gravitates toward. A pathological attractor state is one where mutually reinforcing symptom nodes keep each other active, explaining disorder persistence after the initial trigger is removed. This is distinct from a latent factor explanation (option B) or a trait resilience explanation (option C)."
+  },
+  {
+    "id": 191,
+    "source": "Cramer et al. (2012)",
+    "topic": "Network Theory",
+    "type": "mcq",
+    "question": "[Analysis] A latent variable researcher argues that the network model and the latent variable model produce identical predictions about item correlations and are therefore empirically equivalent. How would Cramer et al. most effectively challenge this equivalence claim?",
+    "options": [
+      "The models make different predictions about interventions: removing or weakening a specific node should have cascading effects in the network model but not in the latent variable model, where removing one indicator leaves the latent factor unchanged.",
+      "The network model is empirically superior because it explains more total variance in personality data than the latent variable model when fit to the same dataset using standard model comparison criteria.",
+      "The models are empirically equivalent only for cross-sectional data, but the latent variable model produces better predictions for longitudinal data because it models trait stability directly.",
+      "Cramer et al. would accept the equivalence claim, since distinguishing the two models statistically is the goal of their paper and they acknowledge no existing test can separate them."
+    ],
+    "answer": 0,
+    "explanation": "Cramer et al. argue the models differ in causal implications, which generates different predictions about what happens when you intervene on one component. In the latent variable model, an item is a symptom of the underlying factor — removing it doesn't change the factor. In the network model, targeting a highly connected node can cascade and disrupt the whole network. This is a testable difference, not merely a graphical convention."
+  },
+  {
+    "id": 192,
+    "source": "Cramer et al. (2012)",
+    "topic": "Network Theory",
+    "type": "mcq",
+    "question": "[Synthesis] Cramer et al.'s network perspective on personality and Mischel & Shoda's CAPS theory both challenge traditional trait models. What fundamental assumption about the nature of personality do both frameworks share, despite their different emphases?",
+    "options": [
+      "Both frameworks assume that personality is better understood as a dynamic system of interacting components than as a set of independent, additive trait scores — context and interconnection matter for understanding behavior.",
+      "Both frameworks conclude that broad trait dimensions like the Big Five are scientifically invalid and should be replaced by process-oriented accounts that abandon dimensional personality measurement entirely.",
+      "Both frameworks are primarily concerned with explaining between-person differences in behavior, arguing that within-person variability across situations is essentially random noise to be eliminated statistically.",
+      "Both frameworks assume that personality processes are best understood through biological and neurological measurement rather than through behavioral observation or self-report questionnaire data."
+    ],
+    "answer": 0,
+    "explanation": "CAPS emphasizes that personality consists of dynamic cognitive-affective units that interact in context-dependent ways. The network model emphasizes direct causal interconnections among personality components. Both reject the implicit additivity assumption of simple trait models — that personality can be fully captured by a set of independent, context-free scores. Neither framework abandons personality description entirely or privileges biological measurement."
+  },
+  {
+    "id": 193,
+    "source": "Ch. 9 – Personality and Life Outcomes",
+    "topic": "Traits & Behavior / Prediction",
+    "type": "mcq",
+    "question": "[Comprehension] Chapter 9 reviews evidence that personality traits predict a wide range of life outcomes. What is the key methodological standard used to establish that these relationships are meaningful rather than merely correlational artifacts?",
+    "options": [
+      "Longitudinal prospective designs in which personality is measured before the outcome occurs, ruling out reverse causation and demonstrating that traits precede and predict the outcomes over time.",
+      "Cross-sectional designs in which personality and outcomes are assessed simultaneously in large samples, providing the statistical power needed to detect true personality-outcome relationships.",
+      "Experimental manipulation of personality traits using targeted interventions, which establishes causal direction by showing that changing a trait produces changes in the predicted life outcome.",
+      "Meta-analytic aggregation of existing correlational studies, which eliminates sampling error and reveals the true population-level correlation between personality traits and life outcomes."
+    ],
+    "answer": 0,
+    "explanation": "The gold standard for establishing that personality predicts outcomes — rather than merely correlates with them — is the longitudinal prospective design: measure personality first, then track outcomes years later. This rules out reverse causation (the outcome causing the apparent trait score) and third-variable explanations are harder to sustain over long time lags. Cross-sectional designs and meta-analyses are useful but cannot establish temporal precedence."
+  },
+  {
+    "id": 194,
+    "source": "Ch. 9 – Personality and Life Outcomes",
+    "topic": "Traits & Behavior / Prediction",
+    "type": "mcq",
+    "question": "[Application] Destiny scores very high on Conscientiousness and moderately high on Agreeableness in her first year of college. Based on the personality-outcome research reviewed in Chapter 9, which life outcome profile is she most likely to show over the following decade?",
+    "options": [
+      "Higher academic achievement and occupational success, better physical health behaviors, and more stable long-term relationships, reflecting Conscientiousness's broad predictive reach across life domains.",
+      "Higher creativity and openness to novel career paths because high Conscientiousness motivates exploration of diverse opportunities rather than settling into stable conventional roles.",
+      "Lower job performance because high Conscientiousness creates rigidity and resistance to organizational change, which limits adaptability in modern dynamic workplace environments.",
+      "Increased risk of anxiety and mood disorders because the self-regulatory demands of high Conscientiousness create chronic stress when goals are not met perfectly."
+    ],
+    "answer": 0,
+    "explanation": "Conscientiousness is the single strongest Big Five predictor of academic achievement, occupational performance, health behaviors, and relationship stability. The other options represent misapplications: high Conscientiousness is associated with conventional persistence, not creative exploration; it predicts better job performance, not worse; and it is negatively, not positively, correlated with anxiety disorders."
+  },
+  {
+    "id": 195,
+    "source": "Ch. 9 – Personality and Life Outcomes",
+    "topic": "Traits & Behavior / Prediction",
+    "type": "mcq",
+    "question": "[Analysis] Chapter 9 notes that Neuroticism predicts a broad range of negative life outcomes, including worse health, more relationship conflict, and lower occupational success. A critic argues this is simply because unhappy people rate everything negatively — a 'complainers bias.' What evidence most directly undermines this alternative explanation?",
+    "options": [
+      "When objective health records, observer-rated relationship quality, and supervisor-rated job performance are used as outcome measures, Neuroticism still predicts worse outcomes, ruling out a purely self-report artifact.",
+      "Neuroticism correlates with Negative Affect, which demonstrates that the construct is measuring a real emotional disposition rather than a mere response style or acquiescence bias.",
+      "The heritability of Neuroticism is well-established, indicating that it reflects genuine biological individual differences rather than a culturally specific tendency to complain.",
+      "Neuroticism's criterion-related validity has been replicated in dozens of countries with different cultural norms around emotional expression, confirming it is not an artifact of Western negativity bias."
+    ],
+    "answer": 0,
+    "explanation": "The 'complainers bias' hypothesis is specifically that high-Neuroticism individuals rate everything negatively on self-report. The most direct rebuttal uses outcomes that cannot be inflated by subjective negativity: objective medical records, observer ratings, supervisor evaluations. If Neuroticism still predicts these, the bias explanation fails. Options B, C, and D are true statements about Neuroticism but do not directly address whether the outcomes are self-report artifacts."
+  },
+  {
+    "id": 196,
+    "source": "Ch. 9 – Personality and Life Outcomes",
+    "topic": "Traits & Behavior / Prediction",
+    "type": "mcq",
+    "question": "[Synthesis] Chapter 9 documents that personality traits predict outcomes across health, relationships, and work. How should this body of evidence change the way applied psychologists — clinicians, organizational consultants, health professionals — think about personality assessment?",
+    "options": [
+      "Personality assessment should be treated as a core tool in applied settings because traits capture stable individual differences that systematically shape the trajectory of consequential real-world outcomes over time.",
+      "Because personality traits are substantially heritable, applied practitioners should focus exclusively on trait-based genetic screening rather than psychological assessment to predict life outcomes.",
+      "The predictive validity of personality for life outcomes means clinicians and consultants should use personality scores alone, without considering situational or contextual factors, when making recommendations.",
+      "Applied practitioners should avoid personality assessment because the correlations between traits and outcomes, while real, are too small at the individual level to justify the ethical risks of labeling clients."
+    ],
+    "answer": 0,
+    "explanation": "The life outcomes literature supports treating personality assessment as a legitimate and useful applied tool — not a replacement for contextual information, not a basis for genetic screening, and not ethically off-limits. Option D correctly notes that individual prediction is imperfect but goes too far in recommending avoidance; the correlations are meaningful enough to inform practice. Option C is the overreach in the other direction."
+  },
+  {
+    "id": 197,
+    "source": "Ch. 1 – Basic Concepts in Psychological Measurement",
+    "topic": "Measurement Methods",
+    "type": "mcq",
+    "question": "[Comprehension] In personality psychology, self-report measures, observer ratings, and behavioral measures are all used to assess traits. What is the fundamental reason that using multiple methods to measure the same construct — a 'multi-method' approach — is considered best practice?",
+    "options": [
+      "Each measurement method captures some true trait variance but also introduces its own unique source of error or bias, so converging evidence across methods provides a stronger, less method-contaminated estimate of the true construct.",
+      "Using multiple methods guarantees that at least one of them will achieve perfect reliability and validity, which is necessary for trait measurement to be considered scientifically credible.",
+      "Multi-method approaches are required by institutional review boards to ensure that no single assessment method can be used to make high-stakes decisions about research participants.",
+      "Multiple methods increase the total number of data points collected per participant, which improves statistical power and allows researchers to detect smaller true effects in personality research."
+    ],
+    "answer": 0,
+    "explanation": "The logic of multi-method assessment is that all methods have systematic biases — self-reports are influenced by social desirability; observer ratings are affected by acquaintance effects and halo; behavioral measures may lack ecological validity. When multiple methods converge on the same conclusion, it is less likely that the convergence is due to method artifact. No single method achieves perfection; the goal is triangulation, not redundancy."
+  },
+  {
+    "id": 198,
+    "source": "Ch. 1 – Basic Concepts in Psychological Measurement",
+    "topic": "Measurement Methods",
+    "type": "mcq",
+    "question": "[Application] Marcus wants to measure Conscientiousness in a sample of working adults. He uses only a self-report questionnaire administered during work hours. What is the most important methodological limitation of this design that he should address in his write-up?",
+    "options": [
+      "Self-report data collected in a work context may be inflated by social desirability and impression management — respondents may portray themselves as more conscientious than they are because the setting makes the evaluation salient.",
+      "Self-report questionnaires have lower internal consistency than observer ratings, which means Cronbach's alpha for his Conscientiousness scale will be artificially deflated by the work setting.",
+      "Conscientiousness cannot be validly measured by self-report under any conditions because individuals lack the metacognitive access needed to accurately judge their own organizational and goal-directed tendencies.",
+      "The work setting introduces range restriction in the sample because only conscientious people remain employed, and this will artificially inflate the observed correlations between Conscientiousness and work outcomes."
+    ],
+    "answer": 0,
+    "explanation": "The primary concern with self-report personality measurement in an evaluative work context is socially desirable responding — the setting makes trait-relevant self-presentation concerns salient. Range restriction (option D) is a real concern in occupational samples but is a sampling issue, not a limitation of using self-report in a work setting specifically. Option C overstates the case against self-report."
+  },
+  {
+    "id": 199,
+    "source": "Ch. 2 – Personality Traits and the Inventories That Measure Them",
+    "topic": "Measurement Methods",
+    "type": "mcq",
+    "question": "[Analysis] Self-report and observer-report measures of the same Big Five trait typically correlate around .40–.50 with each other — moderately but not perfectly. What does this level of convergence imply about the nature of personality traits?",
+    "options": [
+      "Traits have both a self-perceived component and a behaviorally observable component that partially overlap but are not identical — each perspective captures real variance in the trait that the other misses.",
+      "The .40–.50 correlation proves that self-report measures are invalid because a valid measure of the same construct should correlate at 1.0 with an independent assessment of the same trait.",
+      "The moderate convergence means that observer reports should always be preferred over self-reports because observers have access to behavioral evidence that self-raters systematically distort or deny.",
+      "Self-observer agreement at .40–.50 is too low to be theoretically meaningful, suggesting that the Big Five dimensions do not correspond to real psychological entities but rather to culturally shared stereotypes."
+    ],
+    "answer": 0,
+    "explanation": "Moderate self-observer agreement reflects the multi-perspectival nature of personality: self-reports capture inner states and private behaviors observers cannot see; observer ratings capture publicly expressed behaviors the self may not notice or remember accurately. The imperfect convergence is theoretically informative, not a validity failure. A correlation of 1.0 would only be expected if both methods measured the same thing with zero error — an unrealistic standard."
+  },
+  {
+    "id": 200,
+    "source": "Ch. 2 – Personality Traits and the Inventories That Measure Them",
+    "topic": "Measurement Methods",
+    "type": "mcq",
+    "question": "[Synthesis] Chapter 2 discusses the trade-offs between different methods of assessing personality. Given that self-reports, observer ratings, and behavioral measures each have distinct strengths and weaknesses, what does this imply for how personality constructs should be defined and validated?",
+    "options": [
+      "Personality constructs should be defined in a way that is not method-bound — a valid trait should be detectable through multiple assessment methods, and construct validity requires demonstrating convergence across methodologically diverse approaches.",
+      "Because all methods have weaknesses, personality constructs can only be definitively validated using biological measures such as neuroimaging or genetic sequencing that are free from the biases of behavioral observation.",
+      "The existence of method-specific variance means that different questionnaire-based personality measures of the same trait are measuring fundamentally different constructs and should not be compared across studies.",
+      "Given the trade-offs among methods, personality psychology should standardize on a single measurement approach — ideally observer ratings by trained raters — to ensure comparability across all studies in the field."
+    ],
+    "answer": 0,
+    "explanation": "The appropriate conclusion from method trade-offs is that valid personality constructs should show convergent validity across methods — not that any single method is definitive. Biological measures also have method-specific biases. Using different self-report questionnaires does not mean measuring different constructs, as long as they show convergent validity. Standardizing on a single method would sacrifice the triangulation that makes multi-method findings robust."
+  },
+  {
+    "id": 201,
+    "source": "Ch. 6 – Genetic and Environmental Influences on Personality",
+    "topic": "Behavioral Genetics",
+    "type": "mcq",
+    "question": "[Comprehension] Behavior genetic research consistently finds that the nonshared environment accounts for substantial variance in personality, yet this nonshared environmental variance is largely unaccounted for by measured environmental variables. What does this 'missing environment' problem suggest?",
+    "options": [
+      "The experiences that make siblings different from each other are largely idiosyncratic, unsystematic, or involve person-environment transactions that are difficult to identify and measure at the family or neighborhood level.",
+      "The missing nonshared environment is explained by gene-environment interactions that researchers have failed to model correctly, and including interaction terms would eliminate the unexplained variance.",
+      "Nonshared environmental variance is a statistical artifact of the twin design and does not reflect any real environmental influence on personality — it is simply measurement error misattributed to the environment.",
+      "The missing environment demonstrates that personality is more heritable than current estimates suggest, because what appears to be environmental variance actually reflects genetic effects not captured by standard heritability models."
+    ],
+    "answer": 0,
+    "explanation": "Researchers have looked extensively for measurable family, school, and neighborhood factors that explain why siblings differ, and consistently found that these account for little of the nonshared variance. The leading interpretation is that the relevant experiences are idiosyncratic — micro-level, person-specific transactions with environments — and that gene-environment correlation means children partly create their own effective environments, making simple environmental measurement inadequate."
+  },
+  {
+    "id": 202,
+    "source": "Ch. 6 – Genetic and Environmental Influences on Personality",
+    "topic": "Behavioral Genetics",
+    "type": "mcq",
+    "question": "[Application] Twin studies show that Extraversion has a heritability of approximately .50. Camila is a highly extraverted person. What does the heritability estimate tell us — and what does it NOT tell us — about why Camila is extraverted?",
+    "options": [
+      "It tells us that genetic factors explain about half the variance in Extraversion across people in the population, but it does not tell us that Camila's extraversion is 50% caused by her genes — heritability is a population statistic, not an individual causal explanation.",
+      "It tells us that exactly half of Camila's extraversion is caused by her genes and the other half is shaped by her environment, providing a precise and reliable partition of the causal influences responsible for making her the person she is today.",
+      "It tells us that Camila's extraversion is primarily environmental rather than genetic in origin, because a heritability coefficient of .50 means that nongenetic factors account for the larger and more important share of population-level variance.",
+      "It tells us that Camila's level of extraversion is genetically fixed and will remain essentially constant throughout her life, remaining at precisely the level predicted by her inherited endowment regardless of what environmental changes she encounters."
+    ],
+    "answer": 0,
+    "explanation": "Heritability is a population-level statistic — the proportion of variance in a trait in a given population at a given time that is associated with genetic differences. It says nothing definitive about the causes of any individual's trait level. Option B is the classic misinterpretation of heritability as an individual causal partition. Option C misreads .50 heritability as meaning environment explains most variance — it explains approximately the other half."
+  },
+  {
+    "id": 203,
+    "source": "Ch. 6 – Genetic and Environmental Influences on Personality",
+    "topic": "Behavioral Genetics",
+    "type": "mcq",
+    "question": "[Analysis] The finding that shared family environment contributes minimally to Big Five personality variance seems to contradict the intuitive observation that children raised in the same family often seem quite different from one another. How does behavior genetic theory resolve this apparent contradiction?",
+    "options": [
+      "The same parenting behaviors and family conditions are experienced differently by each child based on their genotype — what seems like the same environment is actually functionally different environments for children with different genetic predispositions.",
+      "The finding is methodologically flawed, because the classical twin design systematically underestimates shared environmental contributions by confounding them with gene-environment interactions that artificially inflate heritability estimates.",
+      "Children growing up in the same household are actually more psychologically similar than casual observation suggests — the apparent behavioral differences between siblings mask underlying trait-level similarities that structured measures reveal.",
+      "Shared family environment does make a meaningful contribution to personality development, but its effects are limited to value-laden and attitudinal traits; it has no reliable influence on temperament-based dimensions like Extraversion or Neuroticism."
+    ],
+    "answer": 0,
+    "explanation": "Behavior genetic theory resolves the puzzle by pointing to gene-environment interaction and active gene-environment correlation: children with different genotypes respond differently to the same family environment, and actively elicit and select different micro-environments even within the same home. The 'same' family environment is functionally distinct for each child. Option B is a methodological critique that is not well-supported empirically; options C and D are factually incorrect."
+  },
+  {
+    "id": 204,
+    "source": "Ch. 6 – Genetic and Environmental Influences on Personality",
+    "topic": "Behavioral Genetics",
+    "type": "mcq",
+    "question": "[Synthesis] Behavior genetic findings show that personality traits are substantially heritable, yet personality also shows meaningful change across the lifespan (Chapter 4). How can both of these findings be true simultaneously, and what does their coexistence imply about the nature of genetic influence on personality?",
+    "options": [
+      "Heritability describes the genetic contribution to individual differences at a given time, but genes do not fix traits at a static level — genetically influenced traits can still change as gene expression interacts with developmental processes and environmental experiences across the lifespan.",
+      "Both findings cannot be simultaneously true in the same dataset — a personality trait that is substantially heritable must remain stable over time, and substantial mean-level change across the lifespan would necessarily indicate that current heritability estimates are inflated by environmental confounds.",
+      "Mean-level personality change across the adult lifespan is fully attributable to developmentally regulated changes in gene expression patterns, which means that environmental experiences and social role transitions contribute essentially no independent variance to personality trajectories.",
+      "The coexistence of heritability and change reveals that what researchers call 'personality traits' are better understood as temporary, context-sensitive states rather than genuinely stable individual differences — they are too changeable to be meaningfully constrained by genetic factors."
+    ],
+    "answer": 0,
+    "explanation": "Heritability and change are logically compatible because heritability is about the proportion of variance due to genetic differences among people at a point in time — not about whether absolute levels are fixed. Genes influence developmental trajectories rather than static endpoints. The maturity principle (increasing Conscientiousness and Agreeableness, decreasing Neuroticism with age) may itself be partly genetically orchestrated. Option B contains the key misconception that heritability implies stability."
+  },
+  {
+    "id": 205,
+    "source": "Ch. 4 – Developmental Change and Stability of Personality",
+    "topic": "Personality Development",
+    "type": "mcq",
+    "question": "[Comprehension] Personality researchers distinguish between rank-order stability and mean-level change. Why is it important to keep these two types of stability conceptually separate when interpreting longitudinal personality data?",
+    "options": [
+      "Because a trait can show high rank-order stability — the same people are high and low relative to each other — while also showing systematic mean-level change across the whole sample, and confusing the two leads to incorrect conclusions about whether personality is 'stable' or 'changing.'",
+      "Because rank-order stability coefficients are invariably higher than mean-level change effect sizes in published longitudinal data, researchers who treat the two as interchangeable will systematically underestimate how much personality shifts at the individual level across the lifespan.",
+      "Because mean-level change is best detected using cohort-sequential cross-sectional designs while rank-order stability requires purely longitudinal repeated-measures designs, conflating them leads to methodological errors in choosing the appropriate research design.",
+      "Because rank-order stability is primarily a reflection of genetic continuity while mean-level change is driven by environmental factors, keeping the two analytically separate is necessary to correctly partition genetic and environmental sources of developmental personality variance."
+    ],
+    "answer": 0,
+    "explanation": "The height analogy from the textbook illustrates this perfectly: children can all grow taller on average (mean-level change) while the tallest children remain relatively the tallest (high rank-order stability). Both are true simultaneously. Option C is false — both can be studied longitudinally. Option D is an oversimplification; both types of change have genetic and environmental contributors."
+  },
+  {
+    "id": 206,
+    "source": "Ch. 4 – Developmental Change and Stability of Personality",
+    "topic": "Personality Development",
+    "type": "mcq",
+    "question": "[Application] Kenji measures Agreeableness in a sample of college students and then again ten years later. He finds that the group's average Agreeableness score increased, but the correlation between Time 1 and Time 2 scores is .65. How should Kenji interpret these results?",
+    "options": [
+      "There was systematic mean-level increase in Agreeableness (consistent with the maturity principle), but rank-order stability was high — the people who were most agreeable at Time 1 tended to remain most agreeable at Time 2, even as everyone shifted upward.",
+      "The correlation of .65 indicates that Agreeableness has been substantially unstable for most individuals in the sample, since a trait with strong psychological reality should produce a test-retest correlation approaching 1.0 over a ten-year interval.",
+      "Because mean-level Agreeableness increased across the decade, the rank-order correlation and the mean-level change statistically offset each other, making it logically impossible to draw any unambiguous conclusion about whether change or stability predominates.",
+      "The observed mean-level increase in Agreeableness artificially inflates the rank-order correlation through regression toward the mean, which means the .65 coefficient cannot be interpreted as evidence of genuine individual-level trait stability."
+    ],
+    "answer": 0,
+    "explanation": "These results are entirely consistent: mean-level increase reflects the maturity principle (Agreeableness tends to rise in adulthood), and a correlation of .65 represents moderate-to-high rank-order stability — substantial individual consistency despite the group shift. Option B misinterprets .65 as indicating instability; .65 over a decade is considered reasonably high for personality traits. The two findings are complementary, not contradictory."
+  },
+  {
+    "id": 207,
+    "source": "Ch. 4 – Developmental Change and Stability of Personality",
+    "topic": "Personality Development",
+    "type": "mcq",
+    "question": "[Analysis] The 'corresponsive principle' states that life experiences tend to reinforce and deepen pre-existing personality traits. What does this principle imply about the causal relationship between personality and life experiences over the lifespan?",
+    "options": [
+      "Personality and life experiences are in a reciprocal, self-reinforcing relationship — traits influence the situations people enter and the ways they respond, and those experiences in turn amplify the traits that produced them.",
+      "Life experiences are the primary cause of personality development, and personality traits are simply accumulated habits formed through repeated environmental exposure across the lifespan.",
+      "The corresponsive principle demonstrates that personality is immutable — because traits select for confirming experiences, they are perpetually reinforced and can never change regardless of major life disruptions.",
+      "Personality traits are passive outcomes of social roles and life scripts, with role transitions causing trait change while individual traits have no independent causal influence on which experiences people seek out."
+    ],
+    "answer": 0,
+    "explanation": "The corresponsive principle implies bidirectional causation — traits lead people to select environments that deepen those traits. This is related to the concept of niche-picking (active gene-environment correlation). It does not imply that personality is causally inert (option D), that traits are entirely environmentally accumulated (option B), or that personality can never change (option C) — significant life disruptions can deviate people from their typical trajectories."
+  },
+  {
+    "id": 208,
+    "source": "Ch. 4 – Developmental Change and Stability of Personality",
+    "topic": "Personality Development",
+    "type": "mcq",
+    "question": "[Synthesis] Taken together, research on personality development shows that traits are both stable and changeable across the lifespan. What does this dual finding imply about the best theoretical framework for understanding adult personality?",
+    "options": [
+      "A useful framework must accommodate both continuity and change as co-occurring features of personality — traits function as probabilistic dispositions that are anchored by genetic and early developmental factors but remain open to revision through significant environmental experiences and deliberate effort.",
+      "Because personality simultaneously demonstrates both stability and change, the theoretical concept of a 'trait' becomes internally contradictory and empirically indefensible — purely situationist frameworks that emphasize contextual and momentary determinants of behavior offer a more coherent alternative.",
+      "The coexistence of stability and change means personality psychology requires two entirely distinct theoretical frameworks operating in parallel — one to account for the mechanisms producing continuity and a separate one to account for the mechanisms producing developmental change.",
+      "Both stability and change in personality are most parsimoniously explained by the same underlying genetic mechanism: heritability coefficients account for trait continuity, while random mutation-like changes in gene regulation across development account for all observed mean-level personality shifts."
+    ],
+    "answer": 0,
+    "explanation": "The mature view in personality development research is that traits are neither immutable nor arbitrary — they are real, moderately stable dispositions shaped by genetic and early experiential factors, yet open to incremental change through social roles, relationships, and deliberate effort. Option B throws out the construct; option C creates a false dichotomy; option D is biologically implausible (gene sequences do not mutate across the lifespan in ways that systematically shift trait means)."
+  }
+];
+
+/* ================================================================
+   STATE
+================================================================ */
+let opts        = { shuffleQ: true, shuffleA: true };
+let queue       = [];   // ordered indices into ALL_QUESTIONS for this session
+let current     = 0;    // index into queue
+let answered    = false;
+let score       = 0;
+let attempted   = 0;
+let missedIds   = [];   // question IDs that were answered wrong
+let optionMap   = [];   // maps rendered button index → original option index (for shuffled answers)
+
+/* ================================================================
+   SETUP
+================================================================ */
+function toggleOpt(key) {
+  opts[key] = !opts[key];
+  document.getElementById(key === 'shuffleQ' ? 'btn-shuffle-q' : 'btn-shuffle-a')
+    .classList.toggle('active', opts[key]);
+}
+
+function buildTopicOverview() {
+  const seen = {};
+  ALL_QUESTIONS.forEach(q => {
+    if (!seen[q.topic]) seen[q.topic] = { src: q.source, count: 0 };
+    seen[q.topic].count++;
+  });
+  const grid = document.getElementById('topic-overview');
+  grid.innerHTML = Object.entries(seen).map(([topic, info]) => `
+    <div class="topic-item">
+      <div class="ti-name">${topic}</div>
+      <div class="ti-src">${info.src.split('–')[0].trim()}</div>
+      <div class="ti-count">${info.count} question${info.count > 1 ? 's' : ''}</div>
+    </div>`).join('');
+}
+
+function startQuiz(questionIds) {
+  // questionIds: optional array of IDs (for retry-missed)
+  const pool = questionIds
+    ? ALL_QUESTIONS.filter(q => questionIds.includes(q.id))
+    : ALL_QUESTIONS.slice();
+
+  queue = pool.map((_, i) => i < pool.length ? pool[i] : null).map((q, i) => i);
+  // re-index: store questions in queue order
+  window._activePool = pool;
+
+  if (opts.shuffleQ) shuffle(queue);
+
+  current  = 0;
+  score    = 0;
+  attempted = 0;
+  missedIds = [];
+
+  document.getElementById('setup-screen').style.display   = 'none';
+  document.getElementById('results-screen').style.display = 'none';
+  document.getElementById('quiz-screen').style.display    = 'block';
+
+  renderQuestion();
+}
+
+/* ================================================================
+   RENDER
+================================================================ */
+function renderQuestion() {
+  const q = window._activePool[queue[current]];
+  answered = false;
+
+  // Progress
+  const total = queue.length;
+  const pct   = Math.round((current / total) * 100);
+  document.getElementById('progress-bar').style.width = pct + '%';
+  document.getElementById('progress-text').textContent = `Question ${current + 1} of ${total}`;
+  document.getElementById('score-text').textContent    = `Score: ${score} / ${attempted}`;
+
+  // Extract Bloom's tag from question text
+  const bloomMatch = q.question.match(/^\[(\w+)\]\s*/);
+  const bloomTag   = bloomMatch ? bloomMatch[1] : null;
+  const qText      = q.question.replace(/^\[\w+\]\s*/, '');
+
+  // Meta badges
+  const bloomBadge = bloomTag
+    ? `<span class="badge badge-bloom-${bloomTag.toLowerCase()}">${bloomTag}</span>`
+    : '';
+  document.getElementById('q-meta').innerHTML =
+    bloomBadge +
+    `<span class="badge badge-source">${q.source}</span>` +
+    `<span class="badge badge-topic">${q.topic}</span>`;
+
+  document.getElementById('q-text').textContent = qText;
+
+  // Build option order
+  const indices = q.options.map((_, i) => i);
+  if (opts.shuffleA) shuffle(indices);
+  optionMap = indices; // optionMap[buttonIdx] = originalOptionIdx
+
+  const list = document.getElementById('options-list');
+  list.innerHTML = indices.map((origIdx, btnIdx) => `
+    <li>
+      <button class="option-btn" data-btn="${btnIdx}" onclick="selectOption(${btnIdx})">
+        <span style="font-weight:600;margin-right:8px;opacity:0.5">${btnIdx + 1}.</span>${q.options[origIdx]}
+      </button>
+    </li>`).join('');
+
+  // Feedback
+  const fb = document.getElementById('feedback-box');
+  fb.style.display = 'none';
+  fb.className     = 'feedback-box';
+  fb.innerHTML     = '';
+
+  // Next button
+  const nb = document.getElementById('next-btn');
+  nb.disabled = true;
+  nb.textContent = (current + 1 < queue.length) ? 'Next \u2192 \u00A0Enter' : 'Finish \u2192 \u00A0Enter';
+}
+
+/* ================================================================
+   INTERACTION
+================================================================ */
+function selectOption(btnIdx) {
+  if (answered) return;
+  answered = true;
+  attempted++;
+
+  const q       = window._activePool[queue[current]];
+  const origIdx = optionMap[btnIdx];
+  const correct = origIdx === q.answer;
+
+  if (correct) score++;
+  else         missedIds.push(q.id);
+
+  // Style buttons
+  const buttons = document.querySelectorAll('.option-btn');
+  buttons.forEach((btn, i) => {
+    btn.disabled = true;
+    const orig = optionMap[i];
+    if (orig === q.answer) btn.classList.add(correct ? 'correct' : 'reveal-correct');
+    else if (i === btnIdx) btn.classList.add('wrong');
+  });
+
+  // Feedback
+  const fb = document.getElementById('feedback-box');
+  fb.style.display = 'block';
+  fb.className     = 'feedback-box ' + (correct ? 'correct-fb' : 'wrong-fb');
+  fb.innerHTML     = `<strong>${correct ? 'Correct' : 'Incorrect'}</strong>${q.explanation}`;
+
+  // Score update
+  document.getElementById('score-text').textContent = `Score: ${score} / ${attempted}`;
+
+  // Next button
+  document.getElementById('next-btn').disabled = false;
+}
+
+function nextQuestion() {
+  if (!answered) return;
+  current++;
+  if (current >= queue.length) {
+    showResults();
+  } else {
+    renderQuestion();
+  }
+}
+
+function finishEarly() {
+  showResults();
+}
+
+/* ================================================================
+   RESULTS
+================================================================ */
+function showResults() {
+  document.getElementById('quiz-screen').style.display    = 'none';
+  document.getElementById('results-screen').style.display = 'block';
+
+  const pct = attempted > 0 ? Math.round((score / attempted) * 100) : 0;
+
+  // Circle colour
+  const circle = document.getElementById('score-circle');
+  circle.className = 'score-circle ' + (pct >= 80 ? 'good' : pct >= 60 ? 'ok' : 'poor');
+  document.getElementById('score-pct').textContent = pct + '%';
+  document.getElementById('res-correct').textContent = score;
+  document.getElementById('res-total').textContent   = attempted;
+  document.getElementById('res-missed').textContent  = missedIds.length;
+
+  // Missed list
+  const ms = document.getElementById('missed-section');
+  if (missedIds.length > 0) {
+    ms.style.display = 'block';
+    document.getElementById('missed-list').innerHTML = missedIds.map(id => {
+      const q = ALL_QUESTIONS.find(x => x.id === id);
+      const qText = q.question.replace(/^\[\w+\]\s*/, '');
+      return `<div class="missed-item">
+        <div class="mi-source">${q.source} — ${q.topic}</div>
+        ${qText}
+      </div>`;
+    }).join('');
+  } else {
+    ms.style.display = 'none';
+  }
+
+  // Retry button
+  document.getElementById('btn-retry-missed').disabled = missedIds.length === 0;
+}
+
+function retryMissed() {
+  if (missedIds.length === 0) return;
+  startQuiz(missedIds.slice());
+}
+
+function newSession() {
+  document.getElementById('results-screen').style.display = 'none';
+  document.getElementById('setup-screen').style.display   = 'block';
+}
+
+/* ================================================================
+   KEYBOARD SHORTCUTS
+================================================================ */
+document.addEventListener('keydown', e => {
+  const qs = document.getElementById('quiz-screen');
+  if (qs.style.display === 'none') return;
+
+  if (!answered && e.key >= '1' && e.key <= '4') {
+    const idx = parseInt(e.key) - 1;
+    const buttons = document.querySelectorAll('.option-btn');
+    if (buttons[idx]) selectOption(idx);
+  }
+  if (answered && (e.key === 'Enter' || e.key === ' ')) {
+    e.preventDefault();
+    nextQuestion();
+  }
+});
+
+/* ================================================================
+   UTILITIES
+================================================================ */
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+}
+
+/* ================================================================
+   INIT
+================================================================ */
+buildTopicOverview();
+</script>
+</body>
+</html>
