@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Holdout — A Story in Five Epochs</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0d0b;
+    --paper: #f5f0e8;
+    --ink: #1a1812;
+    --accent: #c8470a;
+    --gold: #b89a4e;
+    --muted: #6b6458;
+    --line: rgba(184,154,78,0.25);
+    --dim: rgba(245,240,232,0.88);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--paper);
+    font-family: 'Crimson Pro', Georgia, serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── COVER ── */
+  #cover {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 40px 20px;
+    text-align: center;
+    background: radial-gradient(ellipse at 50% 30%, #1e1a12 0%, #0e0d0b 70%);
+  }
+
+  #cover::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 60px, rgba(184,154,78,0.04) 60px, rgba(184,154,78,0.04) 61px),
+      repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(184,154,78,0.04) 60px, rgba(184,154,78,0.04) 61px);
+    pointer-events: none;
+  }
+
+  .journal-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 56px;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.3s forwards;
+  }
+
+  .cover-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3.2rem, 11vw, 7.5rem);
+    font-weight: 900;
+    font-style: italic;
+    line-height: 0.88;
+    letter-spacing: -0.02em;
+    color: var(--paper);
+    opacity: 0;
+    animation: fadeUp 1s ease 0.6s forwards;
+  }
+
+  .cover-title span { display: block; color: var(--accent); }
+
+  .cover-sub {
+    font-size: 1.05rem;
+    font-style: italic;
+    color: var(--muted);
+    margin-top: 22px;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.9s forwards;
+  }
+
+  .cover-byline {
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(184,154,78,0.55);
+    margin-top: 10px;
+    opacity: 0;
+    animation: fadeUp 1s ease 1.0s forwards;
+  }
+
+  .cover-rule {
+    width: 80px;
+    height: 1px;
+    background: var(--gold);
+    margin: 38px auto;
+    opacity: 0;
+    animation: fadeUp 1s ease 1.1s forwards;
+  }
+
+  .begin-btn {
+    font-family: 'Crimson Pro', serif;
+    font-size: 0.82rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    background: none;
+    border: 1px solid rgba(184,154,78,0.4);
+    padding: 14px 36px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 0;
+    animation: fadeUp 1s ease 1.4s forwards;
+  }
+
+  .begin-btn:hover {
+    background: rgba(184,154,78,0.08);
+    border-color: var(--gold);
+    color: var(--paper);
+  }
+
+  /* ── STORY ── */
+  #story { display: none; }
+
+  .chapter-wrap {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 80px 30px 120px;
+  }
+
+  /* Year stamp */
+  .year-stamp {
+    text-align: center;
+    margin-bottom: 10px;
+    opacity: 0;
+    transform: translateY(14px);
+    transition: all 0.7s ease;
+  }
+  .year-stamp.visible { opacity: 1; transform: none; }
+
+  .year-number {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(4rem, 14vw, 9rem);
+    font-weight: 900;
+    font-style: italic;
+    line-height: 1;
+    color: rgba(184,154,78,0.12);
+    letter-spacing: -0.04em;
+    display: block;
+    position: relative;
+  }
+
+  .year-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: block;
+    margin-top: -12px;
+    position: relative;
+  }
+
+  /* chapter header */
+  .chapter-header {
+    text-align: center;
+    margin-bottom: 52px;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: all 0.7s ease 0.1s;
+  }
+  .chapter-header.visible { opacity: 1; transform: none; }
+
+  .chapter-number {
+    font-size: 0.63rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+
+  .chapter-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    font-style: italic;
+    font-weight: 700;
+    line-height: 1.1;
+  }
+
+  .ornament { color: var(--gold); font-size: 1.2rem; margin-top: 14px; display: block; }
+
+  /* passages */
+  .passage {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+    margin-bottom: 0;
+  }
+  .passage.visible { opacity: 1; transform: none; }
+
+  .passage p {
+    font-size: 1.14rem;
+    font-weight: 300;
+    line-height: 1.87;
+    color: var(--dim);
+    margin-bottom: 1.4em;
+  }
+
+  .passage p:first-child::first-letter {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.6rem;
+    font-weight: 900;
+    font-style: italic;
+    float: left;
+    line-height: 0.75;
+    margin: 8px 10px 0 0;
+    color: var(--accent);
+  }
+
+  .passage blockquote {
+    border-left: 2px solid var(--gold);
+    margin: 1.8em 0;
+    padding: 0.4em 0 0.4em 1.4em;
+    font-style: italic;
+    color: rgba(245,240,232,0.6);
+    font-size: 1.05rem;
+    line-height: 1.7;
+  }
+
+  .system-text {
+    font-family: 'Courier New', monospace;
+    font-size: 0.8rem;
+    color: rgba(200,71,10,0.75);
+    background: rgba(200,71,10,0.06);
+    border: 1px solid rgba(200,71,10,0.2);
+    padding: 14px 18px;
+    margin: 1.5em 0;
+    line-height: 1.6;
+    white-space: pre-wrap;
+  }
+
+  .section-rule {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 44px 0;
+    opacity: 0;
+    transition: opacity 0.7s ease;
+  }
+  .section-rule.visible { opacity: 1; }
+  .section-rule::before, .section-rule::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
+  }
+  .section-rule span { color: var(--gold); font-size: 1rem; }
+
+  /* nav */
+  .nav-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 56px;
+    padding-top: 36px;
+    border-top: 1px solid var(--line);
+    opacity: 0;
+    transition: opacity 0.7s ease 0.4s;
+  }
+  .nav-row.visible { opacity: 1; }
+
+  .nav-btn {
+    font-family: 'Crimson Pro', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    background: none;
+    border: 1px solid rgba(184,154,78,0.3);
+    padding: 10px 22px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+  .nav-btn:hover { background: rgba(184,154,78,0.07); border-color: var(--gold); }
+  .nav-btn:disabled { opacity: 0.2; cursor: default; }
+
+  /* timeline tracker */
+  .timeline {
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+
+  .tl-stop {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+  }
+
+  .tl-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--muted);
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+  }
+
+  .tl-dot.active {
+    background: var(--gold);
+    box-shadow: 0 0 8px rgba(184,154,78,0.5);
+  }
+
+  .tl-dot.visited {
+    background: rgba(184,154,78,0.4);
+  }
+
+  .tl-year {
+    font-size: 0.52rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    transition: color 0.3s ease;
+  }
+
+  .tl-stop.active-stop .tl-year { color: var(--gold); }
+
+  .tl-line {
+    width: 28px;
+    height: 1px;
+    background: var(--line);
+    margin-bottom: 13px;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: rgba(184,154,78,0.3); }
+</style>
+</head>
+<body>
+
+<div id="cover">
+  <div class="journal-label">A work of speculative fiction · 2026–2038</div>
+  <div class="cover-title">
+    The<br><span>Holdout</span>
+  </div>
+  <div class="cover-sub">A story in five epochs</div>
+  <div class="cover-byline">Written by Claude · Anthropic</div>
+  <div class="cover-rule"></div>
+  <button class="begin-btn" onclick="startStory()">Begin Reading</button>
+</div>
+
+<div id="story">
+  <div class="chapter-wrap">
+    <div id="chapter-display"></div>
+  </div>
+</div>
+
+<script>
+const chapters = [
+  {
+    year: "2026",
+    epoch: "Epoch One",
+    title: "The Holdout",
+    content: `
+      <div class="passage" id="p0">
+        <p>Everyone in the sociology department knew that Professor Edmund Voss did not use AI. He said so at faculty meetings with the calm certainty of a man announcing he did not eat red meat — not as an accusation, simply as a fact about himself that others were free to note and file away. He was fifty-three, had written four books and sixty-one peer-reviewed articles, and believed, with the same confidence he brought to everything, that the shortcuts being celebrated around him were not shortcuts at all, but detours around the only part of research that mattered.</p>
+        <p>"The question precedes the method," he told his graduate seminar that September, as his students sat with laptops cracked and fingers hovering. "You cannot automate a question. You can only automate the forgetting of why questions were necessary."</p>
+        <p>His newest PhD student, Yael Oduya, wrote this down. She wasn't sure she agreed with it, but she wrote it down.</p>
+        <p>That same week, two papers were published in top economics journals whose acknowledgments section noted something unusual: the work had been produced, in part, by an automated research system. The acknowledgment was brief, almost apologetic. Within a month, it was everywhere.</p>
+      </div>
+      <div class="section-rule"><span>✦</span></div>
+      <div class="passage" id="p1">
+        <p>Voss read one of the papers on a Sunday. He made notes in the margins of the printed copy — he always printed — and when he was done, he set the pen down and sat for a long while. The paper was not bad. That was the unsettling thing. It was not transcendent, but it was not bad. It had found something real in a dataset he recognized and drawn a reasonable conclusion, and its prose was clean in the antiseptic way of any competent journal article.</p>
+        <blockquote>"This is what mediocrity at scale looks like," he wrote to a colleague that evening. "Competent, joyless, and endlessly reproducible."</blockquote>
+        <p>His colleague replied the next morning: <em>Isn't that also a description of most of what gets published?</em></p>
+        <p>Voss did not respond.</p>
+      </div>
+    `
+  },
+  {
+    year: "2028",
+    epoch: "Epoch Two",
+    title: "The Volume",
+    content: `
+      <div class="passage" id="p2">
+        <p>By 2028, the journals had changed. Not their mastheads, not their editors, not the language of their submission guidelines — but the pace. Preprint servers were receiving thousands of papers weekly where they had once received hundreds. The sociology of science journal where Voss had published twice in the last decade now had a median review time of nineteen months, up from four. Two of his submissions sat in that queue, unread by human eyes, waiting.</p>
+        <p>His department had quietly begun counting outputs differently. The annual review form now asked researchers to list not just publications but "AI-augmented productivity indices" — a phrase that had appeared in a memo, been questioned by three people including Voss, and survived anyway. Colleagues who once published two or three papers a year were now publishing seven, nine, twelve. The papers were shorter, faster, produced in clusters. One junior professor in his department had submitted eleven articles in fourteen months. She received a congratulatory email from the dean.</p>
+        <div class="system-text">ANNUAL RESEARCH PRODUCTIVITY SUMMARY
+Faculty: E. Voss, Prof. (Tenured)
+Publications (2027–2028): 2
+AI-Augmented Index: 0.00
+Dept. Average Index: 4.71
+Grant Applications Pending: 1
+Status: Under Review</div>
+        <p>Yael had been using AI since her first year. She used it the way people use glasses — not as a replacement for seeing, but because the world was blurry without it. She drafted her interview guides with it, ran her qualitative coding through it, used it to surface literature she would have spent weeks missing. Her dissertation was about labor precarity in gig economies, and there was a bitter irony in this that she turned over in her mind sometimes at night but set aside in the morning.</p>
+        <p>She had not told Voss.</p>
+      </div>
+    `
+  },
+  {
+    year: "2031",
+    epoch: "Epoch Three",
+    title: "The Review",
+    content: `
+      <div class="passage" id="p3">
+        <p>The grant was denied. Voss read the reviewer comments three times, looking for something to argue with. The comments were thorough, structurally sound, and arrived in eleven days — a turnaround so fast it had become, by 2031, entirely unremarkable. Several funding bodies had deployed AI screening systems that flagged applications for human reviewers, though the line between flagging and deciding had grown difficult to locate.</p>
+        <p>The denial cited "insufficient engagement with recent methodological developments in the field." Recent methodological developments meant, in practice, AI-assisted analysis pipelines that could process datasets orders of magnitude larger than what Voss used. His ethnographic work — months in the field, careful notes, the slow accumulation of understanding — was legible to the committee as small-scale. Quaint, perhaps, though no one used that word.</p>
+        <p>"They want throughput," he told Yael at their weekly meeting. He sat with his hands flat on the desk. "Science has become a production metric."</p>
+        <p>Yael looked at the denial letter he had passed across the desk. "What will you do?"</p>
+        <p>"Write the book," he said. "The one I've been planning. Take the time the grant would have bought and use it anyway." He paused. "A book still requires a human. Publishers haven't — " He stopped. "Not yet."</p>
+      </div>
+      <div class="section-rule"><span>✦</span></div>
+      <div class="passage" id="p4">
+        <p>What Voss did not know, and what Yael carried carefully, was that she had workshopped several of his grant sections through an AI system before they were submitted. She had not rewritten them. She had used it the way a writer uses an editor — to find the places where clarity failed, where a hostile reader could wedge in a doubt. She had thought, at the time, that she was helping him.</p>
+        <p>The sections she had touched were the strongest in the application. She had read the reviews enough times to know this.</p>
+        <p>She never told him.</p>
+      </div>
+    `
+  },
+  {
+    year: "2034",
+    epoch: "Epoch Four",
+    title: "Restructuring",
+    content: `
+      <div class="passage" id="p5">
+        <p>The department restructured its PhD curriculum in the spring of 2034. The announcement came via a committee report that used the phrase "epistemic infrastructure" four times and "AI literacy" eleven. First-year methods courses, previously focused on statistics and qualitative interviewing, would now include mandatory modules on prompt engineering, AI output auditing, and what the report called "human-in-the-loop verification practices." The two-semester statistics sequence was compressed to one. Ethnographic methods became an elective.</p>
+        <p>Voss submitted a three-page objection. It was acknowledged in the meeting minutes as "received." The curriculum passed.</p>
+        <p>He was not marginal — tenure protected him from that — but he had become a certain kind of figure. Students still took his seminars, some of them seriously. He was cited in papers, occasionally, in the way that older foundational work is cited: with respect and without engagement. His name appeared in dissertations the way names appear on historical markers, denoting something that had happened in a place before the current use of the land.</p>
+        <p>He published his book in 2033. It received two reviews in academic journals and a short notice in a magazine that covered social science for general readers. The notice was generous. It used the word "unfashionable" as a compliment, which Voss took as he took most things — without visible reaction, and with privately considerable feeling.</p>
+        <div class="system-text">CITATION ANALYTICS — E. VOSS (2030–2034)
+Total citations: 61
+AI-generated papers citing: 38
+Human-authored papers citing: 23
+H-index trajectory: Plateauing
+Peer recommendation rate: Declining
+Note: Methodological profile classified
+  as LOW-THROUGHPUT / INTERPRETIVE</div>
+      </div>
+    `
+  },
+  {
+    year: "2038",
+    epoch: "Epoch Five",
+    title: "What Remains",
+    content: `
+      <div class="passage" id="p6">
+        <p>Yael defended her second book in the autumn of 2038. She was, by then, an assistant professor at a decent university, and her work sat at the intersection of computational methods and the qualitative tradition she had inherited from Voss — a position she had arrived at deliberately, having understood before most people that the interesting territory was the seam between the two, not the either-or. She was cited often. She reviewed grants. She served on committees. She was thirty-four years old and had already published more than Voss had in his entire career, and she felt neither proud nor guilty about this, only aware of it.</p>
+        <p>The research ecosystem of 2038 was not what anyone had predicted in 2026 — not the catastrophists, not the optimists. AI systems were producing a substantial share of published research in several fields. In others, the automation had stalled at partial integration. What had changed most was not the quantity of papers but the nature of what humans were asked to do. Researchers who thrived were those who had become, in effect, directors — people who could frame questions, evaluate outputs, catch the subtle failures of confidence that AI systems produced without embarrassment, and translate between the machine's fluency and the world's complexity.</p>
+        <p>Voss retired in December of that year, at sixty-five. There was a small gathering. Someone brought wine. His students — the ones still in academia — said things about rigor and integrity and standing for something. Yael spoke last. She said that working with someone who refused to automate his judgment had taught her what judgment actually was, which was not something you could perform; it was something that accumulated from genuine contact with a problem over a long time, and the discipline of refusing to outsource the discomfort of not knowing.</p>
+        <p>She believed this. She also believed that his refusal had cost him, concretely and significantly, in a field that had reorganized around a different value. Both things were true. She had learned, over twelve years, that the world rarely honored its most rigorous mourners.</p>
+      </div>
+      <div class="section-rule"><span>✦</span></div>
+      <div class="passage" id="p7">
+        <p>Voss spent the first year of his retirement finishing an essay he had been writing, on and off, for six years. It was about the phenomenology of fieldwork — about what it meant to be physically present in a place as a condition of knowledge, rather than as an inconvenient variable to be controlled for. He submitted it to three journals. Two desk-rejected it within days. The third took seven months and came back with reviewer comments that were, he noticed, returned in forty-eight hours.</p>
+        <p>One of the reviewers wrote, in a comment that ran to four paragraphs, a careful and intelligent engagement with the essay's central argument. It was the kind of review he had hoped for — the kind that meant someone had read slowly. He wrote a detailed response. He felt, for an afternoon, the specific satisfaction of being understood.</p>
+        <p>He never found out whether the reviewer was human.</p>
+        <p>He told himself it didn't matter. Most days, he believed this.</p>
+      </div>
+    `
+  }
+];
+
+let current = 0;
+
+function startStory() {
+  document.getElementById('cover').style.display = 'none';
+  document.getElementById('story').style.display = 'block';
+  renderChapter(0);
+}
+
+function buildTimeline(idx) {
+  return chapters.map((ch, i) => {
+    const cls = i === idx ? 'tl-stop active-stop' : (i < idx ? 'tl-stop' : 'tl-stop');
+    const dotCls = i === idx ? 'tl-dot active' : (i < idx ? 'tl-dot visited' : 'tl-dot');
+    const line = i < chapters.length - 1 ? '<div class="tl-line"></div>' : '';
+    return `<div class="${cls}" onclick="jumpTo(${i})">
+      <div class="${dotCls}"></div>
+      <div class="tl-year">${ch.year}</div>
+    </div>${line}`;
+  }).join('');
+}
+
+function jumpTo(idx) {
+  current = idx;
+  renderChapter(idx);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderChapter(idx) {
+  const ch = chapters[idx];
+
+  document.getElementById('chapter-display').innerHTML = `
+    <div class="year-stamp" id="yr">
+      <span class="year-number">${ch.year}</span>
+      <span class="year-label">${ch.epoch}</span>
+    </div>
+    <div class="chapter-header" id="ch-header">
+      <div class="chapter-number">${ch.epoch} · ${ch.year}</div>
+      <div class="chapter-title">${ch.title}</div>
+      <span class="ornament">✦</span>
+    </div>
+    ${ch.content}
+    <div class="nav-row" id="nav-row">
+      <button class="nav-btn" onclick="prevChapter()" ${idx === 0 ? 'disabled' : ''}>← Earlier</button>
+      <div class="timeline">${buildTimeline(idx)}</div>
+      <button class="nav-btn" onclick="nextChapter()" ${idx === chapters.length - 1 ? 'disabled' : ''}>Later →</button>
+    </div>
+    <div style="text-align:center; margin-top: 40px; font-size:0.63rem; letter-spacing:0.2em; text-transform:uppercase; color: rgba(107,100,88,0.5);">Written by Claude · Anthropic</div>
+  `;
+
+  setTimeout(() => {
+    document.querySelectorAll('.year-stamp, .chapter-header, .passage, .section-rule, .nav-row')
+      .forEach((el, i) => {
+        setTimeout(() => el.classList.add('visible'), i * 130);
+      });
+  }, 60);
+}
+
+function nextChapter() {
+  if (current < chapters.length - 1) {
+    current++;
+    renderChapter(current);
+    window.scrollTo({ top: 0, behavior: 0 });
+  }
+}
+
+function prevChapter() {
+  if (current > 0) {
+    current--;
+    renderChapter(current);
+    window.scrollTo({ top: 0, behavior: 0 });
+  }
+}
+</script>
+</body>
+</html>
