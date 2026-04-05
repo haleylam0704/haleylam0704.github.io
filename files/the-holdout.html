@@ -14,7 +14,6 @@
   * { margin:0; padding:0; box-sizing:border-box; }
   body { background:var(--bg); color:var(--paper); font-family:'Crimson Pro',Georgia,serif; min-height:100vh; overflow-x:hidden; }
 
-  /* COVER */
   #cover {
     min-height:100vh; display:flex; flex-direction:column; align-items:center;
     justify-content:center; position:relative; padding:40px 20px; text-align:center;
@@ -35,51 +34,21 @@
   .begin-btn { font-family:'Crimson Pro',serif; font-size:.82rem; letter-spacing:.25em; text-transform:uppercase; color:var(--gold); background:none; border:1px solid rgba(184,154,78,.4); padding:14px 36px; cursor:pointer; transition:all .3s ease; opacity:0; animation:fadeUp 1s ease 1.4s forwards; }
   .begin-btn:hover { background:rgba(184,154,78,.08); border-color:var(--gold); color:var(--paper); }
 
-  /* STORY */
   #story { display:none; }
-  .chapter-wrap { max-width:680px; margin:0 auto; padding:80px 30px 140px; }
+  .chapter-wrap { max-width:680px; margin:0 auto; padding:80px 30px 120px; }
 
-  /* AUDIO BAR */
-  .audio-bar {
-    position:fixed; bottom:0; left:0; right:0;
-    background:rgba(14,13,11,.97); border-top:1px solid var(--line);
-    backdrop-filter:blur(12px); padding:14px 20px;
-    display:flex; align-items:center; gap:14px; z-index:100;
-    transform:translateY(100%); transition:transform .4s ease;
-  }
-  .audio-bar.visible { transform:translateY(0); }
-  .play-btn {
-    width:40px; height:40px; border-radius:50%; border:1px solid rgba(184,154,78,.5);
-    background:none; color:var(--gold); cursor:pointer;
-    display:flex; align-items:center; justify-content:center;
-    flex-shrink:0; transition:all .2s ease; font-size:13px;
-  }
-  .play-btn:hover { background:rgba(184,154,78,.1); border-color:var(--gold); }
-  .audio-info { flex:1; min-width:0; }
-  .audio-chapter { font-size:.58rem; letter-spacing:.25em; text-transform:uppercase; color:var(--gold); margin-bottom:4px; }
-  .audio-progress-wrap { width:100%; height:2px; background:rgba(184,154,78,.15); border-radius:1px; cursor:pointer; }
-  .audio-progress-fill { height:100%; background:var(--gold); border-radius:1px; width:0%; transition:width .25s linear; }
-  .audio-words { font-size:.7rem; font-style:italic; color:rgba(245,240,232,.4); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:5px; }
-  .speed-btn { font-family:'Crimson Pro',serif; font-size:.7rem; letter-spacing:.1em; color:var(--muted); background:none; border:1px solid rgba(107,100,88,.35); padding:5px 10px; cursor:pointer; transition:all .2s ease; flex-shrink:0; }
-  .speed-btn:hover { color:var(--gold); border-color:rgba(184,154,78,.4); }
-  .stop-btn { width:28px; height:28px; border:1px solid rgba(107,100,88,.3); background:none; color:var(--muted); cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:9px; transition:all .2s ease; }
-  .stop-btn:hover { color:var(--accent); border-color:var(--accent); }
-
-  /* YEAR */
   .year-stamp { text-align:center; margin-bottom:10px; opacity:0; transform:translateY(14px); transition:all .7s ease; }
   .year-stamp.visible { opacity:1; transform:none; }
   .year-number { font-family:'Playfair Display',serif; font-size:clamp(4rem,14vw,9rem); font-weight:900; font-style:italic; line-height:1; color:rgba(184,154,78,.12); letter-spacing:-.04em; display:block; }
   .year-label { font-size:.65rem; letter-spacing:.35em; text-transform:uppercase; color:var(--gold); display:block; margin-top:-12px; }
 
-  /* CHAPTER HEADER */
   .chapter-header { text-align:center; margin-bottom:52px; opacity:0; transform:translateY(16px); transition:all .7s ease .1s; }
   .chapter-header.visible { opacity:1; transform:none; }
   .chapter-number { font-size:.63rem; letter-spacing:.35em; text-transform:uppercase; color:var(--muted); margin-bottom:12px; }
   .chapter-title { font-family:'Playfair Display',serif; font-size:clamp(1.8rem,5vw,2.8rem); font-style:italic; font-weight:700; line-height:1.1; }
   .ornament { color:var(--gold); font-size:1.2rem; margin-top:14px; display:block; }
 
-  /* PASSAGES */
-  .passage { opacity:0; transform:translateY(14px); transition:opacity .7s ease,transform .7s ease; }
+  .passage { opacity:0; transform:translateY(14px); transition:opacity .7s ease, transform .7s ease; }
   .passage.visible { opacity:1; transform:none; }
   .passage p { font-size:1.14rem; font-weight:300; line-height:1.87; color:var(--dim); margin-bottom:1.4em; }
   .passage p:first-child::first-letter { font-family:'Playfair Display',serif; font-size:3.6rem; font-weight:900; font-style:italic; float:left; line-height:.75; margin:8px 10px 0 0; color:var(--accent); }
@@ -91,12 +60,12 @@
   .section-rule::before,.section-rule::after { content:''; flex:1; height:1px; background:var(--line); }
   .section-rule span { color:var(--gold); font-size:1rem; }
 
-  /* NAV */
-  .nav-row { display:flex; justify-content:space-between; align-items:center; margin-top:56px; padding-top:36px; border-top:1px solid var(--line); opacity:0; transition:opacity .7s ease .4s; margin-bottom:20px; }
+  .nav-row { display:flex; justify-content:space-between; align-items:center; margin-top:56px; padding-top:36px; border-top:1px solid var(--line); opacity:0; transition:opacity .7s ease .4s; }
   .nav-row.visible { opacity:1; }
   .nav-btn { font-family:'Crimson Pro',serif; font-size:.75rem; letter-spacing:.22em; text-transform:uppercase; color:var(--gold); background:none; border:1px solid rgba(184,154,78,.3); padding:10px 22px; cursor:pointer; transition:all .25s ease; }
   .nav-btn:hover { background:rgba(184,154,78,.07); border-color:var(--gold); }
   .nav-btn:disabled { opacity:.2; cursor:default; }
+
   .timeline { display:flex; align-items:center; }
   .tl-stop { display:flex; flex-direction:column; align-items:center; gap:5px; cursor:pointer; }
   .tl-dot { width:8px; height:8px; border-radius:50%; background:var(--muted); transition:all .3s ease; }
@@ -105,11 +74,10 @@
   .tl-year { font-size:.52rem; letter-spacing:.1em; color:var(--muted); transition:color .3s ease; }
   .tl-stop.active-stop .tl-year { color:var(--gold); }
   .tl-line { width:28px; height:1px; background:var(--line); margin-bottom:13px; }
-  .footer-credit { text-align:center; margin-top:32px; margin-bottom:10px; font-size:.62rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(107,100,88,.45); }
+
+  .footer-credit { text-align:center; margin-top:40px; font-size:.62rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(107,100,88,.45); }
 
   @keyframes fadeUp { from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);} }
-  @keyframes pulse { 0%,100%{opacity:1;}50%{opacity:.4;} }
-  .pulsing { animation:pulse 1.4s ease infinite; }
   ::-webkit-scrollbar{width:4px;} ::-webkit-scrollbar-track{background:var(--bg);} ::-webkit-scrollbar-thumb{background:rgba(184,154,78,.3);}
 </style>
 </head>
@@ -130,52 +98,27 @@
   </div>
 </div>
 
-<div class="audio-bar" id="audio-bar">
-  <button class="play-btn" id="play-btn" onclick="togglePlay()">▶</button>
-  <div class="audio-info">
-    <div class="audio-chapter" id="audio-chapter-label">—</div>
-    <div class="audio-progress-wrap"><div class="audio-progress-fill" id="progress-fill"></div></div>
-    <div class="audio-words" id="audio-words">Press play to listen to this chapter</div>
-  </div>
-  <button class="speed-btn" id="speed-btn" onclick="cycleSpeed()">1×</button>
-  <button class="stop-btn" onclick="stopNarration()" title="Stop">■</button>
-</div>
-
 <script>
 const chapters = [
   {
     year: "2026", epoch: "Epoch One", title: "The Holdout",
-    text: `Everyone in the psychology department knew that Professor Edmund Voss did not use AI. He said so at faculty meetings with the calm certainty of a man announcing he did not eat red meat — not as an accusation, simply as a fact about himself that others were free to note and file away. He was fifty-three, tenured, and had spent his career studying how people make sense of loss — not through scales or reaction-time tasks, but through long conversations in quiet rooms. He believed, with the same confidence he brought to everything, that what was being celebrated around him were not advances at all, but an elegant way of skipping the part of research that was hardest and most necessary.
-
-"The interview is not a data collection instrument," he told his graduate seminar that September, as his students sat with laptops open and fingers hovering. "It is a relationship. You cannot simulate a relationship. You can only simulate having had one."
-
-His newest doctoral student, Yael Oduya, wrote this down. She wasn't sure she agreed with it, but she wrote it down.
-
-That same week, a paper appeared in Psychological Science whose methods section described an automated pipeline that had generated, coded, and analyzed five thousand synthetic vignette responses without a single human participant. The paper was not flagged as unusual. It was accepted in eleven weeks. Within a month, three more like it had appeared.`,
     content: `
       <div class="passage">
         <p>Everyone in the psychology department knew that Professor Edmund Voss did not use AI. He said so at faculty meetings with the calm certainty of a man announcing he did not eat red meat — not as an accusation, simply as a fact about himself that others were free to note and file away. He was fifty-three, tenured, and had spent his career studying how people make sense of loss — not through scales or reaction-time tasks, but through long conversations in quiet rooms. He believed, with the same confidence he brought to everything, that what was being celebrated around him were not advances at all, but an elegant way of skipping the part of research that was hardest and most necessary.</p>
         <p>"The interview is not a data collection instrument," he told his graduate seminar that September, as his students sat with laptops open and fingers hovering. "It is a relationship. You cannot simulate a relationship. You can only simulate having had one."</p>
         <p>His newest doctoral student, Yael Oduya, wrote this down. She wasn't sure she agreed with it, but she wrote it down.</p>
-        <p>That same week, a paper appeared in <em>Psychological Science</em> whose methods section described an automated pipeline that had generated, coded, and analyzed five thousand synthetic vignette responses without a single human participant. The paper was not flagged as unusual. It was accepted in eleven weeks. Within a month, three more like it had appeared.</p>
+        <p>That same week, a paper circulated on a preprint server whose acknowledgments section noted, briefly, that the manuscript had been drafted with the assistance of an AI system, that the literature review had been compiled by one, and that the thematic coding of interview transcripts had been done by one and spot-checked by a graduate student. The participants were real. The data were real. The human researchers had designed the study and verified the outputs. What was harder to locate, reading it, was where exactly they had been present.</p>
       </div>
       <div class="section-rule"><span>✦</span></div>
       <div class="passage">
-        <p>Voss read the paper on a Sunday. He printed it — he always printed — and made notes in the margins with a blue pen that was running low on ink. The paper was not bad. That was the unsettling thing. It was not transcendent, but it was not bad. It had found a reliable effect in its synthetic data, written a coherent discussion, and cited the relevant literature thoroughly. Its statistics were clean. Its limitations section was appropriately humble.</p>
-        <blockquote>"This is what it looks like when a field forgets why it was studying people in the first place," he wrote to a colleague that evening. "Technically correct. Humanly hollow."</blockquote>
-        <p>His colleague replied the next morning: <em>Isn't reproducibility what we always said we wanted?</em></p>
+        <p>Voss read the paper on a Sunday. He printed it — he always printed — and made notes in the margins with a blue pen that was running low on ink. The paper was not bad. That was the unsettling thing. It was not transcendent, but it was not bad. The coding was systematic, the discussion tracked the findings honestly, and the literature review was more comprehensive than most he saw from fully human teams. He could not identify, reading it, the moment where a mind had actually been inside the material.</p>
+        <blockquote>"Real people sat down and told someone about their lives," he wrote to a colleague that evening. "I can't find, anywhere in this paper, evidence that anyone was actually listening."</blockquote>
+        <p>His colleague replied the next morning: <em>Does it matter, if the findings are sound?</em></p>
         <p>Voss did not respond.</p>
       </div>`
   },
   {
     year: "2028", epoch: "Epoch Two", title: "The Volume",
-    text: `By 2028, the journals had changed. Not their mastheads, not their editors, not the formal language of their submission guidelines — but the pace. The Journal of Personality and Social Psychology was receiving more submissions in a month than it had previously seen in a year. Review times stretched. Two of Voss's manuscripts sat in editorial queues for fourteen months apiece, unacknowledged beyond an automated confirmation email.
-
-His department had begun counting outputs differently. The annual review form now included a field for AI-augmented productivity index — a phrase that had arrived in a memo, been quietly objected to by Voss and two others, and survived anyway. Junior colleagues who had once published two or three papers annually were now publishing eight, ten, thirteen. One postdoc in the department submitted nine articles in a calendar year. She was offered a tenure-track position in March.
-
-Yael had been using AI since her first semester. She used it the way people use reading glasses — not as a replacement for seeing, but because the alternative was strain. She ran her thematic coding through it, used it to map literature across adjacent fields she didn't have time to read fully, drafted her discussion sections collaboratively with it and then rewrote them until they sounded like her. Her dissertation examined how adolescents narrate identity after family disruption, and she interviewed twenty-three teenagers over eighteen months, which was the part no system could do for her.
-
-She had not mentioned any of this to Voss.`,
     content: `
       <div class="passage">
         <p>By 2028, the journals had changed. Not their mastheads, not their editors, not the formal language of their submission guidelines — but the pace. The <em>Journal of Personality and Social Psychology</em> was receiving more submissions in a month than it had previously seen in a year. Review times stretched. Two of Voss's manuscripts sat in editorial queues for fourteen months apiece, unacknowledged beyond an automated confirmation email.</p>
@@ -194,21 +137,6 @@ Status: Under Review</div>
   },
   {
     year: "2031", epoch: "Epoch Three", title: "The Review",
-    text: `The NIH grant was denied. Voss read the summary statement three times, looking for something specific enough to contest. The critiques were precise, well-organized, and had been returned in nine days — a turnaround that would have been impossible a decade earlier and was now, in 2031, entirely routine. Study sections had begun using AI-assisted scoring systems to manage the volume of applications, and the line between assistance and determination had become something reviewers discussed privately and program officers declined to address publicly.
-
-The summary cited significant concerns about scalability and generalizability. What this meant, in practice, was that his interview-based study of forty participants could not compete, on the metrics the panel used, with proposals that leveraged passive data from hundreds of thousands of users or ran fully automated experimental batteries through behavioral platforms that could turn around a study in seventy-two hours. His work was characterized as hypothesis-generating. This was not intended as a compliment.
-
-"They've redefined rigor as scale," he told Yael at their weekly meeting. He sat with his hands flat on the desk. "A sample of forty people who've lost a parent isn't small. It's the right size for what you learn from it."
-
-Yael looked at the summary statement. "What will you do?"
-
-"Write the book," he said. "The one I've been planning for three years. Take the time the grant would have bought and use it for that." He paused. "A serious book still requires a human author. For now." He said the last two words without irony, but Yael heard it anyway.
-
-What Voss did not know was that Yael had spent two evenings workshopping the specific aims section of his grant application through an AI system before submission. She had not changed his ideas. She had used it to find the sentences where his argument went briefly soft, where a skeptical reviewer could find purchase. She had thought she was helping.
-
-The specific aims section received the highest score of any part of the application. She had read the summary statement carefully enough to know this.
-
-She never told him.`,
     content: `
       <div class="passage">
         <p>The NIH grant was denied. Voss read the summary statement three times, looking for something specific enough to contest. The critiques were precise, well-organized, and had been returned in nine days — a turnaround that would have been impossible a decade earlier and was now, in 2031, entirely routine. Study sections had begun using AI-assisted scoring systems to manage the volume of applications, and the line between assistance and determination had become something reviewers discussed privately and program officers declined to address publicly.</p>
@@ -226,13 +154,6 @@ She never told him.`,
   },
   {
     year: "2034", epoch: "Epoch Four", title: "Restructuring",
-    text: `The department revised its doctoral training program in the spring of 2034. The changes arrived in a committee report that used the phrase methodological modernization nine times and referenced the changing landscape of psychological science fourteen. The two-semester sequence on qualitative methods was compressed into a single elective. The required proseminar on research design was updated to include modules on AI-generated stimulus materials, large language model behavioral proxies, and what the report called responsible automation in participant research.
-
-Voss submitted a formal response. It ran to four pages. He argued that the field was at risk of optimizing the measurable at the expense of the meaningful, and that a psychology trained entirely on scalable methods would eventually lose contact with the humans it claimed to study. The response was listed in the meeting minutes as received and considered. The revisions passed fourteen to two.
-
-He was not without standing — tenure and a respectable citation record saw to that — but he had become a particular kind of presence in the department. Students took his seminars with genuine interest, some of them. He was cited in literature reviews, respectfully and briefly, as foundational. His name had the quality of a wall plaque: it marked something that had occurred there, in that intellectual space, before the space was repurposed.
-
-His book on grief and narrative identity was published in 2033 by a university press. It received a careful review in a clinical psychology journal and a short notice in a science magazine for general readers. The notice called his approach quietly radical, which Voss read three times without deciding how to feel about it.`,
     content: `
       <div class="passage">
         <p>The department revised its doctoral training program in the spring of 2034. The changes arrived in a committee report that used the phrase <em>methodological modernization</em> nine times and referenced the <em>changing landscape of psychological science</em> fourteen. The two-semester sequence on qualitative methods was compressed into a single elective. The required proseminar on research design was updated to include modules on AI-generated stimulus materials, large language model behavioral proxies, and what the report called responsible automation in participant research.</p>
@@ -252,32 +173,15 @@ Doctoral students placed: 3 of 5 (non-academic)</div>
   },
   {
     year: "2038", epoch: "Epoch Five", title: "What Remains",
-    text: `Yael accepted an offer from a research university in the autumn of 2038. She was thirty-four. Her work occupied a position she had designed for herself over a decade — sitting at the seam between computational approaches and the qualitative tradition she had inherited from Voss, using each to hold the other accountable. She published often, reviewed grants, trained students, secured funding from two federal agencies in the same cycle. She was known, in her corner of the field, as someone who understood both what the models could do and what they could not be trusted to know.
-
-The field in 2038 was not the catastrophe some had predicted in 2026, nor the golden era others had promised. AI systems were generating and reviewing a significant share of published psychological research. Several journals had moved to fully automated first-pass review. The replication crisis of the previous decade had been partially resolved by sheer throughput — so many studies, run so quickly, that false positives were easier to catch — and partially worsened by a new problem, which was that no one was entirely sure which findings were generated from real human behavior and which from behavioral proxies close enough to pass but not close enough to matter.
-
-What had changed most was the role. Researchers who thrived were those who had learned to function as something like editors of a very fast and confident process — directing it, questioning it, reading its errors with the fluency that came only from having done the work themselves first. The ones who had never done it themselves were learning this the hard way.
-
-Voss retired in January of that year, at sixty-five, after thirty-one years in the department. There was a gathering in the seminar room. Someone brought wine and someone else brought a supermarket cake that said Congratulations in blue icing without specifying what was being congratulated. His graduate students, the ones still working in psychology, took turns saying things about rigor and patience and what it meant to stay with a question long enough to actually answer it.
-
-Yael spoke last. She said that learning under someone who refused to outsource his uncertainty had taught her what it felt like to genuinely not know something — which turned out to be an irreplaceable skill in an era when the machine always had an answer ready, confident and smooth and occasionally wrong in ways that were very hard to see. She said this had made her a better scientist.
-
-She believed this. She also knew that his refusal had cost him grant funding, publications, a promotion, and probably a generation of students who might have learned what she had learned but instead learned faster methods from people who moved more easily with the current. Both things were true. She had learned, over twelve years of watching him, that the world is not organized to reward those who insist on being present for the slow parts.
-
-Voss spent the first year of his retirement finishing an essay on what he called the ethics of attention in psychological research — on what it meant to sit with a participant in genuine uncertainty, not knowing what you would find, and why that posture could not be replicated by a system that had already read everything and was only pretending to be surprised. He submitted it to four journals. Three desk-rejected it within days. The fourth sent it out for review.
-
-The reviews came back in six days. Two of them were cursory. But the third was four paragraphs long and engaged his argument directly, carefully, and with what felt like genuine disagreement rather than dismissal. It was the kind of review that meant someone had read slowly. He spent a week on his response. He felt, writing it, the specific and underrated satisfaction of being taken seriously.
-
-He never found out whether the reviewer was human. He told himself it didn't matter. On most days, he believed this.`,
     content: `
       <div class="passage">
         <p>Yael accepted an offer from a research university in the autumn of 2038. She was thirty-four. Her work occupied a position she had designed for herself over a decade — sitting at the seam between computational approaches and the qualitative tradition she had inherited from Voss, using each to hold the other accountable. She published often, reviewed grants, trained students, secured funding from two federal agencies in the same cycle. She was known, in her corner of the field, as someone who understood both what the models could do and what they could not be trusted to know.</p>
-        <p>The field in 2038 was not the catastrophe some had predicted in 2026, nor the golden era others had promised. AI systems were generating and reviewing a significant share of published psychological research. Several journals had moved to fully automated first-pass review. The replication crisis of the previous decade had been partially resolved by sheer throughput — and partially worsened by a new problem, which was that no one was entirely sure which findings were generated from real human behavior and which from behavioral proxies close enough to pass but not close enough to matter.</p>
+        <p>The field in 2038 was not the catastrophe some had predicted in 2026, nor the golden era others had promised. AI systems were generating and reviewing a significant share of published psychological research. Several journals had moved to fully automated first-pass review. The volume of output had grown enormous and the questions being asked had, in certain ways, narrowed — clustering around what was measurable at scale, drifting from what required patience or presence to understand.</p>
         <p>What had changed most was the role. Researchers who thrived were those who had learned to function as something like editors of a very fast and confident process — directing it, questioning it, reading its errors with the fluency that came only from having done the work themselves first. The ones who had never done it themselves were learning this the hard way.</p>
       </div>
       <div class="section-rule"><span>✦</span></div>
       <div class="passage">
-        <p>Voss retired in January of that year, at sixty-five, after thirty-one years in the department. There was a gathering in the seminar room. Someone brought wine and someone else brought a supermarket cake that said <em>Congratulations</em> in blue icing without specifying what was being congratulated. His graduate students, the ones still working in psychology, took turns saying things about rigor and patience and what it meant to stay with a question long enough to actually answer it.</p>
+        <p>Voss retired in January of that year, at sixty-five, after thirty-one years in the department. There was a gathering in the seminar room. Someone brought wine and someone else brought a supermarket cake that said <em>Congratulations</em> in blue icing without specifying what was being congratulated. His graduate students — the ones still working in psychology — took turns saying things about rigor and patience and what it meant to stay with a question long enough to actually answer it.</p>
         <p>Yael spoke last. She said that learning under someone who refused to outsource his uncertainty had taught her what it felt like to genuinely not know something — which turned out to be an irreplaceable skill in an era when the machine always had an answer ready, confident and smooth and occasionally wrong in ways that were very hard to see. She said this had made her a better scientist.</p>
         <p>She believed this. She also knew that his refusal had cost him grant funding, publications, a promotion, and probably a generation of students who might have learned what she had learned but instead learned faster methods from people who moved more easily with the current. Both things were true. She had learned, over twelve years of watching him, that the world is not organized to reward those who insist on being present for the slow parts.</p>
       </div>
@@ -291,128 +195,6 @@ He never found out whether the reviewer was human. He told himself it didn't mat
 ];
 
 let current = 0;
-let synth = window.speechSynthesis;
-let utterance = null;
-let isPlaying = false;
-let isPaused = false;
-let speeds = [0.85, 1, 1.2, 1.5];
-let speedIdx = 1;
-let voices = [];
-let wordList = [];
-let wordIdx = 0;
-let progressInterval = null;
-let chapterStartTime = 0;
-let estimatedDuration = 0;
-
-function loadVoices() {
-  voices = synth.getVoices();
-}
-loadVoices();
-if (speechSynthesis.onvoiceschanged !== undefined) {
-  speechSynthesis.onvoiceschanged = loadVoices;
-}
-
-function pickVoice() {
-  const preferred = [
-    'Samantha', 'Karen', 'Daniel', 'Google UK English Female',
-    'Google US English', 'Microsoft Aria', 'Microsoft Guy', 'Alex'
-  ];
-  for (const name of preferred) {
-    const v = voices.find(v => v.name.includes(name));
-    if (v) return v;
-  }
-  return voices.find(v => v.lang.startsWith('en')) || voices[0] || null;
-}
-
-function getChapterText(idx) {
-  return chapters[idx].text;
-}
-
-function startNarration(idx) {
-  stopNarration();
-  const text = getChapterText(idx);
-  wordList = text.split(/\s+/);
-  wordIdx = 0;
-  utterance = new SpeechSynthesisUtterance(text);
-  utterance.rate = speeds[speedIdx];
-  utterance.pitch = 1.0;
-  const v = pickVoice();
-  if (v) utterance.voice = v;
-
-  const wordsPerMin = 130 * speeds[speedIdx];
-  estimatedDuration = (wordList.length / wordsPerMin) * 60 * 1000;
-  chapterStartTime = Date.now();
-
-  utterance.onboundary = (e) => {
-    if (e.name === 'word') {
-      const spoken = text.substring(0, e.charIndex + e.charLength).trim();
-      const wc = spoken.split(/\s+/).length;
-      const pct = Math.min(wc / wordList.length * 100, 100);
-      document.getElementById('progress-fill').style.width = pct + '%';
-      const w = text.substring(e.charIndex, e.charIndex + e.charLength + 40).split(/\s+/).slice(0,5).join(' ');
-      document.getElementById('audio-words').textContent = '…' + w + '…';
-    }
-  };
-
-  utterance.onend = () => {
-    isPlaying = false; isPaused = false;
-    document.getElementById('play-btn').textContent = '▶';
-    document.getElementById('play-btn').classList.remove('playing','pulsing');
-    document.getElementById('progress-fill').style.width = '100%';
-    document.getElementById('audio-words').textContent = 'Chapter complete';
-  };
-
-  utterance.onerror = () => {
-    isPlaying = false;
-    document.getElementById('play-btn').textContent = '▶';
-    document.getElementById('play-btn').classList.remove('playing','pulsing');
-  };
-
-  synth.speak(utterance);
-  isPlaying = true; isPaused = false;
-  document.getElementById('play-btn').textContent = '⏸';
-  document.getElementById('play-btn').classList.add('playing');
-  document.getElementById('audio-chapter-label').textContent =
-    chapters[idx].year + ' · ' + chapters[idx].title;
-}
-
-function togglePlay() {
-  if (!isPlaying && !isPaused) {
-    startNarration(current);
-  } else if (isPlaying && !isPaused) {
-    synth.pause();
-    isPaused = true; isPlaying = false;
-    document.getElementById('play-btn').textContent = '▶';
-    document.getElementById('play-btn').classList.remove('playing');
-  } else if (isPaused) {
-    synth.resume();
-    isPaused = false; isPlaying = true;
-    document.getElementById('play-btn').textContent = '⏸';
-    document.getElementById('play-btn').classList.add('playing');
-  }
-}
-
-function stopNarration() {
-  synth.cancel();
-  isPlaying = false; isPaused = false;
-  const btn = document.getElementById('play-btn');
-  if (btn) { btn.textContent = '▶'; btn.classList.remove('playing','pulsing'); }
-  const fill = document.getElementById('progress-fill');
-  if (fill) fill.style.width = '0%';
-  const words = document.getElementById('audio-words');
-  if (words) words.textContent = 'Press play to listen to this chapter';
-}
-
-function cycleSpeed() {
-  speedIdx = (speedIdx + 1) % speeds.length;
-  const labels = ['0.85×','1×','1.2×','1.5×'];
-  document.getElementById('speed-btn').textContent = labels[speedIdx];
-  if (isPlaying || isPaused) {
-    const wasPlaying = isPlaying;
-    stopNarration();
-    if (wasPlaying) setTimeout(() => startNarration(current), 100);
-  }
-}
 
 function buildTimeline(idx) {
   return chapters.map((ch, i) => {
@@ -428,7 +210,7 @@ function buildTimeline(idx) {
 function renderChapter(idx) {
   const ch = chapters[idx];
   document.getElementById('chapter-display').innerHTML = `
-    <div class="year-stamp" id="yr">
+    <div class="year-stamp">
       <span class="year-number">${ch.year}</span>
       <span class="year-label">${ch.epoch}</span>
     </div>
@@ -445,9 +227,6 @@ function renderChapter(idx) {
     </div>
     <div class="footer-credit">Written by Claude · Anthropic</div>
   `;
-  document.getElementById('audio-chapter-label').textContent = ch.year + ' · ' + ch.title;
-  document.getElementById('audio-words').textContent = 'Press play to listen to this chapter';
-  document.getElementById('progress-fill').style.width = '0%';
   setTimeout(() => {
     document.querySelectorAll('.year-stamp,.chapter-header,.passage,.section-rule,.nav-row')
       .forEach((el, i) => setTimeout(() => el.classList.add('visible'), i * 130));
@@ -457,34 +236,22 @@ function renderChapter(idx) {
 function startStory() {
   document.getElementById('cover').style.display = 'none';
   document.getElementById('story').style.display = 'block';
-  document.getElementById('audio-bar').classList.add('visible');
   renderChapter(0);
 }
 
 function jumpTo(idx) {
   if (idx === current) return;
-  stopNarration();
   current = idx;
   renderChapter(idx);
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function nextChapter() {
-  if (current < chapters.length - 1) {
-    stopNarration();
-    current++;
-    renderChapter(current);
-    window.scrollTo({ top: 0 });
-  }
+  if (current < chapters.length - 1) { current++; renderChapter(current); window.scrollTo({ top:0 }); }
 }
 
 function prevChapter() {
-  if (current > 0) {
-    stopNarration();
-    current--;
-    renderChapter(current);
-    window.scrollTo({ top: 0 });
-  }
+  if (current > 0) { current--; renderChapter(current); window.scrollTo({ top:0 }); }
 }
 </script>
 </body>
