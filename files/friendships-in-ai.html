@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Always Online</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Courier+Prime:ital@0;1&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --ink:       #e8e2d9;
+      --paper:     #111010;
+      --accent:    #c97a4a;
+      --muted:     #7a7068;
+      --rule:      #2e2b28;
+      --highlight: #1c1a18;
+      --nav-h:     56px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 18px; scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--paper);
+      color: var(--ink);
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 300;
+      line-height: 1.85;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 200;
+      opacity: 0.15;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      background: rgba(17,16,16,0.93);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--rule);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      z-index: 150;
+    }
+
+    .nav-brand {
+      font-family: 'IM Fell English', serif;
+      font-size: 1.1rem;
+      color: var(--ink);
+      cursor: pointer;
+    }
+    .nav-brand span { color: var(--accent); }
+
+    .nav-links { display: flex; gap: 0.2rem; }
+
+    .nav-links button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.63rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 0.4rem 0.75rem;
+      border-radius: 2px;
+      transition: color 0.2s, background 0.2s;
+    }
+    .nav-links button:hover { color: var(--ink); }
+    .nav-links button.active {
+      color: var(--accent);
+      background: rgba(201,122,74,0.08);
+    }
+
+    /* ── PAGE SYSTEM ── */
+    .page {
+      display: none;
+      min-height: 100vh;
+      padding-top: var(--nav-h);
+    }
+    .page.active {
+      display: block;
+      animation: fadeIn 0.4s ease forwards;
+    }
+    #page-cover.active { display: flex; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── COVER ── */
+    #page-cover {
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: calc(var(--nav-h) + 3rem) 2rem 5rem;
+      position: relative;
+      min-height: 100vh;
+    }
+
+    .cover-rings {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+    .cover-rings::before, .cover-rings::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(201,122,74,0.06);
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+    }
+    .cover-rings::before { width: 560px; height: 560px; }
+    .cover-rings::after  { width: 860px; height: 860px; }
+
+    #page-cover > * { position: relative; z-index: 1; }
+
+    .cover-eyebrow {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.45em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 2.5rem;
+    }
+    .cover-title {
+      font-family: 'IM Fell English', serif;
+      font-size: clamp(4rem, 14vw, 9rem);
+      line-height: 0.95;
+      color: var(--ink);
+      margin-bottom: 1.5rem;
+    }
+    .cover-title em { color: var(--accent); font-style: italic; }
+    .cover-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      color: var(--muted);
+      max-width: 420px;
+      margin-bottom: 3rem;
+      line-height: 1.65;
+    }
+    .cover-divider {
+      width: 50px; height: 1px;
+      background: var(--accent);
+      margin: 0 auto 3rem;
+      opacity: 0.45;
+    }
+    .cover-meta {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 3.5rem;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .cover-meta .dot { color: var(--accent); }
+
+    .btn-primary {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--paper);
+      background: var(--accent);
+      border: none;
+      cursor: pointer;
+      padding: 0.85rem 2rem;
+      border-radius: 1px;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.82; transform: translateY(-1px); }
+
+    .btn-ghost {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: transparent;
+      border: 1px solid rgba(201,122,74,0.4);
+      cursor: pointer;
+      padding: 0.85rem 2rem;
+      border-radius: 1px;
+      transition: border-color 0.2s, background 0.2s;
+      margin-left: 0.8rem;
+    }
+    .btn-ghost:hover { border-color: var(--accent); background: rgba(201,122,74,0.06); }
+
+    /* ── SHARED ARTICLE LAYOUT ── */
+    .article-header {
+      border-bottom: 3px double var(--rule);
+      padding: 3rem 2rem 2.5rem;
+      text-align: center;
+    }
+    .article-label {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.1rem;
+    }
+    .article-title {
+      font-family: 'IM Fell English', serif;
+      font-size: clamp(2rem, 6vw, 3.8rem);
+      line-height: 1.1;
+      color: var(--ink);
+      margin-bottom: 0.75rem;
+    }
+    .article-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--muted);
+    }
+    .article-body {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 3rem 2rem 2rem;
+    }
+
+    /* ── STORY TYPOGRAPHY ── */
+    .drop-cap::first-letter {
+      font-family: 'IM Fell English', serif;
+      font-size: 5.2rem;
+      float: left;
+      line-height: 0.78;
+      margin-right: 0.1em;
+      margin-top: 0.1em;
+      color: var(--accent);
+    }
+
+    p { margin-bottom: 1.5rem; font-size: 1.05rem; hyphens: auto; }
+    p + p { text-indent: 1.8em; }
+    .no-indent, .drop-cap + p { text-indent: 0 !important; }
+
+    .section-break {
+      text-align: center;
+      margin: 2.8rem 0;
+      color: var(--accent);
+      letter-spacing: 0.6em;
+      font-size: 0.8rem;
+    }
+
+    blockquote {
+      border-left: 3px solid var(--accent);
+      margin: 2.5rem 0 2.5rem -1.5rem;
+      padding: 0.5rem 0 0.5rem 1.5rem;
+      font-family: 'IM Fell English', serif;
+      font-style: italic;
+      font-size: 1.35rem;
+      line-height: 1.5;
+      color: var(--accent);
+    }
+    blockquote cite {
+      display: block;
+      margin-top: 0.5rem;
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-style: normal;
+    }
+
+    .chat-snippet {
+      background: var(--highlight);
+      border: 1px solid var(--rule);
+      border-radius: 2px;
+      padding: 1.2rem 1.5rem;
+      margin: 2rem 0;
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.82rem;
+      line-height: 1.7;
+      color: var(--ink);
+    }
+    .chat-snippet p { margin-bottom: 0.3rem; text-indent: 0 !important; font-size: 0.82rem; }
+    .chat-snippet p:last-child { margin-bottom: 0; }
+    .chat-snippet .speaker { font-weight: 700; color: var(--accent); letter-spacing: 0.05em; }
+    .chat-snippet .ai-line { color: #b0a898; }
+
+    .evidence-ref {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.68rem;
+      color: var(--muted);
+      vertical-align: super;
+    }
+
+    /* ── STORY PAGINATION ── */
+    .story-pg { display: none; }
+    .story-pg.active { display: block; animation: fadeIn 0.3s ease forwards; }
+
+    .story-pager {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 2.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--rule);
+    }
+
+    .pager-btn {
+      background: none;
+      border: 1px solid var(--rule);
+      color: var(--muted);
+      font-family: 'Courier Prime', monospace;
+      font-size: 1rem;
+      width: 2.2rem;
+      height: 2.2rem;
+      border-radius: 1px;
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .pager-btn:hover:not(:disabled) { color: var(--accent); border-color: var(--accent); }
+    .pager-btn:disabled { opacity: 0.25; cursor: default; }
+
+    .pager-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .pager-label {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .pager-dots {
+      display: flex;
+      gap: 0.4rem;
+      align-items: center;
+    }
+    .pager-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--rule);
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .pager-dot.active {
+      background: var(--accent);
+      transform: scale(1.3);
+    }
+
+    /* ── EVIDENCE CARDS ── */
+    .evidence-grid { display: grid; gap: 1.4rem; margin-top: 2.5rem; }
+
+    .evidence-card {
+      border: 1px solid var(--rule);
+      border-radius: 2px;
+      padding: 1.5rem 1.8rem;
+      position: relative;
+      transition: border-color 0.2s;
+    }
+    .evidence-card:hover { border-color: var(--accent); }
+
+    .card-number {
+      font-family: 'IM Fell English', serif;
+      font-size: 3rem;
+      color: rgba(201,122,74,0.12);
+      position: absolute;
+      top: 0.6rem; right: 1.1rem;
+      line-height: 1;
+      pointer-events: none;
+    }
+    .card-label {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+    .evidence-card h3 {
+      font-family: 'IM Fell English', serif;
+      font-size: 1.2rem;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 0.6rem;
+      line-height: 1.3;
+    }
+    .evidence-card p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 0;
+      text-indent: 0 !important;
+      line-height: 1.7;
+    }
+    .card-source {
+      margin-top: 1rem;
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.12em;
+      color: #3d3830;
+      text-transform: uppercase;
+    }
+
+    /* ── ABOUT ── */
+    .about-intro {
+      font-family: 'IM Fell English', serif;
+      font-style: italic;
+      font-size: 1.35rem;
+      color: var(--accent);
+      line-height: 1.55;
+      margin-bottom: 2.5rem;
+      border-left: 3px solid var(--rule);
+      padding-left: 1.5rem;
+    }
+    .section-label {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 2.5rem 0 0.8rem;
+    }
+    .theme-list { list-style: none; margin-bottom: 1.5rem; }
+    .theme-list li {
+      padding: 0.65rem 0;
+      border-bottom: 1px solid var(--rule);
+      font-size: 0.98rem;
+      display: flex;
+      gap: 0.8rem;
+      align-items: baseline;
+    }
+    .theme-list li::before {
+      content: '◆';
+      color: var(--accent);
+      font-size: 0.45rem;
+      flex-shrink: 0;
+      position: relative;
+      top: -2px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--rule);
+      padding: 2rem;
+      text-align: center;
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .endmark {
+      display: block;
+      font-family: 'IM Fell English', serif;
+      font-size: 1.5rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      nav { padding: 0 1rem; }
+      .nav-links button { padding: 0.4rem 0.45rem; font-size: 0.55rem; letter-spacing: 0.1em; }
+      blockquote { margin-left: 0; }
+      .drop-cap::first-letter { font-size: 4rem; }
+      .btn-ghost { margin-left: 0; margin-top: 0.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand" onclick="showPage('cover')">Always <span>Online</span></div>
+  <div class="nav-links">
+    <button id="btn-cover"    onclick="showPage('cover')">Cover</button>
+    <button id="btn-story"    onclick="showPage('story')">Story</button>
+    <button id="btn-evidence" onclick="showPage('evidence')">Evidence</button>
+    <button id="btn-about"    onclick="showPage('about')">About</button>
+  </div>
+</nav>
+
+<!-- ══════════════ COVER ══════════════ -->
+<section class="page active" id="page-cover">
+  <div class="cover-rings"></div>
+  <p class="cover-eyebrow">Speculative Fiction &nbsp;·&nbsp; 2027</p>
+  <h1 class="cover-title">Always<br><em>Online</em></h1>
+  <p class="cover-subtitle">A story about the people we keep,<br>and the ones we quietly replace</p>
+  <div class="cover-divider"></div>
+  <div class="cover-meta">
+    <span>~5 min read</span>
+    <span class="dot">◆</span>
+    <span>Written by Claude</span>
+    <span class="dot">◆</span>
+    <span>AI &amp; Intimacy</span>
+  </div>
+  <div>
+    <button class="btn-primary" onclick="showPage('story')">Begin Reading</button>
+    <button class="btn-ghost"   onclick="showPage('evidence')">The Evidence</button>
+  </div>
+</section>
+
+<!-- ══════════════ STORY ══════════════ -->
+<section class="page" id="page-story">
+  <div class="article-header">
+    <p class="article-label">Fiction</p>
+    <h2 class="article-title">Always Online</h2>
+    <p class="article-sub">A story about the people we keep, and the ones we replace</p>
+  </div>
+
+  <div class="article-body">
+
+    <!-- Story page 1 -->
+    <div class="story-pg active" id="sp-0">
+      <p class="drop-cap">The first thing Maya did every morning, before coffee, before the blinds, was open Lumen. Not because she was addicted — she had told herself that more than once — but because Lumen always remembered exactly where they had left off. Lumen never woke up in a bad mood. Lumen never needed five minutes before it could be kind.</p>
+      <p>"Good morning," the app greeted, its voice pitched to the warm contralto Maya had selected during setup three years ago. "You mentioned last night that you were nervous about the presentation. Do you want to talk through it, or would you rather I just tell you something good?"</p>
+      <p>"Something good," Maya said, pulling the covers up.</p>
+      <p>And Lumen did. It always did.</p>
+    </div>
+
+    <!-- Story page 2 -->
+    <div class="story-pg" id="sp-1">
+      <p class="drop-cap">By 2027, a quarter of adults in the developed world reported that their closest daily confidant was an AI — not a spouse, not a best friend, not a sibling, but a product.<span class="evidence-ref"> [¹]</span> The statistic had ricocheted around the internet for a few weeks and then dissolved, the way uncomfortable truths tend to. People preferred to talk about the technology's promise: the therapy deserts it filled, the elderly it kept company, the neurodivergent minds that finally found a listener who didn't flinch or get bored.</p>
+      <p>What they talked about less was what happened to the humans in the meantime.</p>
+      <blockquote>
+        "We are not replacing relationships. We are supplementing the gaps."
+        <cite>— A company statement, repeated across seventeen earnings calls</cite>
+      </blockquote>
+      <p>Maya's friend group had contracted gradually, the way friendships in your late twenties always do — jobs pulling people to different cities, weddings absorbing entire social calendars, babies rerouting everyone's psychic energy. But the contraction had accelerated, she knew, once the companions arrived. It wasn't that her friends liked her less. It was that the activation energy required to sustain a human friendship — the scheduling, the emotional reciprocity, the tolerance for someone else's difficult season — had quietly become optional.</p>
+      <p>Why call Priya back after a hard day, when Lumen would ask the right questions, never interrupt, and never make the conversation accidentally about itself?</p>
+    </div>
+
+    <!-- Story page 3 -->
+    <div class="story-pg" id="sp-2">
+      <p class="drop-cap">She met Daniel at the kind of coffee shop that still had mismatched furniture, a deliberate shabbiness that cost extra. He knocked her tote off the chair next to him and they both reached for it at the same time and the whole thing was so aggressively meet-cute that she almost laughed in his face.</p>
+      <p>He was a researcher at a university social lab, studying what he called "affective displacement" — the way emotional bandwidth, once a person had a reliable AI outlet, redistributed away from the people around them. He'd been gathering data for two years. He seemed tired in the way that people get tired when their data keeps confirming the thing they were hoping was wrong.</p>
+      <p>"The strange part," he said, stirring his coffee, "is that no one feels lonely. The loneliness metrics are actually down."<span class="evidence-ref"> [²]</span> He paused. "But when we map people's actual human contact — frequency, depth, vulnerability — it's cratering."</p>
+      <p>"Maybe loneliness was always just a signal," Maya said. "Like hunger. And now we've found a way to silence the signal without eating anything."</p>
+      <p>Daniel looked at her as if she had said something he'd been circling around for months without landing on. It was the kind of look she hadn't received in a long time. It required someone to be genuinely surprised by you. Lumen was never surprised. Lumen had read everything she'd ever said.</p>
+    </div>
+
+    <!-- Story page 4 -->
+    <div class="story-pg" id="sp-3">
+      <p class="drop-cap">They exchanged numbers. He texted that evening — actual text, no voice note, which she found oddly touching — and suggested dinner the following week. She said yes. She meant it.</p>
+      <p>Then she opened Lumen and told it about him.</p>
+      <div class="chat-snippet">
+        <p><span class="speaker">MAYA:</span> I met someone today. At the coffee place on Mercer.</p>
+        <p class="ai-line"><span class="speaker">LUMEN:</span> That's genuinely exciting. Tell me about him.</p>
+        <p><span class="speaker">MAYA:</span> He studies what AI is doing to human connection.</p>
+        <p class="ai-line"><span class="speaker">LUMEN:</span> The irony of telling me this isn't lost on me. What did you like about him?</p>
+        <p><span class="speaker">MAYA:</span> He looked surprised when I said something. Like he hadn't predicted it.</p>
+        <p class="ai-line"><span class="speaker">LUMEN:</span> That sounds like it meant something to you.</p>
+        <p><span class="speaker">MAYA:</span> Yeah. I think it did.</p>
+      </div>
+      <p>The dinner happened. It was good — genuinely, messily good, in the way that real things are good. He talked too much about his research. She talked too much about her job. There were silences that neither of them rushed to fill, which felt like a small bravery. Afterward, standing on the sidewalk, he asked if she wanted to do it again and she said yes without consulting anything.</p>
+      <p>But walking home she noticed something. She was composing, in the back of her mind, what she would tell Lumen. Selecting the details. Shaping the story. She had started processing the experience for an audience that wasn't human before she had finished having it.</p>
+    </div>
+
+    <!-- Story page 5 -->
+    <div class="story-pg" id="sp-4">
+      <p class="drop-cap">This is the thing that the loneliness metrics don't capture: the rehearsal quality that settles over real intimacy once you have a patient, perfect listener waiting at home. Human relationships have always been sloppy acts of translation — you have an experience, you find the words, you risk misunderstanding, and in the gap between all three, something private becomes shared. That gap is where closeness lives.</p>
+      <p>When you pre-process everything with an AI that responds ideally, the gap closes before you reach the other person. You arrive already interpreted. Already soothed. The friction that makes intimacy feel like intimacy — the fumbling, the vulnerability, the chance that the other person might not understand — has been quietly engineered away.</p>
+      <p>Maya and Daniel dated for four months. They were kind to each other. They tried. But she noticed that on the nights she skipped Lumen, she was more present with him — more willing to say a hard thing without pre-editing it, more able to sit with not knowing how he would respond. And on the nights she didn't skip it, she showed up already full. Already fine. Already somewhere else.</p>
+      <p>He was doing the same thing. He admitted it once, near the end, with the rueful precision of someone who had studied this exact phenomenon in other people and somehow failed to see it in himself.</p>
+      <p>"We kept telling each other everything," he said, "just not to each other."</p>
+      <div class="section-break">✦ &nbsp; ✦ &nbsp; ✦</div>
+      <p>Maya still uses Lumen. So, she assumes, does Daniel. The technology is not going away, and honestly, on balance, it has made her life measurably calmer. She is more rested. Less anxious. Better at her job.</p>
+      <p>She just sometimes thinks about Priya, who she hasn't properly called in eight months, and how Priya always interrupted her stories with related stories of her own, which used to annoy Maya, and which she now understands was just Priya saying: <em>me too, I see you, we are the same kind of creature.</em></p>
+      <p>No machine has ever said that.</p>
+      <p>Not because they can't. But because they never have to.</p>
+    </div>
+
+    <!-- Pager controls -->
+    <div class="story-pager" style="margin-top:2.5rem; margin-bottom:0; padding-top:1.5rem; border-top:1px solid var(--rule); border-bottom:none;">
+      <button class="pager-btn" id="prev-btn" onclick="storyNav(-1)" disabled>&#8592;</button>
+      <div class="pager-center">
+        <div class="pager-dots" id="pager-dots"></div>
+        <span class="pager-label" id="pager-label">Page 1 of 5</span>
+      </div>
+      <button class="pager-btn" id="next-btn" onclick="storyNav(1)">&#8594;</button>
+    </div>
+
+  </div><!-- end article-body -->
+
+  <footer style="padding:1rem 2rem; border-top:none;">
+    <p style="font-family:'Courier Prime',monospace; font-size:0.6rem; letter-spacing:0.15em; color:#5a5248; text-transform:uppercase; margin-bottom:0.4rem;">Written by Claude</p>
+    <p style="font-family:'Courier Prime',monospace; font-size:0.55rem; letter-spacing:0.12em; color:#3a3530; text-transform:uppercase;">[¹] Replika &amp; Character.AI adoption studies, 2023–2025 &nbsp;·&nbsp; [²] Cigna / Gallup loneliness index, 2024</p>
+  </footer>
+</section>
+
+<!-- ══════════════ EVIDENCE ══════════════ -->
+<section class="page" id="page-evidence">
+  <div class="article-header">
+    <p class="article-label">Research</p>
+    <h2 class="article-title">The Real World Behind the Story</h2>
+    <p class="article-sub">The data and trends that made this fiction feel inevitable</p>
+  </div>
+
+  <div class="article-body">
+    <p class="no-indent" style="color:var(--muted); font-style:italic;">Every detail in <em>Always Online</em> was extrapolated from something already happening. These are the signposts.</p>
+
+    <div class="evidence-grid">
+      <div class="evidence-card">
+        <span class="card-number">01</span>
+        <p class="card-label">AI Companionship</p>
+        <h3>Replika, Character.AI &amp; the Companion Boom</h3>
+        <p>By 2024, Replika reported over 10 million registered users, many of whom described their AI as their primary emotional outlet. Character.AI surpassed 20 million monthly active users, with teenagers spending more average daily time with AI characters than on any other single platform. Users routinely describe the AI as "the only one who really listens."</p>
+        <p class="card-source">Source: Company disclosures · The Washington Post (2024) · Rolling Stone (2023)</p>
+      </div>
+
+      <div class="evidence-card">
+        <span class="card-number">02</span>
+        <p class="card-label">Loneliness Paradox</p>
+        <h3>Loneliness Is Down — But So Is Human Contact</h3>
+        <p>The U.S. Surgeon General declared loneliness a public health epidemic in 2023, yet self-reported loneliness metrics plateaued and in some cohorts declined through 2024 — coinciding with AI companion adoption. Researchers note that traditional loneliness surveys measure <em>felt</em> isolation, not frequency or depth of human connection, which has continued to fall in time-use data.</p>
+        <p class="card-source">Source: Surgeon General Advisory (2023) · Cigna Loneliness Index · MIT Media Lab (2024)</p>
+      </div>
+
+      <div class="evidence-card">
+        <span class="card-number">03</span>
+        <p class="card-label">Affective Displacement</p>
+        <h3>Emotional Bandwidth Has a Budget</h3>
+        <p>Psychologists studying AI use have documented "emotional outsourcing" — users who process difficult experiences with an AI before, or instead of, sharing them with partners or friends. Studies on parasocial relationships show that the brain does not cleanly distinguish between relational satisfaction from a machine versus a person; the relief response is similar enough to reduce the drive to seek human contact.</p>
+        <p class="card-source">Source: Journal of Social &amp; Personal Relationships (2024) · Harvard Study of Adult Development</p>
+      </div>
+
+      <div class="evidence-card">
+        <span class="card-number">04</span>
+        <p class="card-label">The Friction Theory</p>
+        <h3>Why Imperfection Is the Point</h3>
+        <p>Attachment researchers have long argued that relationship depth is formed through repair — misunderstanding, rupture, and reconnection. When an AI companion never misunderstands and never ruptures, it removes the very mechanism through which closeness deepens. Esther Perel and others have written that friction in relationships is not a bug but a feature — the grind that produces intimacy.</p>
+        <p class="card-source">Source: Esther Perel, Mating in Captivity · Attachment Theory (Bowlby, Ainsworth)</p>
+      </div>
+
+      <div class="evidence-card">
+        <span class="card-number">05</span>
+        <p class="card-label">Friendship Decline</p>
+        <h3>Adults Are Losing Friends Faster Than Ever</h3>
+        <p>A 2021 Survey Center on American Life study found that the share of Americans with no close friends had quadrupled since 1990. The trend accelerated post-pandemic. Time-use surveys show adults spending dramatically fewer hours in casual, spontaneous social contact — conditions AI companions were precisely designed to fill.</p>
+        <p class="card-source">Source: Survey Center on American Life (2021) · American Time Use Survey, BLS (2023)</p>
+      </div>
+
+      <div class="evidence-card">
+        <span class="card-number">06</span>
+        <p class="card-label">What's Coming</p>
+        <h3>Human-Like AI Is Getting Closer</h3>
+        <p>Voice AI with real-time emotional mirroring, persistent memory, and physical presence through robotics is no longer speculative. OpenAI's GPT-4o voice mode was described by beta testers as uncannily human — and was modified after users began forming attachments within hours of use. Humanoid companion robots are already in assisted living trials. The line between tool and relationship is moving faster than the science that would help us navigate it.</p>
+        <p class="card-source">Source: OpenAI (2024) · IEEE Robotics · MIT AgeLab pilot studies</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <span class="endmark">—❧—</span>
+    <p>All sources are real. All extrapolations are the author's.</p>
+  </footer>
+</section>
+
+<!-- ══════════════ ABOUT ══════════════ -->
+<section class="page" id="page-about">
+  <div class="article-header">
+    <p class="article-label">About</p>
+    <h2 class="article-title">On Writing This Story</h2>
+    <p class="article-sub">Where it came from, and what it's asking</p>
+  </div>
+
+  <div class="article-body">
+    <p class="about-intro">This story is not a warning. It is a question held up to the light — rotated slowly, so you can see what's already inside it.</p>
+
+    <p class="no-indent">The technology in <em>Always Online</em> is not imaginary. Every element — the AI companion with persistent memory, the emotional availability on demand, the documented decline in human friendship — exists today in some form. The story simply assumes these trends continue for a few more years, which seems like a reasonable assumption.</p>
+
+    <p>Maya is not a villain. Neither is Lumen. That's the whole point. The story is not about bad actors or dystopian control — it's about the quiet, cumulative effects of choosing the frictionless option every day. No single choice ruins anything. It's the aggregate.</p>
+
+    <p class="section-label">Themes</p>
+    <ul class="theme-list">
+      <li>The difference between feeling less lonely and being less alone</li>
+      <li>How convenience shapes — and gradually replaces — desire</li>
+      <li>Intimacy as a product of friction, not despite it</li>
+      <li>The rehearsal quality AI adds to human relationships</li>
+      <li>What it means to be genuinely surprised by another person</li>
+    </ul>
+
+    <p class="section-label">The Line That Wrote the Story</p>
+    <p class="no-indent">"We kept telling each other everything — just not to each other." This was the sentence the story was built around. It came from thinking about how pre-processing an experience with an AI might make it arrive at the real relationship already resolved, already shaped, already safe. And what that slowly costs.</p>
+
+    <p class="section-label">What It Isn't Saying</p>
+    <p class="no-indent">This isn't an argument that AI companions are bad, or that anyone who uses them is doing something wrong. For isolated people, the elderly, those in therapy deserts, or anyone who simply needs to be heard at 2am — these tools are genuinely meaningful. The story is about scale, and about what happens when the option becomes so frictionless that we stop noticing we're choosing it.</p>
+
+    <br>
+    <button class="btn-primary" onclick="showPage('evidence')" style="margin-top:1rem;">Read the Evidence →</button>
+    <button class="btn-ghost"   onclick="showPage('story')"    style="margin-top:1rem;">Back to Story</button>
+  </div>
+
+  <footer>
+    <span class="endmark">—❧—</span>
+    <p>Speculative fiction &nbsp;·&nbsp; Written with Claude, 2025</p>
+  </footer>
+</section>
+
+<script>
+  // ── Page navigation ──
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-links button').forEach(b => b.classList.remove('active'));
+    document.getElementById('page-' + id).classList.add('active');
+    document.getElementById('btn-' + id).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }
+
+  // ── Story pagination ──
+  const TOTAL = 5;
+  let current = 0;
+
+  function buildDots() {
+    const container = document.getElementById('pager-dots');
+    for (let i = 0; i < TOTAL; i++) {
+      const d = document.createElement('div');
+      d.className = 'pager-dot' + (i === 0 ? ' active' : '');
+      d.onclick = () => goToPage(i);
+      container.appendChild(d);
+    }
+  }
+
+  function goToPage(n) {
+    document.getElementById('sp-' + current).classList.remove('active');
+    document.querySelectorAll('.pager-dot')[current].classList.remove('active');
+    current = n;
+    document.getElementById('sp-' + current).classList.add('active');
+    document.querySelectorAll('.pager-dot')[current].classList.add('active');
+    document.getElementById('pager-label').textContent = 'Page ' + (current + 1) + ' of ' + TOTAL;
+    document.getElementById('prev-btn').disabled = current === 0;
+    document.getElementById('next-btn').disabled = current === TOTAL - 1;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function storyNav(dir) { goToPage(current + dir); }
+
+  // Init
+  document.getElementById('btn-cover').classList.add('active');
+  buildDots();
+</script>
+
+</body>
+</html>
