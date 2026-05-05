@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Creativity Trainer</title>
+<style>
+  :root {
+    --bg: #f7f5f0;
+    --surface: #ffffff;
+    --surface2: #f0ede6;
+    --border: rgba(0,0,0,0.10);
+    --border2: rgba(0,0,0,0.18);
+    --text: #1a1814;
+    --text2: #6b6760;
+    --text3: #a09d98;
+    --accent: #2d5a3d;
+    --accent-bg: #e8f2eb;
+    --accent-text: #1e4029;
+    --warn: #8a4a1a;
+    --warn-bg: #fdf0e6;
+    --radius: 10px;
+    --radius-lg: 16px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Georgia', serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+  /* Layout */
+  .app { max-width: 700px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+  .app-header { margin-bottom: 2.5rem; }
+  .app-title { font-size: 22px; font-weight: normal; letter-spacing: -0.01em; color: var(--text); }
+  .app-sub { font-size: 13px; color: var(--text3); margin-top: 3px; font-family: 'Helvetica Neue', sans-serif; }
+  /* Tabs */
+  .tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
+  .tab { padding: 8px 16px; font-size: 13px; font-family: 'Helvetica Neue', sans-serif; color: var(--text2); cursor: pointer; border: none; background: none; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color 0.15s; }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--text); border-bottom-color: var(--text); font-weight: 500; }
+  /* Panels */
+  .panel { display: none; }
+  .panel.active { display: block; }
+  /* Cards */
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1rem; }
+  .card-title { font-size: 11px; font-family: 'Helvetica Neue', sans-serif; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text3); margin-bottom: 1rem; }
+  /* Streak row */
+  .streak-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.5rem; }
+  .streak-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; text-align: center; }
+  .streak-val { font-size: 28px; color: var(--text); }
+  .streak-lbl { font-size: 11px; font-family: 'Helvetica Neue', sans-serif; color: var(--text3); margin-top: 3px; letter-spacing: 0.05em; text-transform: uppercase; }
+  /* Today row */
+  .today-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 2rem; }
+  .today-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.875rem 1rem; display: flex; align-items: center; gap: 10px; }
+  .today-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--border2); flex-shrink: 0; }
+  .today-dot.done { background: var(--accent); }
+  .today-info { flex: 1; }
+  .today-name { font-size: 12px; font-family: 'Helvetica Neue', sans-serif; font-weight: 500; color: var(--text); }
+  .today-status { font-size: 11px; color: var(--text3); font-family: 'Helvetica Neue', sans-serif; margin-top: 1px; }
+  /* Calendar */
+  .cal-row { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 0.5rem; }
+  .cal-day { width: 14px; height: 14px; border-radius: 3px; background: var(--surface2); }
+  .cal-day.has-aut { background: var(--accent); opacity: 0.9; }
+  .cal-day.has-med { background: #4a7c6f; opacity: 0.9; }
+  .cal-day.has-nov { background: #8a6a2a; opacity: 0.9; }
+  .cal-day.has-all { background: var(--accent); }
+  .cal-legend { display: flex; gap: 12px; margin-top: 8px; }
+  .cal-legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; font-family: 'Helvetica Neue', sans-serif; color: var(--text3); }
+  .cal-dot { width: 10px; height: 10px; border-radius: 2px; }
+  /* Buttons */
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 18px; border-radius: var(--radius); border: 1px solid var(--border2); background: transparent; color: var(--text); font-size: 13px; font-family: 'Helvetica Neue', sans-serif; cursor: pointer; transition: background 0.12s; }
+  .btn:hover { background: var(--surface2); }
+  .btn-primary { background: var(--text); color: var(--surface); border-color: var(--text); }
+  .btn-primary:hover { background: #333; }
+  .btn-sm { padding: 6px 12px; font-size: 12px; }
+  .btn:disabled { opacity: 0.35; cursor: default; }
+  /* AUT */
+  .object-display { text-align: center; padding: 2rem 1rem; }
+  .object-word { font-size: 48px; color: var(--text); letter-spacing: -0.02em; margin-bottom: 6px; }
+  .object-hint { font-size: 13px; color: var(--text3); font-family: 'Helvetica Neue', sans-serif; }
+  .timer-wrap { text-align: center; margin: 1.5rem 0; }
+  .timer-num { font-size: 52px; font-family: 'Helvetica Neue', sans-serif; font-weight: 300; color: var(--text); font-variant-numeric: tabular-nums; line-height: 1; }
+  .timer-num.urgent { color: var(--warn); }
+  .progress-track { height: 3px; background: var(--surface2); border-radius: 2px; margin: 10px auto; max-width: 200px; }
+  .progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 1s linear; }
+  .ctl-row { display: flex; gap: 8px; justify-content: center; margin: 1rem 0 1.5rem; }
+  .idea-entry { display: flex; gap: 8px; margin-bottom: 10px; }
+  .idea-entry input { flex: 1; padding: 9px 12px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); color: var(--text); font-size: 14px; font-family: 'Georgia', serif; outline: none; }
+  .idea-entry input:focus { border-color: var(--border2); }
+  .idea-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 12px; font-family: 'Helvetica Neue', sans-serif; color: var(--text3); }
+  .idea-list { display: flex; flex-direction: column; gap: 5px; }
+  .idea-item { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: var(--surface2); border-radius: 8px; font-size: 13px; font-family: 'Helvetica Neue', sans-serif; }
+  .idea-n { color: var(--text3); min-width: 20px; font-size: 11px; }
+  .idea-text { flex: 1; color: var(--text); }
+  .tag { font-size: 10px; padding: 2px 8px; border-radius: 20px; border: 1px solid; letter-spacing: 0.04em; }
+  .tag-orig { background: var(--accent-bg); color: var(--accent-text); border-color: rgba(45,90,61,0.25); }
+  .tag-common { background: var(--surface2); color: var(--text3); border-color: var(--border); }
+  /* Done banner */
+  .done-card { background: var(--accent-bg); border: 1px solid rgba(45,90,61,0.2); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1rem; }
+  .done-msg { font-size: 15px; color: var(--accent-text); margin-bottom: 1rem; }
+  .done-stats { display: flex; gap: 1.5rem; margin-bottom: 1rem; }
+  .done-stat { text-align: center; }
+  .done-stat-val { font-size: 28px; color: var(--accent-text); }
+  .done-stat-lbl { font-size: 11px; font-family: 'Helvetica Neue', sans-serif; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; }
+  /* History list */
+  .hist-list { display: flex; flex-direction: column; gap: 6px; }
+  .hist-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: var(--surface2); border-radius: var(--radius); font-family: 'Helvetica Neue', sans-serif; font-size: 13px; }
+  .hist-date { color: var(--text3); font-size: 11px; min-width: 80px; }
+  .hist-obj { flex: 1; color: var(--text); font-weight: 500; }
+  .hist-nums { color: var(--text2); font-size: 12px; }
+  .hist-orig { color: var(--accent); font-size: 12px; }
+  /* Meditation */
+  .phase-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-family: 'Helvetica Neue', sans-serif; margin-bottom: 1rem; }
+  .phase-1 { background: var(--surface2); color: var(--text2); border: 1px solid var(--border); }
+  .phase-2 { background: var(--accent-bg); color: var(--accent-text); border: 1px solid rgba(45,90,61,0.25); }
+  .phase-locked { background: var(--surface2); color: var(--text3); border: 1px solid var(--border); opacity: 0.6; }
+  .form-row { margin-bottom: 1rem; }
+  .form-label { font-size: 11px; font-family: 'Helvetica Neue', sans-serif; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text3); margin-bottom: 5px; display: block; }
+  .form-select, .form-input { width: 100%; padding: 9px 12px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); color: var(--text); font-size: 14px; font-family: 'Helvetica Neue', sans-serif; outline: none; }
+  .form-select:focus, .form-input:focus { border-color: var(--border2); }
+  .duration-row { display: flex; gap: 8px; }
+  .dur-btn { flex: 1; padding: 8px; border-radius: var(--radius); border: 1px solid var(--border); background: transparent; color: var(--text2); font-size: 13px; font-family: 'Helvetica Neue', sans-serif; cursor: pointer; text-align: center; transition: all 0.12s; }
+  .dur-btn.selected { background: var(--text); color: var(--surface); border-color: var(--text); }
+  .dur-btn:hover:not(.selected) { background: var(--surface2); }
+  /* Novelty */
+  .domain-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 6px; margin-bottom: 1rem; }
+  .domain-btn { padding: 8px 6px; border-radius: var(--radius); border: 1px solid var(--border); background: transparent; color: var(--text2); font-size: 12px; font-family: 'Helvetica Neue', sans-serif; cursor: pointer; text-align: center; transition: all 0.12s; }
+  .domain-btn.selected { background: var(--warn-bg); color: var(--warn); border-color: rgba(138,106,42,0.3); }
+  .domain-btn:hover:not(.selected) { background: var(--surface2); }
+  /* Empty state */
+  .empty { text-align: center; padding: 2rem; color: var(--text3); font-size: 13px; font-family: 'Helvetica Neue', sans-serif; font-style: italic; }
+  /* Phase progress */
+  .phase-progress { margin: 1rem 0; }
+  .phase-progress-bar { height: 4px; background: var(--surface2); border-radius: 2px; overflow: hidden; }
+  .phase-progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.5s; }
+  .phase-progress-label { display: flex; justify-content: space-between; font-size: 11px; font-family: 'Helvetica Neue', sans-serif; color: var(--text3); margin-top: 4px; }
+  hr.divider { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+  .section-label { font-size: 11px; font-family: 'Helvetica Neue', sans-serif; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text3); margin-bottom: 10px; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="app-header">
+    <div class="app-title">Creativity Trainer</div>
+    <div class="app-sub">Alternate uses · Meditation · Novelty exposure</div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('overview')">Overview</button>
+    <button class="tab" onclick="switchTab('aut')">Alternate Uses</button>
+    <button class="tab" onclick="switchTab('med')">Meditation</button>
+    <button class="tab" onclick="switchTab('nov')">Novelty</button>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="panel active" id="panel-overview">
+    <div class="streak-row">
+      <div class="streak-box"><div class="streak-val" id="ov-total-days">0</div><div class="streak-lbl">days logged</div></div>
+      <div class="streak-box"><div class="streak-val" id="ov-streak">0</div><div class="streak-lbl">day streak</div></div>
+      <div class="streak-box"><div class="streak-val" id="ov-phase">1</div><div class="streak-lbl">med. phase</div></div>
+    </div>
+
+    <div class="section-label">Today</div>
+    <div class="today-row" id="today-row">
+      <div class="today-box"><div class="today-dot" id="td-aut"></div><div class="today-info"><div class="today-name">Alternate Uses</div><div class="today-status" id="td-aut-s">Not done</div></div></div>
+      <div class="today-box"><div class="today-dot" id="td-med"></div><div class="today-info"><div class="today-name">Meditation</div><div class="today-status" id="td-med-s">Not done</div></div></div>
+      <div class="today-box"><div class="today-dot" id="td-nov"></div><div class="today-info"><div class="today-name">Novelty</div><div class="today-status" id="td-nov-s">Not done</div></div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Last 60 days</div>
+      <div class="cal-row" id="cal-grid"></div>
+      <div class="cal-legend">
+        <div class="cal-legend-item"><div class="cal-dot" style="background:#2d5a3d"></div>AUT</div>
+        <div class="cal-legend-item"><div class="cal-dot" style="background:#4a7c6f"></div>Meditation</div>
+        <div class="cal-legend-item"><div class="cal-dot" style="background:#8a6a2a"></div>Novelty</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Phase progress</div>
+      <div id="phase-info-text" style="font-size:13px;font-family:'Helvetica Neue',sans-serif;color:var(--text2);margin-bottom:10px;"></div>
+      <div class="phase-progress">
+        <div class="phase-progress-bar"><div class="phase-progress-fill" id="phase-fill" style="width:0%"></div></div>
+        <div class="phase-progress-label"><span>Phase 1 (FA)</span><span id="phase-days-label">0 / 60 sessions</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AUT -->
+  <div class="panel" id="panel-aut">
+    <div id="aut-start-view">
+      <div class="card" style="text-align:center; padding: 2.5rem 1.5rem;">
+        <div style="font-size:13px;font-family:'Helvetica Neue',sans-serif;color:var(--text3);margin-bottom:1.5rem;">Generate as many unusual uses for an everyday object as you can in 5 minutes. Push past the obvious.</div>
+        <button class="btn btn-primary" onclick="autStart()">Start session</button>
+      </div>
+      <div id="aut-hist-section">
+        <div class="section-label">Session history</div>
+        <div class="hist-list" id="aut-hist"></div>
+      </div>
+    </div>
+
+    <div id="aut-session-view" style="display:none">
+      <div class="card">
+        <div class="object-display">
+          <div class="object-word" id="aut-object">—</div>
+          <div class="object-hint" id="aut-hint">—</div>
+        </div>
+        <div class="timer-wrap">
+          <div class="timer-num" id="aut-timer">5:00</div>
+          <div class="progress-track"><div class="progress-fill" id="aut-progress" style="width:100%"></div></div>
+        </div>
+        <div class="ctl-row">
+          <button class="btn" id="aut-btn-new" onclick="autNewObject()">New object</button>
+          <button class="btn" id="aut-btn-finish" onclick="autFinish()">Finish early</button>
+        </div>
+        <div class="idea-meta">
+          <span id="aut-idea-count">0 ideas</span>
+          <span id="aut-orig-pct" style="color:var(--text3)">—</span>
+        </div>
+        <div class="idea-entry">
+          <input type="text" id="aut-idea-input" placeholder="Type an idea, press Enter…" onkeydown="if(event.key==='Enter')autAddIdea()" />
+          <button class="btn btn-sm" onclick="autAddIdea()">Add</button>
+        </div>
+        <div class="idea-list" id="aut-idea-list"></div>
+      </div>
+    </div>
+
+    <div id="aut-done-view" style="display:none">
+      <div class="done-card">
+        <div class="done-msg" id="aut-done-msg"></div>
+        <div class="done-stats">
+          <div class="done-stat"><div class="done-stat-val" id="aut-done-ideas">0</div><div class="done-stat-lbl">ideas</div></div>
+          <div class="done-stat"><div class="done-stat-val" id="aut-done-orig">0</div><div class="done-stat-lbl">original</div></div>
+          <div class="done-stat"><div class="done-stat-val" id="aut-done-pct">0%</div><div class="done-stat-lbl">originality</div></div>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-primary" onclick="autReset()">New session</button>
+        </div>
+      </div>
+      <div class="section-label">Session history</div>
+      <div class="hist-list" id="aut-hist2"></div>
+    </div>
+  </div>
+
+  <!-- MEDITATION -->
+  <div class="panel" id="panel-med">
+    <div class="card">
+      <div id="med-phase-badge"></div>
+      <div id="med-phase-desc" style="font-size:13px;font-family:'Helvetica Neue',sans-serif;color:var(--text2);margin-bottom:1.25rem;line-height:1.6;"></div>
+
+      <div class="form-row">
+        <label class="form-label">Session type</label>
+        <div id="med-type-row" style="display:flex;gap:8px;">
+          <button class="dur-btn selected" id="med-type-fa" onclick="selectMedType('FA')">Focused Attention (FA)</button>
+          <button class="dur-btn" id="med-type-om" onclick="selectMedType('OM')">Open Monitoring (OM)</button>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label class="form-label">Duration</label>
+        <div class="duration-row" id="med-dur-row">
+          <button class="dur-btn" onclick="selectDur(5)">5 min</button>
+          <button class="dur-btn selected" onclick="selectDur(10)">10 min</button>
+          <button class="dur-btn" onclick="selectDur(15)">15 min</button>
+          <button class="dur-btn" onclick="selectDur(20)">20 min</button>
+          <button class="dur-btn" onclick="selectDur(30)">30 min</button>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label class="form-label">Notes (optional)</label>
+        <input type="text" class="form-input" id="med-notes" placeholder="How did it feel? Any observations…" />
+      </div>
+
+      <button class="btn btn-primary" onclick="medLog()">Log session</button>
+    </div>
+
+    <div class="section-label" style="margin-top:1.5rem">Session history</div>
+    <div class="hist-list" id="med-hist"></div>
+  </div>
+
+  <!-- NOVELTY -->
+  <div class="panel" id="panel-nov">
+    <div class="card">
+      <div style="font-size:13px;font-family:'Helvetica Neue',sans-serif;color:var(--text2);margin-bottom:1.25rem;line-height:1.6;">Log books, articles, podcasts, conversations, or experiences that exposed you to ideas far outside your normal domain.</div>
+
+      <div class="form-row">
+        <label class="form-label">Domain</label>
+        <div class="domain-grid" id="domain-grid">
+          <button class="domain-btn" onclick="selectDomain(this,'Anthropology')">Anthropology</button>
+          <button class="domain-btn" onclick="selectDomain(this,'Biology')">Biology</button>
+          <button class="domain-btn" onclick="selectDomain(this,'Philosophy')">Philosophy</button>
+          <button class="domain-btn" onclick="selectDomain(this,'History')">History</button>
+          <button class="domain-btn" onclick="selectDomain(this,'Physics')">Physics</button>
+          <button class="domain-btn" onclick="selectDomain(this,'Art')">Art</button>
+          <button class="domain-btn" onclick="selectDomain(this,'Music')">Music</button>
+          <button class="domain-btn" onclick="selectDomain(this,'Economics')">Economics</button>
+          <button class="domain-btn" onclick="selectDomain(this,'Psychology')">Psychology</button>
+          <button class="domain-btn" onclick="selectDomain(this,'Literature')">Literature</button>
+          <button class="domain-btn" onclick="selectDomain(this,'Architecture')">Architecture</button>
+          <button class="domain-btn" onclick="selectDomain(this,'Other')">Other</button>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label class="form-label">What was it?</label>
+        <input type="text" class="form-input" id="nov-what" placeholder="Book title, podcast, conversation topic…" />
+      </div>
+
+      <div class="form-row">
+        <label class="form-label">One thing that surprised or interested you</label>
+        <input type="text" class="form-input" id="nov-note" placeholder="Optional but valuable…" />
+      </div>
+
+      <button class="btn btn-primary" onclick="novLog()">Log exposure</button>
+    </div>
+
+    <div class="section-label" style="margin-top:1.5rem">Exposure history</div>
+    <div class="hist-list" id="nov-hist"></div>
+  </div>
+</div>
+
+<script>
+const OBJECTS = [
+  {name:"paperclip",hint:"Mundane but infinitely bendable"},
+  {name:"brick",hint:"Heavy, rectangular, rough"},
+  {name:"rubber band",hint:"Elastic, circular, grippy"},
+  {name:"cardboard box",hint:"Flat or assembled, corrugated"},
+  {name:"pencil",hint:"Wood, graphite, erasable"},
+  {name:"plastic bottle",hint:"Empty, lightweight, hollow"},
+  {name:"fork",hint:"Four tines, handle, metal or plastic"},
+  {name:"newspaper",hint:"Ink on thin paper, large sheets"},
+  {name:"umbrella",hint:"Collapsible, waterproof canopy"},
+  {name:"shoe",hint:"One shoe, any material"},
+  {name:"blanket",hint:"Large, soft, rectangular"},
+  {name:"mirror",hint:"Reflective surface, rigid"},
+  {name:"tin can",hint:"Cylindrical, metal, open top"},
+  {name:"rope",hint:"Long, fibrous, flexible"},
+  {name:"wooden spoon",hint:"Long handle, rounded bowl"},
+  {name:"sponge",hint:"Porous, absorbent, compressible"},
+  {name:"traffic cone",hint:"Bright orange, hollow, conical"},
+  {name:"glass jar",hint:"Transparent, cylindrical, lidded"},
+  {name:"bicycle wheel",hint:"Spoked, circular, rubber rim"},
+  {name:"chair",hint:"Four legs, seat, back"},
+];
+const COMMON = {
+  paperclip:["hold papers","bookmark","pick lock","hang","hook","wire"],
+  brick:["build","wall","doorstop","weapon","weight","grind"],
+  "rubber band":["hold","slingshot","hair","mark","grip"],
+  "cardboard box":["store","move","fort","box","table","hat"],
+  pencil:["write","draw","mark","point","stir","skewer"],
+  "plastic bottle":["water","store","float","scoop","funnel","bird"],
+  fork:["eat","comb","serve","mark","pry","bookmark"],
+  newspaper:["read","wrap","line","fire","hat"],
+  umbrella:["rain","shade","stick","hook"],
+  shoe:["wear","doorstop","weapon","plant","pot"],
+  blanket:["sleep","warmth","picnic","fort","dress","carry"],
+  mirror:["reflect","signal","decorate","appearance","fire"],
+  "tin can":["store","drink","plant","drum","lantern","phone"],
+  rope:["tie","climb","swing","pull","skip","border"],
+  "wooden spoon":["cook","drum","pointer","ruler","scratch","stake"],
+  sponge:["clean","bath","paint","float","grip"],
+  "traffic cone":["traffic","hat","plant","megaphone","goal"],
+  "glass jar":["store","drink","vase","lamp","terrarium","bank"],
+  "bicycle wheel":["transport","art","spin","hoop","water"],
+  chair:["sit","ladder","block","shelf","exercise"],
+};
+
+function today() { return new Date().toISOString().slice(0,10); }
+function load(k) { try { return JSON.parse(localStorage.getItem(k)) || []; } catch(e) { return []; } }
+function save(k,v) { localStorage.setItem(k, JSON.stringify(v)); }
+
+// State
+let autSessions = load('ct_aut');
+let medSessions = load('ct_med');
+let novSessions = load('ct_nov');
+let autIdeas = [];
+let autObject = null;
+let autTimer = null;
+let autSeconds = 300;
+let autActive = false;
+let medType = 'FA';
+let medDur = 10;
+let novDomain = null;
+
+// Tab switching
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach((t,i)=>{ t.classList.toggle('active', ['overview','aut','med','nov'][i]===name); });
+  document.querySelectorAll('.panel').forEach((p,i)=>{ p.classList.toggle('active', ['panel-overview','panel-aut','panel-med','panel-nov'][i]==='panel-'+name); });
+  if(name==='overview') renderOverview();
+  if(name==='aut') renderAutHist();
+  if(name==='med') { renderMedPhase(); renderMedHist(); }
+  if(name==='nov') renderNovHist();
+}
+
+// ---- OVERVIEW ----
+function renderOverview() {
+  const allDays = new Set([...autSessions.map(s=>s.date),...medSessions.map(s=>s.date),...novSessions.map(s=>s.date)]);
+  document.getElementById('ov-total-days').textContent = allDays.size;
+  document.getElementById('ov-streak').textContent = calcStreak();
+  const phase = getMedPhase();
+  document.getElementById('ov-phase').textContent = phase;
+
+  // Today
+  const t = today();
+  const autToday = autSessions.find(s=>s.date===t);
+  const medToday = medSessions.find(s=>s.date===t);
+  const novToday = novSessions.find(s=>s.date===t);
+  document.getElementById('td-aut').className = 'today-dot'+(autToday?' done':'');
+  document.getElementById('td-aut-s').textContent = autToday ? autToday.ideas+' ideas logged' : 'Not done';
+  document.getElementById('td-med').className = 'today-dot'+(medToday?' done':'');
+  document.getElementById('td-med-s').textContent = medToday ? medToday.type+' · '+medToday.dur+' min' : 'Not done';
+  document.getElementById('td-nov').className = 'today-dot'+(novToday?' done':'');
+  document.getElementById('td-nov-s').textContent = novToday ? novToday.domain : 'Not done';
+
+  // Calendar
+  renderCal();
+
+  // Phase progress
+  const medCount = medSessions.length;
+  const pct = Math.min(100, Math.round((medCount/60)*100));
+  document.getElementById('phase-fill').style.width = pct+'%';
+  document.getElementById('phase-days-label').textContent = medCount+' / 60 sessions';
+  if(phase >= 2) {
+    document.getElementById('phase-info-text').textContent = 'You\'ve reached Phase 2. Open Monitoring is now unlocked. Continue building both FA and OM practice.';
+  } else {
+    const left = 60 - medCount;
+    document.getElementById('phase-info-text').textContent = 'You\'re in Phase 1 (Focused Attention). Log '+left+' more meditation session'+(left!==1?'s':'')+' to unlock Phase 2 (Open Monitoring).';
+  }
+}
+
+function calcStreak() {
+  const allDays = new Set([...autSessions.map(s=>s.date),...medSessions.map(s=>s.date),...novSessions.map(s=>s.date)]);
+  const sorted = [...allDays].sort().reverse();
+  if(!sorted.length) return 0;
+  let streak = 0;
+  let cur = new Date(today());
+  for(let d of sorted) {
+    const dd = new Date(d);
+    const diff = Math.round((cur - dd)/(1000*60*60*24));
+    if(diff <= 1) { streak++; cur = dd; }
+    else break;
+  }
+  return streak;
+}
+
+function getMedPhase() {
+  return medSessions.length >= 60 ? 2 : 1;
+}
+
+function renderCal() {
+  const grid = document.getElementById('cal-grid');
+  grid.innerHTML = '';
+  const autSet = new Set(autSessions.map(s=>s.date));
+  const medSet = new Set(medSessions.map(s=>s.date));
+  const novSet = new Set(novSessions.map(s=>s.date));
+  for(let i=59; i>=0; i--) {
+    const d = new Date(); d.setDate(d.getDate()-i);
+    const ds = d.toISOString().slice(0,10);
+    const a = autSet.has(ds), m = medSet.has(ds), n = novSet.has(ds);
+    const div = document.createElement('div');
+    div.className = 'cal-day';
+    div.title = ds;
+    if(a&&m&&n) { div.classList.add('has-all'); }
+    else if(a) div.classList.add('has-aut');
+    else if(m) div.classList.add('has-med');
+    else if(n) div.classList.add('has-nov');
+    grid.appendChild(div);
+  }
+}
+
+// ---- AUT ----
+function autStart() {
+  autIdeas = []; autSeconds = 300; autActive = true;
+  autObject = OBJECTS[Math.floor(Math.random()*OBJECTS.length)];
+  document.getElementById('aut-object').textContent = autObject.name;
+  document.getElementById('aut-hint').textContent = autObject.hint;
+  document.getElementById('aut-start-view').style.display = 'none';
+  document.getElementById('aut-session-view').style.display = 'block';
+  document.getElementById('aut-done-view').style.display = 'none';
+  document.getElementById('aut-idea-list').innerHTML = '';
+  document.getElementById('aut-idea-count').textContent = '0 ideas';
+  document.getElementById('aut-orig-pct').textContent = '—';
+  document.getElementById('aut-timer').className = 'timer-num';
+  updateAutTimer();
+  clearInterval(autTimer);
+  autTimer = setInterval(()=>{ if(autSeconds>0){autSeconds--;updateAutTimer();} else{clearInterval(autTimer);autFinish();} },1000);
+  document.getElementById('aut-idea-input').focus();
+}
+
+function autNewObject() {
+  autObject = OBJECTS[Math.floor(Math.random()*OBJECTS.length)];
+  document.getElementById('aut-object').textContent = autObject.name;
+  document.getElementById('aut-hint').textContent = autObject.hint;
+  autIdeas = [];
+  document.getElementById('aut-idea-list').innerHTML = '';
+  document.getElementById('aut-idea-count').textContent = '0 ideas';
+  document.getElementById('aut-orig-pct').textContent = '—';
+}
+
+function updateAutTimer() {
+  const m = Math.floor(autSeconds/60), s = autSeconds%60;
+  const el = document.getElementById('aut-timer');
+  el.textContent = m+':'+(s<10?'0':'')+s;
+  el.className = 'timer-num'+(autSeconds<=60?' urgent':'');
+  document.getElementById('aut-progress').style.width = Math.round((autSeconds/300)*100)+'%';
+}
+
+function autAddIdea() {
+  const inp = document.getElementById('aut-idea-input');
+  const txt = inp.value.trim(); if(!txt||!autActive) return;
+  inp.value = '';
+  const common = COMMON[autObject.name]||[];
+  const orig = !common.some(c=>txt.toLowerCase().includes(c)||c.includes(txt.toLowerCase().split(' ')[0]));
+  autIdeas.push({text:txt,orig});
+  renderAutIdeas();
+  inp.focus();
+}
+
+function renderAutIdeas() {
+  const list = document.getElementById('aut-idea-list');
+  list.innerHTML = autIdeas.map((idea,i)=>`<div class="idea-item"><span class="idea-n">${i+1}</span><span class="idea-text">${idea.text}</span><span class="tag ${idea.orig?'tag-orig':'tag-common'}">${idea.orig?'original':'common'}</span></div>`).join('');
+  const origC = autIdeas.filter(i=>i.orig).length;
+  document.getElementById('aut-idea-count').textContent = autIdeas.length+' idea'+(autIdeas.length!==1?'s':'');
+  if(autIdeas.length>0){
+    const pct = Math.round((origC/autIdeas.length)*100);
+    document.getElementById('aut-orig-pct').textContent = pct+'% original';
+    document.getElementById('aut-orig-pct').style.color = pct>=50?'var(--accent)':'var(--text3)';
+  }
+}
+
+function autFinish() {
+  clearInterval(autTimer); autActive = false;
+  const origC = autIdeas.filter(i=>i.orig).length;
+  const pct = autIdeas.length>0?Math.round((origC/autIdeas.length)*100):0;
+  const session = {date:today(),object:autObject.name,ideas:autIdeas.length,original:origC};
+  autSessions.push(session); save('ct_aut',autSessions);
+
+  let msg = '';
+  if(autIdeas.length>=12) msg = 'Strong session — '+autIdeas.length+' ideas. Push for more original ones next time.';
+  else if(autIdeas.length>=7) msg = 'Good session — '+autIdeas.length+' ideas. Try to reach 12+ next time.';
+  else if(autIdeas.length>0) msg = autIdeas.length+' idea'+(autIdeas.length>1?'s':'')+' logged. Aim for at least 8 next session.';
+  else msg = 'No ideas logged. Try typing fast without judging — quantity first.';
+
+  document.getElementById('aut-done-msg').textContent = msg;
+  document.getElementById('aut-done-ideas').textContent = autIdeas.length;
+  document.getElementById('aut-done-orig').textContent = origC;
+  document.getElementById('aut-done-pct').textContent = pct+'%';
+  document.getElementById('aut-session-view').style.display = 'none';
+  document.getElementById('aut-done-view').style.display = 'block';
+  renderAutHist2();
+}
+
+function autReset() {
+  document.getElementById('aut-done-view').style.display = 'none';
+  document.getElementById('aut-start-view').style.display = 'block';
+  renderAutHist();
+}
+
+function renderAutHist() {
+  const el = document.getElementById('aut-hist');
+  if(!autSessions.length){ el.innerHTML='<div class="empty">No sessions yet.</div>'; return; }
+  el.innerHTML = [...autSessions].reverse().slice(0,8).map(s=>{
+    const pct = s.ideas>0?Math.round((s.original/s.ideas)*100):0;
+    return `<div class="hist-item"><span class="hist-date">${s.date}</span><span class="hist-obj">${s.object}</span><span class="hist-nums">${s.ideas} ideas</span><span class="hist-orig">${pct}% orig</span></div>`;
+  }).join('');
+}
+
+function renderAutHist2() {
+  const el = document.getElementById('aut-hist2');
+  if(!autSessions.length){ el.innerHTML='<div class="empty">No sessions yet.</div>'; return; }
+  el.innerHTML = [...autSessions].reverse().slice(0,6).map(s=>{
+    const pct = s.ideas>0?Math.round((s.original/s.ideas)*100):0;
+    return `<div class="hist-item"><span class="hist-date">${s.date}</span><span class="hist-obj">${s.object}</span><span class="hist-nums">${s.ideas} ideas</span><span class="hist-orig">${pct}% orig</span></div>`;
+  }).join('');
+}
+
+// ---- MEDITATION ----
+function selectMedType(t) {
+  const phase = getMedPhase();
+  if(t==='OM' && phase<2){ alert('Open Monitoring unlocks after 60 logged meditation sessions (Phase 2). You\'re currently in Phase 1 — keep logging FA sessions.'); return; }
+  medType = t;
+  document.getElementById('med-type-fa').classList.toggle('selected', t==='FA');
+  document.getElementById('med-type-om').classList.toggle('selected', t==='OM');
+}
+
+function selectDur(d) {
+  medDur = d;
+  document.querySelectorAll('#med-dur-row .dur-btn').forEach(b=>{ b.classList.toggle('selected', parseInt(b.textContent)===d); });
+}
+
+function medLog() {
+  const notes = document.getElementById('med-notes').value.trim();
+  medSessions.push({date:today(),type:medType,dur:medDur,notes});
+  save('ct_med',medSessions);
+  document.getElementById('med-notes').value='';
+  renderMedHist();
+  renderMedPhase();
+  alert('Meditation session logged.');
+}
+
+function renderMedPhase() {
+  const phase = getMedPhase();
+  const badge = document.getElementById('med-phase-badge');
+  const desc = document.getElementById('med-phase-desc');
+  if(phase===1){
+    badge.innerHTML='<span class="phase-badge phase-1">Phase 1 — Focused Attention</span>';
+    desc.textContent = 'Anchor your attention to the breath. When your mind wanders, simply notice and return. This builds the attentional control needed for Phase 2. Open Monitoring unlocks after 60 sessions.';
+    document.getElementById('med-type-om').disabled = true;
+    document.getElementById('med-type-om').style.opacity = '0.4';
+  } else {
+    badge.innerHTML='<span class="phase-badge phase-2">Phase 2 — Open Monitoring unlocked</span>';
+    desc.textContent = 'You can now practice Open Monitoring: let your attention rest on whatever arises — sounds, thoughts, sensations — without following or suppressing any of it. You\'re observing the stream, not steering it.';
+    document.getElementById('med-type-om').disabled = false;
+    document.getElementById('med-type-om').style.opacity = '1';
+  }
+}
+
+function renderMedHist() {
+  const el = document.getElementById('med-hist');
+  if(!medSessions.length){ el.innerHTML='<div class="empty">No sessions logged yet.</div>'; return; }
+  el.innerHTML = [...medSessions].reverse().slice(0,10).map(s=>`<div class="hist-item"><span class="hist-date">${s.date}</span><span class="hist-obj">${s.type}</span><span class="hist-nums">${s.dur} min</span><span class="hist-orig" style="color:var(--text3);font-size:11px;">${s.notes||''}</span></div>`).join('');
+}
+
+// ---- NOVELTY ----
+function selectDomain(btn, domain) {
+  novDomain = domain;
+  document.querySelectorAll('.domain-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+function novLog() {
+  const what = document.getElementById('nov-what').value.trim();
+  const note = document.getElementById('nov-note').value.trim();
+  if(!novDomain){ alert('Please select a domain.'); return; }
+  if(!what){ alert('Please describe what you read, watched, or experienced.'); return; }
+  novSessions.push({date:today(),domain:novDomain,what,note});
+  save('ct_nov',novSessions);
+  document.getElementById('nov-what').value='';
+  document.getElementById('nov-note').value='';
+  document.querySelectorAll('.domain-btn').forEach(b=>b.classList.remove('selected'));
+  novDomain = null;
+  renderNovHist();
+  alert('Novelty exposure logged.');
+}
+
+function renderNovHist() {
+  const el = document.getElementById('nov-hist');
+  if(!novSessions.length){ el.innerHTML='<div class="empty">No entries yet.</div>'; return; }
+  el.innerHTML = [...novSessions].reverse().slice(0,10).map(s=>`<div class="hist-item"><span class="hist-date">${s.date}</span><span class="hist-obj" style="color:var(--warn)">${s.domain}</span><span class="hist-nums" style="flex:2">${s.what}</span></div>`).join('');
+}
+
+// Init
+renderOverview();
+renderAutHist();
+renderMedPhase();
+renderMedHist();
+renderNovHist();
+</script>
+</body>
+</html>
