@@ -339,6 +339,35 @@ const OBJECTS = [
   {name:"glass jar",hint:"Transparent, cylindrical, lidded"},
   {name:"bicycle wheel",hint:"Spoked, circular, rubber rim"},
   {name:"chair",hint:"Four legs, seat, back"},
+  {name:"toothbrush",hint:"Small, bristled, long handle"},
+  {name:"coat hanger",hint:"Wire or plastic, hooked"},
+  {name:"bucket",hint:"Cylindrical, open top, handled"},
+  {name:"key",hint:"Metal, jagged edge, small"},
+  {name:"button",hint:"Small disc, holes in center"},
+  {name:"drinking straw",hint:"Thin, hollow, flexible or rigid"},
+  {name:"coffee mug",hint:"Ceramic, handled, open top"},
+  {name:"rubber glove",hint:"Stretchy, waterproof, hand-shaped"},
+  {name:"duct tape",hint:"Wide, sticky, silvery, very strong"},
+  {name:"paper bag",hint:"Flat-bottomed, brown, crinkly"},
+  {name:"chopsticks",hint:"Two thin sticks, wooden or bamboo"},
+  {name:"balloon",hint:"Latex, stretchable, hollow"},
+  {name:"clothespin",hint:"Spring-loaded, pinching clip"},
+  {name:"comb",hint:"Flat, toothed, rigid"},
+  {name:"ruler",hint:"Flat, marked in inches and cm, rigid"},
+  {name:"envelope",hint:"Flat, paper, sealable flap"},
+  {name:"cork",hint:"Cylindrical, lightweight, porous"},
+  {name:"broom",hint:"Long handle, bristled head"},
+  {name:"candle",hint:"Wax cylinder, wick at top"},
+  {name:"thumbtack",hint:"Flat disc head, sharp metal pin"},
+  {name:"foam cup",hint:"White, insulating, lightweight"},
+  {name:"ping pong ball",hint:"Hollow, lightweight, white sphere"},
+  {name:"safety pin",hint:"Hinged, sharp point, locking clasp"},
+  {name:"pillowcase",hint:"Fabric sleeve, open at one end"},
+  {name:"wooden plank",hint:"Flat, rectangular, rough wood"},
+  {name:"stapler",hint:"Metal body, spring-loaded, uses staples"},
+  {name:"magnifying glass",hint:"Convex lens, handle, enlarges"},
+  {name:"plastic bag",hint:"Thin, transparent, handles"},
+  {name:"shoelace",hint:"Long, thin, flexible cord"},
 ];
 const COMMON = {
   paperclip:["hold papers","bookmark","pick lock","hang","hook","wire"],
@@ -361,6 +390,35 @@ const COMMON = {
   "glass jar":["store","drink","vase","lamp","terrarium","bank"],
   "bicycle wheel":["transport","art","spin","hoop","water"],
   chair:["sit","ladder","block","shelf","exercise"],
+  toothbrush:["brush teeth","clean","scrub","paint","apply"],
+  "coat hanger":["hang clothes","hook","antenna","unclog","reach"],
+  bucket:["carry water","store","seat","drum","wash"],
+  key:["unlock","screwdriver","scrape","mark","measure"],
+  button:["fasten","decorate","token","counter","eye"],
+  "drinking straw":["drink","blow","stir","measure","pipe"],
+  "coffee mug":["drink","store","plant","drum","weight"],
+  "rubber glove":["protect","waterproof","grip","balloon","container"],
+  "duct tape":["tape","repair","bind","seal","label"],
+  "paper bag":["carry","store","breathe","puppet","dispose"],
+  chopsticks:["eat","stir","skewer","reach","measure"],
+  balloon:["decorate","float","carry","signal","waterproof"],
+  clothespin:["clip","hang","hold","clamp","mark"],
+  comb:["hair","rake","scrape","texture","mark"],
+  ruler:["measure","draw","scrape","level","pointer"],
+  envelope:["mail","store","fold","label","waterproof"],
+  cork:["seal","float","pin","grip","carve"],
+  broom:["sweep","reach","prop","rake","knock"],
+  candle:["light","heat","wax","mark","seal"],
+  thumbtack:["pin","mark","scratch","hook","stud"],
+  "foam cup":["drink","insulate","plant","float","mold"],
+  "ping pong ball":["play","float","measure","decorate","sensor"],
+  "safety pin":["fasten","pick","mark","hook","measure"],
+  pillowcase:["sleep","carry","store","costume","bag"],
+  "wooden plank":["build","bridge","shelf","weapon","float"],
+  stapler:["staple","bind","weight","clamp","mark"],
+  "magnifying glass":["magnify","focus light","signal","measure","burn"],
+  "plastic bag":["carry","store","waterproof","protect","dispose"],
+  shoelace:["tie","bind","measure","hang","decorate"],
 };
 
 function today() { return new Date().toISOString().slice(0,10); }
@@ -467,9 +525,19 @@ function renderCal() {
 }
 
 // ---- AUT ----
+function pickObject() {
+  const recentNames = load('ct_aut_recent');
+  const pool = OBJECTS.filter(o => !recentNames.includes(o.name));
+  const candidates = pool.length > 0 ? pool : OBJECTS;
+  const picked = candidates[Math.floor(Math.random()*candidates.length)];
+  const updated = [...recentNames.filter(n => n !== picked.name), picked.name].slice(-20);
+  save('ct_aut_recent', updated);
+  return picked;
+}
+
 function autStart() {
   autIdeas = []; autSeconds = 300; autActive = true;
-  autObject = OBJECTS[Math.floor(Math.random()*OBJECTS.length)];
+  autObject = pickObject();
   document.getElementById('aut-object').textContent = autObject.name;
   document.getElementById('aut-hint').textContent = autObject.hint;
   document.getElementById('aut-start-view').style.display = 'none';
@@ -486,7 +554,7 @@ function autStart() {
 }
 
 function autNewObject() {
-  autObject = OBJECTS[Math.floor(Math.random()*OBJECTS.length)];
+  autObject = pickObject();
   document.getElementById('aut-object').textContent = autObject.name;
   document.getElementById('aut-hint').textContent = autObject.hint;
   autIdeas = [];
