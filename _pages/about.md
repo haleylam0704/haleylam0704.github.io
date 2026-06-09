@@ -9,7 +9,12 @@ redirect_from:
 
 I'm a Master's student in Psychology at Wake Forest University, working with Dr. Mike Furr.
 
-My research interests are mainly in the **psychology of human-AI interaction**, where I examine how interacting with emerging technologies affects human psychology. I'm also interested in learning about human nature by finding similarities and differences between humans and AI systems. I believe that by comparing humans with these systems and examining what is unique to humans, we can increase the understanding of ourselves. I'm also interested in using AI tools for psychological research.
+My research centers on the **psychology of human-AI interaction** and how the increasing presence of AI changes human cognition, emotion, and social behavior. My interests fall into three areas:
+- The psychological effects of LLM-human relationships on users (e.g., attachment, self-disclosure, wellbeing)
+- Whether (or when) AI companionship substitutes for or complements human-human connection
+- How AI changes cognition and judgment, including sycophancy, cognitive offloading, and effects on belief formation
+
+Across all three, I'm interested in individual differences as moderators: what types of people are most likely to interact with AI (i.e., individual differences in the antecedent), and who benefits or is most at risk from such interactions (i.e., individual differences in the consequences).
 
 Additionally, I'm interested in **pluralism**, and how individuals can interact respectfully across deep worldview differences. I'm currently involved in developing a scale for "relational pluralism," which assesses individual orientation toward engaging across differences with the motivation to increase mutual understanding.
 
