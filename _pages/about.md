@@ -16,7 +16,7 @@ My research centers on the **psychology of human-AI interaction** and how the in
 
 Across all three, I'm interested in individual differences as moderators: what types of people are most likely to interact with AI (i.e., individual differences in the antecedent), and who benefits or is most at risk from such interactions (i.e., individual differences in the consequences).
 
-Additionally, I'm interested in **pluralism**, and how individuals can interact respectfully across deep worldview differences. I'm currently involved in developing a scale for "relational pluralism," which assesses individual orientation toward engaging across differences with the motivation to increase mutual understanding.
+Additionally, I'm interested in **pluralism**, and how individuals can interact across deep worldview differences and understand each other's views better. I'm currently involved in developing a scale for "relational pluralism," which assesses individual orientation toward engaging across differences with the motivation to increase mutual understanding.
 
 ## Education
 
