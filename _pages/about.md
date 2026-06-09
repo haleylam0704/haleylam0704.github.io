@@ -25,10 +25,6 @@ Advisor: Dr. Mike Furr
 
 **B.A. in Psychology, Economics, and Music**, Baylor University (May 2025)<br>
 *summa cum laude*
-
-**Summer School of Personality Science (SSPS)** (2026)<br>
-European Association of Personality Psychology — selected as 1 of 16 participants internationally
-
 ## Current Research
 
 I'm currently working on projects examining:
