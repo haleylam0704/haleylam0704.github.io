@@ -16,7 +16,7 @@ Interactive tools and materials related to my research.
   <p style="color: #666; margin-bottom: 0.5em;">
     Explore methodological differences between Economics and Psychology (2008-2024).
     Filter by discipline, journal, method, and year. Based on
-    <a href="/publication/2025-methodological-trends">Lam (2025)</a>.
+    <a href="/publication/2025-methodological-trends">Lam (2025)</a>, created by Claude Code.
   </p>
   <a href="/files/methods-explorer.html" class="btn btn--primary">Launch Explorer</a>
 </div>
