@@ -9,7 +9,7 @@ redirect_from:
 
 I'm a Master's student in Psychology at Wake Forest University, working with Dr. Mike Furr.
 
-My research interests are mainly in the **psychology of AI**, where I examine how interacting with emerging technologies affects human psychology. I'm also interested in learning about human nature by finding similarities and differences between humans and AI systems. I believe that by comparing humans with these systems and examining what is unique to humans, we can increase the understanding of ourselves. I'm also interested in using AI tools for psychological research.
+My research interests are mainly in the **psychology of human-AI interaction**, where I examine how interacting with emerging technologies affects human psychology. I'm also interested in learning about human nature by finding similarities and differences between humans and AI systems. I believe that by comparing humans with these systems and examining what is unique to humans, we can increase the understanding of ourselves. I'm also interested in using AI tools for psychological research.
 
 Additionally, I'm interested in **pluralism**, and how individuals can interact respectfully across deep worldview differences. I'm currently involved in developing a scale for "relational pluralism," which assesses individual orientation toward engaging across differences with the motivation to increase mutual understanding.
 
