@@ -26,10 +26,13 @@ Advisor: Dr. Mike Furr
 **B.A. in Psychology, Economics, and Music**, Baylor University (May 2025)<br>
 *summa cum laude*
 
+**Summer School of Personality Science (SSPS)** (2026)<br>
+European Association of Personality Psychology — selected as 1 of 16 participants internationally
+
 ## Current Research
 
 I'm currently working on projects examining:
-- How LLMs compare to humans in situational understanding
+- How well people can predict behaviors compared to LLMs
 - Developing a relational pluralism scale to assess orientation toward engaging across worldview differences
 
 Feel free to reach out via email (haleylam0704@gmail.com) or connect with me on LinkedIn!

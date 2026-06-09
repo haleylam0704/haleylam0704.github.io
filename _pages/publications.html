@@ -9,28 +9,24 @@ author_profile: true
   <div class="wordwrap">You can also find my articles on <a href="{{site.author.googlescholar}}">my Google Scholar profile</a>.</div>
 {% endif %}
 
-{% include base_path %}
+## Publications
 
-<!-- New style rendering if publication categories are defined -->
-{% if site.publication_category %}
-  {% for category in site.publication_category  %}
-    {% assign title_shown = false %}
-    {% for post in site.publications reversed %}
-      {% if post.category != category[0] %}
-        {% continue %}
-      {% endif %}
-      {% unless title_shown %}
-        <h2>{{ category[1].title }}</h2><hr />
-        {% assign title_shown = true %}
-      {% endunless %}
-      {% include archive-single.html %}
-    {% endfor %}
-  {% endfor %}
-{% else %}
-  {% for post in site.publications reversed %}
-    {% include archive-single.html %}
-  {% endfor %}
-{% endif %}
+Lam, H. (2025). Methodological Trends and Differences: A Comparative Analysis of Economics and Psychology. *Collabra: Psychology*, 11(1). \[[link](https://doi.org/10.1525/collabra.147337)\]
 
+Lam, H., Balkaya-Ince, M., Cole, V., … Furr, R. M., Jayawickreme, E. et al. (Provisionally Accepted). Clarifying the Psychological Underpinnings of Covenantal Pluralism: Relational Engagement Across Religious Differences. *The Review of Faith & International Affairs.*
 
+## Ongoing Projects
 
+Lam, H., & Furr, R. M. (In preparation). How Well Can People Predict Behaviors? Large Language Models (LLMs) Outperform Humans in Behavioral Predictions.
+
+## Conference Presentations
+
+Lam, H., & Furr, R. M. (2026, April). Can people predict behaviors better than LLMs? Seminar for Self-Regulation, Department of Psychology, Wake Forest University, Winston-Salem, NC.
+
+Lam, H. (2026, February). Are psychologists methodologically stubborn? Comparing research methodologies and trends in economics and psychology. Seminar of Analysis and Measurement, Department of Psychology, Wake Forest University, Winston-Salem, NC.
+
+Lam, H. (2025, April). Diverging Methods: Trends and Differences in Research Methodologies Between Economics and Psychology. Blitz Paper Presentation, Interdisciplinary Research Ethics and Norms Conference (IRENC).
+
+Lam, H. (2025, April). National Predictors of Attitudes Toward Artificial Intelligence: A Cross-Cultural Analysis. Platform Presentation, University Scholars Week, Baylor University.
+
+Lam, H. (2024, October). The Impact of Mental Illness Diagnoses on Mass Shooting Severity. Poster Presentation, Baylor Research & Internship Day Symposium.
