@@ -25,6 +25,7 @@ Advisor: Dr. Mike Furr
 
 **B.A. in Psychology, Economics, and Music**, Baylor University (May 2025)<br>
 *summa cum laude*
+
 ## Current Research
 
 I'm currently working on projects examining:

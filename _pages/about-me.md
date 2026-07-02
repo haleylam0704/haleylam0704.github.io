@@ -1,8 +1,10 @@
 ---
 permalink: /about-me/
-title: "About Me"
+title: "Personal"
 author_profile: true
 ---
+
+This is the non-academic side of me. For my research background, see my [About](/) page.
 
 When I'm not doing psychology, I'm probably doing one of these things:
 
