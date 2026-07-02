@@ -28,4 +28,4 @@ When I'm not studying psychology, here's what I'm probably doing:
 
 ## Other Interests
 
-Recently, I've been watching philosophy videos in my free time, including topics on consciousness, religion, and ethics. I've also been finding myself playing chess when procrastinating on work.
+Recently, I've been watching philosophy videos in my free time, including topics on consciousness, religion, and ethics. I've also been finding myself playing chess when procrastinating on work :).
