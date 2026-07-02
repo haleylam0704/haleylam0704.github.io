@@ -7,7 +7,7 @@ author_profile: true
 This is the non-academic side of me. For my research background, see my [About](/) page.
 
 <p align="center">
-<img src="/images/about-me/childhood-1.jpg" alt="Childhood photo" style="max-height: 220px; width: auto; border-radius: 16px;">
+<img src="/images/about-me/childhood-1.jpg" alt="Childhood photo" style="max-height: 300px; width: auto; border-radius: 16px;">
 </p>
 
 When I'm not studying psychology, here's what I'm probably doing:
