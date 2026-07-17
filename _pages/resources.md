@@ -21,6 +21,15 @@ Interactive tools and materials related to my research.
   <a href="/files/methods-explorer.html" class="btn btn--primary">Launch Explorer</a>
 </div>
 
+<div style="margin-bottom: 2em;">
+  <h3 style="margin-bottom: 0.3em;">Psychology of AI Literature Tracker</h3>
+  <p style="color: #666; margin-bottom: 0.5em;">
+    An auto-updating collection of research papers on the psychology of human–AI interaction.
+    Pulls bibliographic data from OpenAlex and uses Claude to classify new papers as they're indexed.
+  </p>
+  <a href="https://haleylam0704.github.io/psych-of-ai-tracker/" class="btn btn--primary">Launch Tracker</a>
+</div>
+
 ---
 
 ## Data & Code
