@@ -9,7 +9,7 @@ redirect_from:
 
 I'm a Master's student in Psychology at Wake Forest University, working with Dr. Mike Furr.
 
-My research centers on the **psychology of human-AI interaction** and how the increasing presence of AI changes human cognition, emotion, and social behavior. My interests fall into three areas:
+My interests are in the **psychology of human-AI interaction** and how the increasing presence of AI changes human cognition, emotion, and social behavior. These fall into three areas:
 - The psychological effects of LLM-human relationships on users (e.g., attachment, self-disclosure, wellbeing)
 - Whether (or when) AI companionship substitutes for or complements human-human connection
 - How AI changes cognition and judgment, including sycophancy, cognitive offloading, and effects on belief formation
