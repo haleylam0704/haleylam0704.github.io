@@ -30,6 +30,6 @@ Advisor: Dr. Mike Furr
 
 I'm currently working on projects examining:
 - How well people can predict behaviors compared to LLMs
-- Developing a relational pluralism scale to assess orientation toward engaging across worldview differences
+- Individual differences in relational pluralism (engagement across worldview differences to increase mutual understanding)
 
 Feel free to reach out via email (haleylam0704@gmail.com) or connect with me on LinkedIn!
