@@ -14,6 +14,8 @@ A running list of articles I've been reading, with a few brief thoughts on each.
   .reading-table th { text-align: left; white-space: nowrap; }
   .reading-table td { vertical-align: top; }
   .reading-table td.nowrap { white-space: nowrap; }
+  .reading-table td.title { min-width: 14em; }
+  .reading-table td.authors { min-width: 8em; }
   .reading-table td.thoughts { min-width: 16em; }
 </style>
 
@@ -33,8 +35,8 @@ A running list of articles I've been reading, with a few brief thoughts on each.
   {% for p in papers %}
     <tr>
       <td class="nowrap">{{ p.date }}</td>
-      <td>{{ p.title }}</td>
-      <td>{{ p.authors }}</td>
+      <td class="title">{{ p.title }}</td>
+      <td class="authors">{{ p.authors }}</td>
       <td>{{ p.year }}</td>
       <td class="nowrap">{% if p.doi %}<a href="https://doi.org/{{ p.doi }}">{{ p.doi }}</a>{% endif %}</td>
       <td class="thoughts">{{ p.thoughts }}</td>
