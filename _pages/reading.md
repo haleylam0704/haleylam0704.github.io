@@ -20,6 +20,7 @@ A running list of articles I've been reading, with a few brief thoughts on each.
 </style>
 
 {% assign papers = site.data.reading | sort: "date" | reverse %}
+{% assign months = "Jan,Feb,Mar,Apr,May,June,July,Aug,Sept,Oct,Nov,Dec" | split: "," %}
 <table class="reading-table">
   <thead>
     <tr>
@@ -34,7 +35,7 @@ A running list of articles I've been reading, with a few brief thoughts on each.
   <tbody>
   {% for p in papers %}
     <tr>
-      <td class="nowrap">{{ p.date }}</td>
+      <td class="nowrap">{% assign mi = p.date | date: "%-m" | minus: 1 %}{{ months[mi] }} {{ p.date | date: "%-d, %Y" }}</td>
       <td class="title">{{ p.title }}</td>
       <td class="authors">{{ p.authors }}</td>
       <td>{{ p.year }}</td>
