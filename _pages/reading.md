@@ -72,7 +72,7 @@ A running list of articles I've been reading, with a few brief thoughts on each.
   var headers = table.querySelectorAll('th');
   var sortCol = 0, sortAsc = false;
 
-  // Category filter
+  /* Category filter */
   document.querySelectorAll('.reading-filters button').forEach(function (btn) {
     btn.addEventListener('click', function () {
       document.querySelectorAll('.reading-filters button').forEach(function (b) { b.classList.remove('active'); });
@@ -84,7 +84,7 @@ A running list of articles I've been reading, with a few brief thoughts on each.
     });
   });
 
-  // Sort by clicking a header
+  /* Sort by clicking a header */
   headers.forEach(function (th, i) {
     th.addEventListener('click', function () {
       sortAsc = (sortCol === i) ? !sortAsc : true;
@@ -103,7 +103,7 @@ A running list of articles I've been reading, with a few brief thoughts on each.
     });
   });
 
-  // Click a row to highlight it (links still work normally)
+  /* Click a row to highlight it (links still work normally) */
   tbody.addEventListener('click', function (e) {
     if (e.target.closest('a')) return;
     var row = e.target.closest('tr');
