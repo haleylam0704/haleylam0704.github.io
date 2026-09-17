@@ -7,7 +7,7 @@ sitemap: false
 search: false
 ---
 
-A running list of articles I've been reading, with a few brief thoughts on each. Click a category to filter, or a column header to sort.
+A running list of articles I've been reading, with a few brief thoughts on each. Click a button to filter by category, or a column header to sort.
 
 <style>
   .reading-filters { margin: 1em 0; display: flex; flex-wrap: wrap; gap: 0.4em; }
@@ -16,7 +16,8 @@ A running list of articles I've been reading, with a few brief thoughts on each.
     border: 1px solid currentColor; border-radius: 999px; background: transparent; color: inherit; opacity: 0.6;
   }
   .reading-filters button.active { opacity: 1; font-weight: bold; }
-  .reading-table { font-size: 0.8em; width: 100%; }
+  .reading-scroll { overflow-x: auto; max-width: 100%; position: relative; }
+  .reading-table { font-size: 0.8em; width: 100%; display: table; margin-bottom: 0; }
   .reading-table th { text-align: left; white-space: nowrap; cursor: pointer; user-select: none; }
   .reading-table th .arrow { opacity: 0.5; font-size: 0.8em; }
   .reading-table td { vertical-align: top; }
@@ -38,11 +39,10 @@ A running list of articles I've been reading, with a few brief thoughts on each.
   {% for c in categories %}<button data-cat="{{ c }}">{{ c }}</button>{% endfor %}
 </div>
 
-<table class="reading-table">
+<div class="reading-scroll"><table class="reading-table">
   <thead>
     <tr>
       <th data-type="text">Date read <span class="arrow">▼</span></th>
-      <th data-type="text">Category <span class="arrow"></span></th>
       <th data-type="text">Title <span class="arrow"></span></th>
       <th data-type="text">Authors <span class="arrow"></span></th>
       <th data-type="num">Year <span class="arrow"></span></th>
@@ -54,7 +54,6 @@ A running list of articles I've been reading, with a few brief thoughts on each.
   {% for p in papers %}
     <tr data-cat="{{ p.category }}">
       <td class="nowrap" data-sort="{{ p.date }}">{% assign mi = p.date | date: "%-m" | minus: 1 %}{{ months[mi] }} {{ p.date | date: "%-d, %Y" }}</td>
-      <td class="nowrap">{{ p.category }}</td>
       <td class="title">{{ p.title }}</td>
       <td class="authors">{{ p.authors }}</td>
       <td>{{ p.year }}</td>
@@ -63,7 +62,7 @@ A running list of articles I've been reading, with a few brief thoughts on each.
     </tr>
   {% endfor %}
   </tbody>
-</table>
+</table></div>
 
 <script>
 (function () {
