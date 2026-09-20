@@ -27,9 +27,3 @@ Interactive tools and materials related to my research.
   </p>
   <a href="/files/methods-explorer.html" class="btn btn--primary">Launch Explorer</a>
 </div>
-
----
-
-## Data & Code
-
-- [OSF: Methodological Trends Project](https://osf.io/d2z5c/) - Dataset, supplementary materials, and analysis code
