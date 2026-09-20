@@ -18,18 +18,10 @@ Across all three, I'm interested in individual differences as moderators: what t
 
 Additionally, I'm interested in **pluralism**, and how individuals can interact across deep worldview differences and understand each other's views better. I'm currently involved in developing a scale for "relational pluralism," which assesses individual orientation toward engaging across differences with the motivation to increase mutual understanding.
 
-## Education
-
-**M.S. in Psychology**, Wake Forest University (expected May 2027)<br>
-Advisor: Dr. Mike Furr
-
-**B.A. in Psychology, Economics, and Music**, Baylor University (May 2025)<br>
-*summa cum laude*
-
 ## Current Research
 
 I'm currently working on projects examining:
 - How well people can predict behaviors compared to LLMs
 - Individual differences in relational pluralism (engagement across worldview differences to increase mutual understanding)
 
-Feel free to reach out via email (haleylam0704@gmail.com) or connect with me on LinkedIn!
+Feel free to reach out via email (haleylam0704@gmail.com) or connect with me on [LinkedIn](https://www.linkedin.com/in/haley-lam/)!

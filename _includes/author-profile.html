@@ -170,7 +170,11 @@
       {% endif %}
       {% if author.zhihu %}
       <li><a href="https://www.zhihu.com/people/{{ author.zhihu }}"><i class="fab fa-fw fa-zhihu icon-pad-right" aria-hidden="true"></i>Zhihu</a></li>
-      {% endif %}      
+      {% endif %}
+
+      {% if author.feedback %}
+        <li style="margin-top: 0.6em; padding-top: 0.6em; border-top: 1px solid var(--global-border-color);"><a href="{{ author.feedback }}"><i class="fas fa-fw fa-comment icon-pad-right" aria-hidden="true"></i>Give me anonymous feedback</a></li>
+      {% endif %}
     </ul>
   </div>
 </div>
