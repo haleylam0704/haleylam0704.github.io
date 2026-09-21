@@ -12,7 +12,7 @@ I'm a Master's student in Psychology at Wake Forest University, working with [Dr
 My interests are in the **psychology of human-AI interaction**. Specifically, they fall into three broad areas:
 
 1. The effects of human-AI interactions (both single interactions or sustained relationships) on users' wellbeing, loneliness, and existing human-human relationships.
-2. How human-AI interactions affect beliefs and intellectual virtues (could they lead to better thinking?).
+2. How human-AI interactions affect beliefs and intellectual virtues (e.g., could they lead to better thinking?).
 3. Individual differences that change who is disposed to interact with AI (heterogeneous dispositions) and who is harmed/benefited by human-AI interactions (heterogeneous effects).
 
 Overall, my interests are in how (and for whom) AI chatbots psychologically affect well-being, relationships, and beliefs.
