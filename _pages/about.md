@@ -24,7 +24,8 @@ Additionally, I'm interested in societal **pluralism** and how individuals can i
 I'm currently working on the following projects:
 
 1. How accurately humans (compared to LLMs) can predict human behavior (Master's Thesis)
-2. How to increase intellectual virtues (e.g., curiosity, open-mindedness, intellectual rigor) using LLMs
-3. A theory paper on "relational pluralism" (engagement across worldview differences with the goal of increasing mutual understanding)
+2. How AI emotional support affects stress and preferences for human versus AI support
+3. How to increase intellectual virtues (e.g., curiosity, open-mindedness, intellectual rigor) using LLMs
+4. A theory paper on "relational pluralism" (engagement across worldview differences with the goal of increasing mutual understanding)
 
 Please reach out via email (haleylam0704@gmail.com) or connect with me on [LinkedIn](https://www.linkedin.com/in/haley-lam/)!
